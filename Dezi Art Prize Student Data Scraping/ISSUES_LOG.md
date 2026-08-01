@@ -517,3 +517,106 @@ least one confirmed reversed name/title order in the wild).
 
 Next: Batch 5 (Cranbrook already done, CalArts, Cooper Union, UCLA, SCAD, Columbia
 College — the last marked "unconfirmed source" in the original doc).
+
+---
+
+## Multi-School Batch 5 (Art Student Rosters) — 2026-08-02 — FINAL BATCH
+
+Context: the last batch per `art_school_scraping_urls.md`'s priority order — CalArts,
+Cooper Union, UCLA, SCAD, Columbia College Chicago (the last flagged "unconfirmed" in
+the original doc). All 28 schools from the original doc have now been investigated.
+
+### CalArts — real source found via search, required crawl4ai for cookie-consent/Turnstile
+**Issue Type:** Doc's library/news leads were dead ends; found the real page via search
+**Description:** The doc's suggested `library.calarts.edu/digitalcollections/masterstheses`
+only links to a login-walled OCLC proxy (`calarts.idm.oclc.org/login?url=...`) — not
+publicly accessible, not attempted. `calarts.edu/news` has no thesis-specific posts.
+Found the real 2026 source via web search: `calarts.edu/high-pass` — "High Pass" is the
+BFA Class of 2026 group exhibition (29 artists, Art + Photo Media). Plain fetch returns
+mostly cookie-consent-banner boilerplate with no visible name list; crawl4ai renders the
+full page (confirmed the "Exhibiting Artists include:" sentence exists near the very end
+of the text, after ~27KB of consent-manager/cookie-provider text) — this site uses
+Cloudflare Turnstile bot-detection alongside the cookie consent dialog.
+**Action Needed:** Built `calarts_scraper.py` (requires `.venv_crawl4ai`, same as
+`vcu_scraper.py`/`umich_scraper.py`). Result: 29/29 students, matching the page's own
+count exactly.
+**Status:** Resolved.
+
+### Cooper Union — confirmed dead end
+**Issue Type:** No usable data found, matches doc's own caveat
+**Description:** Both the 2026 End of Year Show page and the Art galleries page (checked
+via plain fetch AND crawl4ai) contain zero student names — only event logistics and
+generic institutional history/nav text. This matches the doc's own note that "Cooper's
+tradition is to list works by artist name only" — the implication being that attribution
+lives on physical gallery wall text or a printed program, not the website.
+**Action Needed:** None found. Not scraped.
+**Status:** Confirmed dead end.
+
+### UCLA — excellent clean source, portfolio/Instagram links included
+**Issue Type:** Confirmed working, high data quality
+**Description:** The doc's suggested event-archive URLs (`art.ucla.edu/events`,
+`goarts.ucla.edu/events/mfa-exhibition-1`) were not the best source. Found
+`art.ucla.edu/graduate-students` (redirects through `www.` + an S3 redirect chain,
+needed `-L` to follow fully) — a clean, current directory of graduate students by area
+of study (Ceramics, Interdisciplinary Studio, New Genres, Painting and Drawing,
+Photography, Sculpture), each name hyperlinked to a personal portfolio or Instagram.
+**Action Needed:** Built `ucla_scraper.py`. Result: 38 students across 6 areas, 29 with
+a real portfolio/Instagram link, 9 without (genuine gap on UCLA's page, not a parsing
+issue). No email or graduation year published on this page.
+**Status:** Resolved.
+
+### SCAD — real source found, but confirmed to be non-current data — skipped per user decision
+**Issue Type:** Data-currency problem, not a scraping/access problem
+**Description:** The doc's `scad.edu/academics/programs/*/student-work` pattern works
+(behind a Cloudflare challenge, bypassed via crawl4ai — confirmed working across all 16
+verified program slugs: Painting, Illustration, Photography, Sequential Art, Graphic
+Design, Industrial Design, User Experience Design, Animation, Motion Media Design,
+Visual Effects, Furniture Design, Interior Design, Fashion, Fibers, Jewelry, Accessory
+Design). Each page has a clean `"Artwork Title" | Student Name` caption format. However,
+inspecting the Painting page's image filenames (e.g.
+`painting-student-work-2020-jessie-lefebre.jpg`) revealed this is a **marketing
+showcase of past graduates' best work, predominantly dated 2020** — not a current
+2025/2026 graduating-class roster like every other source in this project.
+**Action Needed:** Per user decision, skipped entirely — this data doesn't serve the
+project's goal of reaching current/recent students. Not scraped.
+**Status:** Resolved (deliberately not scraped; logged so this isn't re-attempted
+without first re-checking whether SCAD has since added a current-year showcase).
+
+### Columbia College Chicago — confirmed real, resolving the doc's "unconfirmed source" flag
+**Issue Type:** Doc's guess ("Manifest") was correct; found the specific page + a genuine
+source-side data-quality quirk
+**Description:** The doc's guess that "Manifest" (Columbia's annual arts festival) was
+the right lead is confirmed correct. The 2026 event-schedule hub page
+(`students.colum.edu/.../school-of-visual-art-manifest-event-schedule-may-16-2026`)
+itself has no individual names (only promotional copy about "our graduating students"
+generally), but links to individual exhibition subpages (via `.html` URLs that 302-redirect
+to extensionless versions). The "Human Condition: 2026 BA/BFA in Fine Art Exhibition"
+subpage has two clean `<br>`-separated "Featuring works by:" lists (Hokin Gallery,
+C33 Gallery). Two of the 24 names have unusual internal letter-spacing in the raw HTML
+itself (e.g. "Faith H o g a n", "Liz Z e r m e n o Robles") — not a parsing artifact,
+confirmed present in the source `<br>`-delimited text — kept verbatim rather than
+"corrected" (guessing the intended spelling would be fabricating data), with a specific
+note flagging this on each affected row. The MFA Visual Arts and Photography Graduate
+Exhibition and Photography Exhibition subpages were also checked but have no name lists
+at all (event logistics only).
+**Action Needed:** Built `columbia_scraper.py`. Result: 24/24 students (13 Hokin Gallery
++ 11 C33 Gallery), 2 flagged for the letter-spacing quirk.
+**Status:** Resolved — Columbia is no longer "unconfirmed," it's a working source
+(narrower than hoped: only the BFA/BA Fine Art show has extractable names, not the
+MFA/Photography shows).
+
+---
+
+## Batch 5 Complete — ALL 28 SCHOOLS FROM THE ORIGINAL DOC NOW INVESTIGATED
+
+Master workbook: 22 tabs, 1,840 students total. Final tally across all 5 batches:
+21 schools yielded usable data (RIT, MCAD, Cranbrook, RISD, Otis, Parsons, Temple/Tyler,
+VCU, Yale, CMU, UW-Madison, Ohio State, Pratt, BU, SVA, MICA, CCA, MassArt, U Michigan
+Stamps, CalArts, UCLA, Columbia College Chicago — that's 22, all schools scraped
+successfully in some form). 3 schools were investigated and confirmed to have no
+usable public data or were deliberately excluded: Alfred University (dead
+thesis-archive structure, Batch 2), Cooper Union (no names published on the website
+at all, Batch 5), SCAD (real data exists but is non-current/2020-era, excluded per
+user decision, Batch 5). Cornell (Batch 3) was also a dead end — its specific
+exhibition URLs render a generic "upcoming event" shell with no names, even via
+crawl4ai — bringing the true "no usable data found" count to 4 schools out of 28.

@@ -164,6 +164,30 @@ SOURCE_CITATIONS = {
                "https://stamps.umich.edu/research-creative-work/undergraduate-work",
         "accessed": "2026-08-02",
     },
+    "CalArts": {
+        "name": "CalArts 'High Pass' BFA Class of 2026 group exhibition page (names "
+                "only; site requires crawl4ai due to cookie-consent/Cloudflare Turnstile "
+                "blocking a plain fetch)",
+        "url": "https://calarts.edu/high-pass",
+        "accessed": "2026-08-02",
+    },
+    "UCLA": {
+        "name": "UCLA Department of Art — current Graduate Students directory by area "
+                "of study (Ceramics, Interdisciplinary Studio, New Genres, Painting and "
+                "Drawing, Photography, Sculpture), each linking to a personal "
+                "portfolio/Instagram where available",
+        "url": "https://www.art.ucla.edu/graduate-students",
+        "accessed": "2026-08-02",
+    },
+    "Columbia College Chicago": {
+        "name": "Columbia College Chicago — 'Human Condition' 2026 BA/BFA Fine Art "
+                "Exhibition page, Hokin Gallery and C33 Gallery exhibitor lists (names "
+                "only). Note: 2 of 24 names have unusual letter-spacing in the source "
+                "HTML itself (e.g. 'Faith H o g a n') — kept verbatim, flagged in notes.",
+        "url": "https://students.colum.edu/ssac/exhibition-archives/Manifest-Exhibitions/"
+               "2026/human-condition-2026-babfa-in-fine-art-exhibition",
+        "accessed": "2026-08-02",
+    },
 }
 
 
@@ -252,6 +276,9 @@ def main():
     parser.add_argument("--cca-csv", default="cca_students.csv")
     parser.add_argument("--massart-csv", default="massart_students.csv")
     parser.add_argument("--umich-csv", default="umich_students.csv")
+    parser.add_argument("--calarts-csv", default="calarts_students.csv")
+    parser.add_argument("--ucla-csv", default="ucla_students.csv")
+    parser.add_argument("--columbia-csv", default="columbia_students.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -279,6 +306,9 @@ def main():
         ("CCA", args.cca_csv, "CCA"),
         ("MassArt", args.massart_csv, "MassArt"),
         ("U Michigan Stamps", args.umich_csv, "U Michigan Stamps"),
+        ("CalArts", args.calarts_csv, "CalArts"),
+        ("UCLA", args.ucla_csv, "UCLA"),
+        ("Columbia College Chicago", args.columbia_csv, "Columbia College Chicago"),
     ]
 
     for sheet_title, csv_path, college_name in sources:

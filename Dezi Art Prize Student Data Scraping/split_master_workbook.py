@@ -25,6 +25,9 @@ SOURCES = [
     ("CCA", "cca_students.csv", "CCA"),
     ("MassArt", "massart_students.csv", "MassArt"),
     ("U Michigan Stamps", "umich_students.csv", "U Michigan Stamps"),
+    ("CalArts", "calarts_students.csv", "CalArts"),
+    ("UCLA", "ucla_students.csv", "UCLA"),
+    ("Columbia College Chicago", "columbia_students.csv", "Columbia College Chicago"),
 ]
 
 NO_EMAIL_VALUES = {"", "not found"}
