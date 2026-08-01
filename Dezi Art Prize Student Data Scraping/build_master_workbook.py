@@ -106,6 +106,64 @@ SOURCE_CITATIONS = {
                "https://uas.osu.edu/events/waiting-light-change",
         "accessed": "2026-08-01",
     },
+    "Pratt": {
+        "name": "Pratt Institute 2026 'Pratt Shows' pages — MFA Thesis Parts 1-2, BFA "
+                "Painting/Drawing/Sculpture/Printmaking (clean 'Exhibiting Artists' lists), "
+                "and BFA/MFA Photography shows (names UNVERIFIED — source lists them as "
+                "ambiguous <br>-separated chunks, see notes column)",
+        "url": "https://www.pratt.edu/events/pratt-shows-mfa-thesis-exhibition-part-1/ "
+               "(and 23 corresponding pratt-shows-* discipline/photography pages)",
+        "accessed": "2026-08-01",
+    },
+    "BU": {
+        "name": "Boston University College of Fine Arts — 2024 MFA Thesis 'Exhibiting "
+                "Students by Program' page (Painting, Sculpture, Visual Narrative, Print "
+                "Media & Photography, Graphic Design)",
+        "url": "https://www.bu.edu/cfa/featured-work/mfa-thesis-2024/",
+        "accessed": "2026-08-01",
+    },
+    "SVA": {
+        "name": "SVA Events & Exhibitions search (2026-dated exhibitions with an "
+                "'Exhibiting artists include' / 'Artists include' description) — names "
+                "only; these exhibitions may mix current students, alumni, faculty, and "
+                "guest artists together, not confirmed to be current students only",
+        "url": "https://sva.edu/events/search/type/Exhibition (22 paginated list pages, "
+               "individual event pages fetched for all 2026-dated exhibitions)",
+        "accessed": "2026-08-01",
+    },
+    "MICA": {
+        "name": "MICA Grad Show 2026 — 'Participating students' per-program pages "
+                "(14 MA/MFA programs), each with name and website/Instagram link",
+        "url": "https://www.mica.edu/events-exhibitions/annual-events-series/commencement/"
+               "grad-show-2026/ (14 program subpages)",
+        "accessed": "2026-08-02",
+    },
+    "CCA": {
+        "name": "California College of the Arts newsroom article announcing the 2026 "
+                "MFA Fine Arts Thesis Exhibition (names only; the actual event pages on "
+                "portal.cca.edu are behind a student/staff login wall and were not used)",
+        "url": "https://www.cca.edu/newsroom/cca-presents-the-2026-mfa-fine-arts-graduate-exhibitions/",
+        "accessed": "2026-08-02",
+    },
+    "MassArt": {
+        "name": "MassArt 2026 MFA Thesis Exhibition, Parts I & II — 'FEATURED ARTISTS' "
+                "lists with name + program (names only, no email/portfolio)",
+        "url": "https://calendar.massart.edu/event/2026-mfa-thesis-exhibition-PARTI; "
+               "https://calendar.massart.edu/event/2026-spring-mfa-thesis-exhibition-part-ii",
+        "accessed": "2026-08-02",
+    },
+    "U Michigan Stamps": {
+        "name": "U Michigan Stamps 2025 MFA Thesis Exhibition page (clean, dated) plus "
+                "the Graduate and Undergraduate Research & Creative Work gallery pages "
+                "(mixed: some entries have a reliable name+year, many are UNVERIFIED "
+                "'Name: Artwork Title' entries with no year and unconfirmed name/title "
+                "order — see notes column per row). Site is behind a Cloudflare JS "
+                "challenge; fetched via crawl4ai headless browser, not a plain HTTP fetch.",
+        "url": "https://stamps.umich.edu/events/2025-mfa-thesis-exhibition; "
+               "https://stamps.umich.edu/research-creative-work/graduate-work-mfa; "
+               "https://stamps.umich.edu/research-creative-work/undergraduate-work",
+        "accessed": "2026-08-02",
+    },
 }
 
 
@@ -187,6 +245,13 @@ def main():
     parser.add_argument("--cmu-csv", default="cmu_students.csv")
     parser.add_argument("--uw-madison-csv", default="uw_madison_students.csv")
     parser.add_argument("--ohio-state-csv", default="ohio_state_students.csv")
+    parser.add_argument("--pratt-csv", default="pratt_students.csv")
+    parser.add_argument("--bu-csv", default="bu_students.csv")
+    parser.add_argument("--sva-csv", default="sva_students.csv")
+    parser.add_argument("--mica-csv", default="mica_students.csv")
+    parser.add_argument("--cca-csv", default="cca_students.csv")
+    parser.add_argument("--massart-csv", default="massart_students.csv")
+    parser.add_argument("--umich-csv", default="umich_students.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -207,6 +272,13 @@ def main():
         ("CMU", args.cmu_csv, "CMU"),
         ("UW-Madison", args.uw_madison_csv, "UW-Madison"),
         ("Ohio State", args.ohio_state_csv, "Ohio State"),
+        ("Pratt", args.pratt_csv, "Pratt"),
+        ("BU", args.bu_csv, "BU"),
+        ("SVA", args.sva_csv, "SVA"),
+        ("MICA", args.mica_csv, "MICA"),
+        ("CCA", args.cca_csv, "CCA"),
+        ("MassArt", args.massart_csv, "MassArt"),
+        ("U Michigan Stamps", args.umich_csv, "U Michigan Stamps"),
     ]
 
     for sheet_title, csv_path, college_name in sources:

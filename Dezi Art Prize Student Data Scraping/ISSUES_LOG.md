@@ -309,3 +309,211 @@ pronoun/"Follow" text was leaking into the *next* student's captured name (e.g. 
 Follow Anastasiia Bulatova") — fixed by stripping known leading noise patterns after
 each match. Result: 21/21 students, 19 with real emails.
 **Status:** Resolved.
+
+---
+
+## Multi-School Batch 4 (Art Student Rosters) — 2026-08-01 (in progress)
+
+Context: continuing into Batch 4 (SVA, Pratt, MICA, BU, CCA, MassArt, U Michigan) per
+`art_school_scraping_urls.md`'s priority order. This entry covers Pratt and BU
+(completed); SVA, MICA, CCA, MassArt, and U Michigan are still open/in progress.
+
+### SVA — dead subdomains + one live page with no extractable names
+**Issue Type:** Mostly dead ends
+**Description:** Two of the doc's SVA subdomains are dead:
+`mfafineart.sva.edu` doesn't resolve (DNS failure — note this is a different, similarly
+named subdomain from the live `mfafinearts.sva.edu`), and `mfavisualnarrative.sva.edu`
+fails TLS handshake. `artpractice.sva.edu` redirects and loads, but the MFA Art Practice
+program has been **discontinued** ("no longer accepting applications for future
+cohorts") — no current student roster. `mfafinearts.sva.edu` redirects to
+`sva.edu/academics/graduate/mfa-fine-arts`, which has a "Student Work" subpage
+(`/student-work`) — but that page shows only a "SHOW MORE" button with no actual names
+in either a plain fetch or a crawl4ai-rendered fetch (likely an infinite-scroll/API-driven
+gallery that a simple render-and-wait doesn't trigger).
+**Action Needed:** None found. Not scraped.
+**Status:** Deferred/mostly dead end. Revisit only if SVA's Student Work gallery's
+underlying data endpoint is identified (e.g. via browser devtools network inspection,
+which isn't available in this environment).
+
+### Pratt — large 2026 "Pratt Shows" archive found, much bigger than the doc suggested
+**Issue Type:** Doc undersold this source + one format is ambiguous
+**Description:** The doc only mentioned "MFA Thesis Exhibition Part 1/2." The real 2026
+event hub (`pratt.edu/pratt-shows/`) lists 30+ distinct discipline-specific thesis show
+pages. Per user decision, scoped to MFA Thesis (Parts 1-2) plus BFA fine-art disciplines:
+Painting (6 weeks), Drawing (3 weeks), Sculpture and Integrated Practices, Printmaking,
+and BFA/MFA Photography (12 pages total for Photography). Painting/Drawing/Sculpture/
+Printmaking/MFA-Thesis all use a clean "Exhibiting Artists: Name1, Name2, ..." format.
+Photography pages use a different, structurally ambiguous format instead:
+"Students featured:<br>Name<br>Name<br>Name" where `<br>` tags don't reliably align with
+name boundaries (e.g. "Alejandro<br>Yullo Eli Meyer<br>Tesia Han" — genuinely unclear
+where one name ends and the next begins, likely a data-entry mistake on Pratt's own site).
+**Action Needed:** Built `pratt_scraper.py` with two parsers: a "clean" comma-split parser
+(also required an initial terminator-string fix, same class of bug as Yale/Ohio State —
+the naive "Schafler Gallery" stop-string didn't match on the MFA Thesis pages, which
+instead say "Dock 72" / repeat the show title, causing the first run to grab 53 "students"
+for MFA Part 1 including curatorial bio text — fixed with a multi-phrase terminator
+regex), and a "brk" parser for Photography that treats each `<br>`-separated chunk as one
+row verbatim, every row flagged UNVERIFIED per user decision. Also found genuine content
+gaps unrelated to parsing: MFA Thesis Part 2's page describes only the curator's bio with
+no student list at all, and several Photography show pages (4, 6, 8, 9, MFA-1, MFA-2)
+have no "Students featured" text at all — confirmed these are real gaps on Pratt's side,
+not parser misses. Result: 107 students (17 MFA + 41 clean BFA disciplines + 49
+unverified Photography).
+**Status:** Resolved.
+
+### BU — excellent clean source, better structured than most schools found so far
+**Issue Type:** Confirmed working, high data quality
+**Description:** `bu.edu/cfa/featured-work/mfa-thesis-2024/` has an "Exhibiting Students
+by Program" section broken cleanly into 5 MFA programs (Painting, Sculpture, Visual
+Narrative, Print Media & Photography, Graphic Design), each a `•`-bullet-separated name
+list with a reliable terminator ("Faculty Advisors, Chairs, and Collaborators").
+**Action Needed:** Built `bu_scraper.py`. Result: 60 students across 5 programs (page's
+own summary text says "61 Artists" — a one-off discrepancy in their own marketing
+copy, not a parsing gap; all 60 rows are real names cleanly split by program).
+**Status:** Resolved.
+
+### SVA — user found a much better source than the doc's dead subdomains
+**Issue Type:** Doc scope correction (major upgrade) + several parsing bugs
+**Description:** User pointed to `sva.edu/events/search/type/Exhibition`, a paginated
+archive of ~1,050 exhibition event pages (22 list pages × ~50 events each), each
+event page potentially containing an "Exhibiting artists include ..." or "Artists
+include ..." sentence naming the show's participants. This is a completely different
+(and far richer) source than the dead/broken subdomains checked earlier in Batch 4.
+Scoped per user decision to 2026-dated exhibitions only: fetched all 22 list pages to
+collect event slug + date + department per card (from `calendar-card-*` HTML classes),
+filtered to the 53 events dated 2026, then fetched those individual pages.
+**Action Needed:** Three parsing bugs found and fixed via user-supplied examples:
+(1) the name list is often prefixed with a department/cohort description before the
+actual names start, e.g. "Exhibiting artists include **BFA Visual and Critical Studies
+students** Elsa Chen, ..." — fixed by stripping everything up through the last
+"student(s)" occurrence; (2) some pages use "Artists include:" with a leading colon,
+which leaked into the first captured name — fixed by stripping leading `": "`;
+(3) parenthetical program/degree annotations contain their own commas (e.g. "Paul Simon
+(MFA 2019 Photography, Video and Related Media)"), which broke a naive comma-split —
+fixed by masking commas inside parentheses before splitting, then stripping the whole
+parenthetical afterward; (4) the sentence-terminator pattern didn't account for curly
+quote characters immediately following a period (e.g. "Stephanie Moon.” “Circuit
+Tension,”...", where "”" doesn't match a plain `[A-Z]` terminator check), which let one
+page's captured text run on for many extra "names" that were actually a repeated image
+caption — fixed by adding curly-quote characters to the terminator character class.
+Also added a safety filter: if a captured "name" has more than 5 words (a symptom of a
+page listing names space-separated with no delimiters at all, confirmed on the
+"SVA + NASA at the Intrepid Museum" page — 20+ names run together with no commas), skip
+it rather than emit an unreliable merged blob. Result: 85 students from 7 of the 53
+2026-dated pages (the rest had no extractable "artists include" sentence — image-only
+event pages). Every row is flagged that the exhibition may mix current students with
+alumni/faculty/guest artists, since these are curated shows, not clean class rosters.
+**Status:** Resolved for 2026-dated exhibitions. ~1,000 more (2016-2025) events exist in
+this same archive if a future batch wants to go further back — same scraper/pattern
+should work, just change the year filter.
+
+### Pratt (from user) — beyond-digital and pratt-shows-2026 hub checked
+**Issue Type:** Confirmed not worth adding
+**Description:** User asked to check `pratt.edu/pratt-shows/pratt-shows-2026/` (same
+page as the hub already scraped — 395,396 bytes, identical to what
+`pratt_scraper.py`'s hub fetch already covers) and `pratt.edu/events/beyond-digital/`
+(has a "Participating Artists:" list, but names are space-separated with no delimiters
+at all — "Tess Adams Nicolás Cuestas Nate King..." — same ambiguity as the Photography
+`<br>`-chunk problem, and the page describes them as Pratt's "Digital Arts **alumni**
+community," not current students).
+**Action Needed:** None — hub page already covered; beyond-digital skipped due to both
+name ambiguity and being alumni rather than current-student data.
+**Status:** Resolved (no changes needed).
+
+### MICA — found the real per-program Grad Show pages, plus 2 nested-list parsing bugs
+**Issue Type:** Doc's hub page was thin, found the real source + fixed bugs
+**Description:** `mica.edu/gradshow` hub page describes the show but lists no names
+directly. Found the real source: `mica.edu/.../commencement/grad-show-2026/` links to 14
+per-program pages (Community Arts, Curatorial Studies, Filmmaking, Graphic Design MA/MFA,
+Illustration MA + Practice, Painting, Mount Royal, Photography, Sculpture, Social Design,
+Studio Art, Teaching), each with a "Participating students" (or just "Participating")
+`<ul>` of `<li><strong>Name</strong> (website | Instagram)</li>` entries.
+**Action Needed:** Two real bugs found and fixed: (1) heading text varies ("Participating
+students" vs. bare "Participating&nbsp;") — broadened the regex to accept both; (2) the
+Curatorial Studies page nests a sub-`<ul>` of exhibition-detail `<li>`s *inside* a
+student's own `<li>` (e.g. exhibition dates/location), which broke a naive "match up to
+the first `</ul>`" approach and silently dropped all but the first student on that page —
+fixed by writing a small tag-depth tracker (`find_top_level_items`) that correctly skips
+over nested `<ul>...</ul>` blocks rather than using a single regex. Also handled: names
+split across two adjacent `<strong>` tags (e.g. "Taro" / "Cantú" as two tags for one
+person) by joining all `<strong>` fragments per `<li>`; HTML entity unescaping (`&uacute;`
+etc.) via Python's `html.unescape`. Result: 132 students across all 14 programs, 109 with
+a real website/Instagram link.
+**Status:** Resolved.
+
+### CCA — portal is login-walled, found a public newsroom article instead
+**Issue Type:** Login wall correctly identified and worked around with a legitimate public source
+**Description:** The doc's/redirected event URLs live on `portal.cca.edu`, confirmed to be
+a login-walled internal student/staff portal ("CCA Portal Dashboard", "Log in" present) —
+per CLAUDE.md, did not attempt to bypass this. Found a genuinely public alternative: CCA's
+own newsroom article announcing the 2026 MFA Fine Arts Thesis Exhibition, with a clean
+"The international group of artists include Name1, Name2, ..., and NameN." sentence.
+**Action Needed:** Built `cca_scraper.py` targeting the newsroom article. Result: 19
+students, matching the article's own name count exactly. Note: this only covers MFA Fine
+Arts — the Design Division's graduation exhibition (also mentioned in search results) is
+on the login-walled portal with no public equivalent found, so it's not included.
+**Status:** Resolved (MFA Fine Arts only; Design Division not accessible).
+
+### MassArt — doc's URL pattern outdated, found current year via search
+**Issue Type:** Doc's guessed pattern didn't exist for current year, found real URLs
+**Description:** The doc's `2023_massart_mfa_thesis`-style guess 404s for all years
+2023-2026. The 2022 page (`calendar.massart.edu/event/2022_mfa_thesis_exhibition`) does
+work and has a clean "FEATURED ARTISTS: Name (Program)" format, confirming the site's
+general pattern — but the URL *scheme* changed for later years. Found the real 2026 URLs
+via web search: Part I is `.../event/2026-mfa-thesis-exhibition-PARTI` (hyphenated,
+different casing/format entirely) and Part II is
+`.../event/2026-spring-mfa-thesis-exhibition-part-ii` (yet another distinct slug pattern
+— not a simple "PARTII" swap). Both use "FEATURED ARTISTS: Name | Program" (pipe-
+delimited, different from 2022's parenthetical format).
+**Action Needed:** Built `massart_scraper.py` targeting both 2026 URLs directly (2022 not
+scraped, since the user's scope has consistently been current/2025-2026 cohorts across
+other schools). Result: 5 (Part I) + 6 (Part II) = 11 students, exactly matching the
+site's own "all eleven 2026 MFA thesis candidates" summary text.
+**Status:** Resolved.
+
+### U Michigan Stamps — Cloudflare challenge actually passed by crawl4ai; gallery data is genuinely messy
+**Issue Type:** Blocker resolved better than expected + significant data-quality nuance
+**Description:** Contrary to the Batch 4 checkpoint note (assumed this would resist
+crawl4ai like Otis's old subdomain), crawl4ai's headless browser DID get past the
+Cloudflare interactive JS challenge here (confirmed: no "Just a moment..."/`cf_chl_opt`
+markers in the rendered output). Found two source types: (1) the 2025 MFA Thesis
+Exhibition page — clean, dated, "features the work of MFA students Name1, Name2, ...".
+(2) Per user's explicit request, also scraped the Graduate and Undergraduate Research &
+Creative Work gallery pages — these turned out to be two different carousels bundled on
+one page: a clean one ("Stamps MFA 2026: Name" / "Name: 2024 MFA Profile" / "Name:
+Profile") with reliable name+year (year present or explicitly absent), and a second,
+structurally different one ("Name: Artwork Title", e.g. "Ruth Burke: Gopi") with no year
+information at all and — confirmed on a real entry — inconsistent name/title order
+("The Stop Motion Animator's Cat: Kate Bonello" has the artwork title *first* and the
+real name *second*, unlike every other entry on the page).
+**Action Needed:** Built `umich_scraper.py` (uses crawl4ai, same `.venv_crawl4ai`
+requirement as `vcu_scraper.py`) with three parse paths: clean-with-year, clean-no-year,
+and a best-effort ambiguous path (splits on the first colon, assumes name-first) — every
+ambiguous-path row is flagged UNVERIFIED with an explicit note about the confirmed
+reversed-order failure mode, so "The Stop Motion Animator's Cat" is never mistaken for a
+real name without a warning attached. Deduplicates by name within the clean-path results
+only (so a student doesn't appear twice from the same clean carousel) but intentionally
+does NOT dedupe across the thesis page vs. gallery vs. ambiguous-carousel results, since
+those are genuinely different sources with different confidence levels — a student like
+"Hannah Buchanan" legitimately appears twice (once with year 2025 from the thesis page,
+once with no year from the gallery "Profile" entry) and merging them risked hiding which
+claim came from which source. Result: 7 (thesis, clean) + 44 (grad gallery, mixed
+clean/ambiguous) + 18 (undergrad gallery, entirely ambiguous) = 69 total entries, 41 of
+which are UNVERIFIED.
+**Status:** Resolved, with the caveat that ~59% of U Michigan's rows are explicitly
+flagged low-confidence per the user's own choice to include the ambiguous gallery data.
+
+---
+
+## Batch 4 Complete — Summary
+
+All 7 schools in Batch 4 (SVA, Pratt, MICA, CCA, MassArt, BU, U Michigan Stamps)
+investigated; master workbook now has 19 tabs / 1,749 students total. Batch 4 required
+more real-time debugging than any prior batch — 3 schools (SVA, Pratt, U Michigan) had
+genuinely ambiguous source-page text formats requiring explicit UNVERIFIED flagging
+rather than confident extraction, reflecting that art-school exhibition pages get less
+editorial care than school directories/rosters (typos, inconsistent delimiters, and at
+least one confirmed reversed name/title order in the wild).
+
+Next: Batch 5 (Cranbrook already done, CalArts, Cooper Union, UCLA, SCAD, Columbia
+College — the last marked "unconfirmed source" in the original doc).
