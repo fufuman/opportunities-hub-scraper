@@ -5,6 +5,9 @@ venv/
 __pycache__/
 *.pyc
 
+# Scraping cache (regenerable, not source)
+cache/
+
 # OS files
 .DS_Store
 Thumbs.db
