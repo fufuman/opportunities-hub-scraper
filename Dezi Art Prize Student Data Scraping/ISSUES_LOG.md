@@ -924,6 +924,40 @@ maedehmehdipour.com, bensoloart.com, pegahsaebi.com) — confirms these were
 environment/tool-side limitations, not dead links, and validates flagging rather than
 discarding such leads.
 
+### Columbia College Chicago — 0 of 24 emails found
+**Description:** All 24 name-only BFA/BA Fine Art students (Human Condition 2026
+exhibition, Hokin + C33 Galleries) searched individually. Unlike every MFA cohort
+searched so far, undergrad exhibition students essentially never have a personal
+portfolio site — search results were dominated by noise: Dean's List PDFs (confirms
+enrollment, never contact info), LinkedIn stubs with no email, ShopColumbia product
+listings (confirms the person is a real Columbia Fine Arts student and sells work
+there, but the shop has no per-artist contact page), and frequent wrong-person
+name collisions (a different "Cristian Romero" mixed-media artist, a different
+"Fiona Connor" established LA artist, a different "Jupiter Flynn").
+- **Jenna Davis**: real personal site found (`creatingbyjenna.art`) but no email
+  visible — only social handles and an unfetched `/contact` page.
+- **Ana Lara**: confirmed as a real Columbia Fine Arts student via a ShopColumbia
+  product listing ("Lobotomy" by Ana Lara) but no contact info available there.
+- **Cristian Romero**: genuinely ambiguous — at least 3 different people share this
+  name online (Chicago mixed-media artist, a UIC student per LinkedIn, a musician
+  endorser) with none confirmably the same Columbia College Chicago student — not
+  treated as a match, per the no-guessing rule.
+- Remaining 21 students: no personal site, no confirmable contact info at all.
+**Action Needed:** None further this session — this school's undergrad cohort
+appears to be a structurally weak fit for name→email web search (no MFA-style
+personal-site culture). Future attempts here would likely need a different
+approach (e.g. Instagram handle discovery, since several of the doc's original
+notes mentioned Instagram tags) rather than more generic search queries.
+**Status:** Resolved (0/24 — full pass completed, genuine dead end this session).
+
+**Pattern noted:** undergrad/BFA cohorts are meaningfully harder to enrich via
+generic web search than MFA cohorts — MFA students consistently maintain personal
+portfolio sites (the pattern that worked well for BGSU/MassArt/CMU/Temple), but BFA
+students mostly don't yet, so ShopColumbia/Dean's-List/LinkedIn-only results should
+be expected and treated as confirmation-of-enrollment rather than a real contact
+lead. Worth setting expectations accordingly for other BFA-heavy schools upcoming in
+the plan (Cranbrook, UCLA undergrad portions, CalArts, SVA).
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
