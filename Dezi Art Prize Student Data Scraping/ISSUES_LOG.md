@@ -755,6 +755,44 @@ quick targeted search + visiting the right contact page) succeeded twice where
 automated search alone stalled on multiple same-name candidates — worth flagging
 ambiguous cases back to the user rather than giving up on them outright.
 
+### UW Art — 0 of 10 emails found automatically; 2 manual-follow-up leads flagged
+**Description:** All 10 students searched individually. None had a portfolio_url
+already on file (all pointed to the generic Henry Art Gallery exhibition page), so
+every student needed a fresh search.
+- **Jeff Jiang**: personal site `jeff-jiang.com` found — no email visible in static
+  HTML (likely a JS-rendered contact form). No email found.
+- **Oscar Pearson**: personal site `oscarpearsonart.wixsite.com/studio` found
+  (Wix, Instagram @oscarpearson_) — contact page is a Wix form only, no email shown.
+  Note: a same-name but unrelated California muralist/gallery artist also surfaces in
+  search — confirmed NOT the same person as this UW MFA student.
+- **Victoria Mackender**: personal site `vamack.com` found via search, but this
+  session's `WebFetch` tool cannot resolve that domain (`getaddrinfo ENOTFOUND`) —
+  environment/tool limitation, not a dead site. **Flagged for manual check.**
+- **Ryan Walters**: personal site `ryanwalters.art` found via search, but `WebFetch`
+  cannot resolve `.art` TLD domains in this environment (same DNS failure pattern).
+  **Flagged for manual check.**
+- **Stephanie Alacon / Dahae Cheon / Andrew Roibal**: UW's own
+  `art.washington.edu/people/<name>` profile pages exist (confirmed via search
+  snippets showing MFA program + bio details) but return HTTP 404 when fetched
+  directly — likely JS-routed or search index is ahead of a page rename. No email
+  found.
+- **Li-Yuan Chiou / Alex Moni-Sauri / Chave Pichardo**: no personal site or usable
+  contact page surfaced in search at all. No email found.
+- UW's general people directory (`art.washington.edu/people-0`, a static
+  name/title/email table) was checked directly — none of the 10 current MFA/MDes
+  thesis students appear in it (looks like a faculty/staff-only listing, not current
+  students).
+**Action Needed:** Two real leads need a human to open directly (this tool's fetcher
+can't reach them): `vamack.com` (Victoria Mackender) and `ryanwalters.art` (Ryan
+Walters) — both are DNS/tool-side failures, not confirmed dead links.
+**Status:** Resolved (partial — 0/10 auto-confirmed; 2 flagged for manual check).
+
+**Tooling note:** `WebFetch` in this environment fails to resolve some domains
+(`.art` TLD, and `vamack.com` specifically) with `getaddrinfo ENOTFOUND` even though
+they appear as live sites in search results — this is a DNS/tool-side limitation, not
+evidence the site doesn't exist. Worth trying a plain browser or `curl` manually for
+any site this tool reports as unresolvable before concluding no email exists.
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
