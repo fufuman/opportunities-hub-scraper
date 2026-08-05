@@ -708,3 +708,43 @@ all 3 known URLs). Master workbook now has 25 tabs, 1,874 students total. Tier 2
 (SUNY New Paltz, NMSU, UNM, UGA, UIC, Tulane, Bard, Herron, Syracuse) and Tier 3
 (the JS-microsite independent colleges) from the new doc remain for a future batch,
 per the user's explicit scope choice for this session.
+
+---
+
+## Email Discovery Pass (Enrichment, not scraping)
+
+New effort starting 2026-08-06: for students already in the master list with a name
+but no email, use `WebSearch`/`WebFetch` interactively (no new script/API) to find a
+real, verifiable email, one school at a time, smallest school first. Confidence gate:
+only write an email directly into the CSV if it's clearly corroborated (own domain,
+matching thesis/name, confirmed personal site); otherwise leave `email` blank and note
+an "UNVERIFIED possible email" lead for manual review. No pattern-guessing emails
+(e.g. assuming `firstname.lastname@college.edu` without a verified source), no
+attempts to bypass logins/CAPTCHAs/blocked pages.
+
+### BGSU — 1 of 6 emails found
+**Description:** Ran individual searches per student.
+- **Syed Fatmi**: confirmed high-confidence — `syedway.digital@gmail.com`, found on his
+  own portfolio site `syedway.com` (matches thesis title "OMNISYS" and LinkedIn).
+  Updated `portfolio_url` from the bare ScholarWorks record to his real personal site.
+- **Kamrun Mim**: personal site found (`kamrunnahermim.com`) but the site returns
+  HTTP 403 on fetch (blocks the fetch tool) — couldn't retrieve the email. Noted in CSV
+  as a manual-follow-up lead; `portfolio_url` updated to the real site.
+- **Precious Gyekye**: confirmed as a current BGSU Graduate Teaching Associate, but no
+  email found — BGSU's directory page is JS-rendered (not fetchable statically), and
+  the only "contact info" surfaced was a masked ZoomInfo listing (data broker, blocked
+  on fetch anyway) — not used as a source.
+- **Peter Kiladejo / Rachel Krieger / Nick Felaris**: no confirmed match. Same-name
+  people exist online (a Nigerian gallery-represented artist "Adetope Peter Kiladejo,"
+  several unrelated "Rachel Krieger"s, a 2020 Toledo graffiti-artist Instagram for
+  "Nick Felaris") but none could be confirmed as the same BGSU MFA student, so nothing
+  was written.
+**Action Needed:** None further this session — remaining 5 need either a different
+search angle or direct manual outreach.
+**Status:** Resolved (partial — 1/6 found, per confidence-gate rules).
+
+**Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
+`.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
+Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
+rebuild scripts should be run with `../.venv_crawl4ai/Scripts/python.exe`, not system
+`python`, going forward.
