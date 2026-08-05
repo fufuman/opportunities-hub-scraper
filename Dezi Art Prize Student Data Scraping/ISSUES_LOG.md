@@ -824,6 +824,28 @@ MFA students commonly maintain one.
 future MassArt name-only student, in addition to a generic search.
 **Status:** Resolved (partial — 4/11 confirmed, 1 flagged unverified, 6 no-finds).
 
+### CMU — 3 of 6 remaining emails found
+**Description:** All 6 name-only CMU students already had a `portfolio_url` on file
+(from the original scrape) — checked each site directly first, per the "reuse existing
+portfolio_url" rule, before falling back to search.
+- **Sarah Al-Sarraj**: confirmed — `info.sarahalsarraj@gmail.com`, from her own site.
+- **Stefanie Zito**: confirmed — `info@stefaniezito.com` (site displayed it in an
+  anti-scrape "info[at]stefaniezito.com" format, converted normally).
+- **Amber N. Ford**: confirmed — `studio@ambernford.com`, from her own site's /info
+  page (her CMU directory page had no direct email, only the school's general inbox).
+- **Yiying Wang**: own site `yiyingwang666.com` found (and linked from her CMU
+  directory page) but this tool's fetcher can't resolve the domain (DNS failure,
+  same pattern as `vamack.com`/`ryanwalters.art` in the UW Art batch) — flagged for
+  manual check.
+- **Walter Smits**: own site `waltersmits.com` returned HTTP 503 on two separate
+  attempts (site appears to be down, not a tool-side block); CMU directory has no
+  direct email. Flagged for manual check/retry later.
+- **Morgan Strahorn**: only online presence found is a Behance profile with no listed
+  contact info; no personal site found.
+**Action Needed:** Yiying Wang and Walter Smits both have real sites that just
+couldn't be reached this session — worth a manual check or retry.
+**Status:** Resolved (partial — 3/6 found this pass; CMU now 11/14 total with email).
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
