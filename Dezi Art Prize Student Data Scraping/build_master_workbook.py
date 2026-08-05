@@ -188,6 +188,28 @@ SOURCE_CITATIONS = {
                "2026/human-condition-2026-babfa-in-fine-art-exhibition",
         "accessed": "2026-08-02",
     },
+    "University of Iowa": {
+        "name": "University of Iowa School of Art, Art History, and Design — MFA "
+                "Virtual Exhibitions page (2024-2026 cohorts), each linking to a "
+                "Matterport 3D exhibition tour rather than a personal portfolio site",
+        "url": "https://art.uiowa.edu/events/mfa-virtual-exhibitions",
+        "accessed": "2026-08-04",
+    },
+    "University of Washington": {
+        "name": "University of Washington 2026 MFA + MDes Thesis Exhibition page "
+                "(Henry Art Gallery) — names only; source does not map a specific "
+                "discipline to each individual student",
+        "url": "https://henryart.org/exhibitions/2026-university-of-washington-mfa-mdes-thesis-exhibition",
+        "accessed": "2026-08-04",
+    },
+    "BGSU": {
+        "name": "BGSU ScholarWorks — School of Art MA and MFA Graduate Exhibitions, "
+                "Portfolios, and Theses repository, 2025 cohort (thesis title + "
+                "author name; portfolio_url is the repository record, not a personal "
+                "site)",
+        "url": "https://scholarworks.bgsu.edu/ms_art/",
+        "accessed": "2026-08-04",
+    },
 }
 
 
@@ -279,6 +301,9 @@ def main():
     parser.add_argument("--calarts-csv", default="calarts_students.csv")
     parser.add_argument("--ucla-csv", default="ucla_students.csv")
     parser.add_argument("--columbia-csv", default="columbia_students.csv")
+    parser.add_argument("--iowa-csv", default="iowa_students.csv")
+    parser.add_argument("--uw-art-csv", default="uw_art_students.csv")
+    parser.add_argument("--bgsu-csv", default="bgsu_students.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -309,6 +334,9 @@ def main():
         ("CalArts", args.calarts_csv, "CalArts"),
         ("UCLA", args.ucla_csv, "UCLA"),
         ("Columbia College Chicago", args.columbia_csv, "Columbia College Chicago"),
+        ("Iowa", args.iowa_csv, "University of Iowa"),
+        ("UW Art", args.uw_art_csv, "University of Washington"),
+        ("BGSU", args.bgsu_csv, "BGSU"),
     ]
 
     for sheet_title, csv_path, college_name in sources:

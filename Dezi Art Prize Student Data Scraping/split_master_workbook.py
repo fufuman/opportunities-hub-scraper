@@ -28,6 +28,9 @@ SOURCES = [
     ("CalArts", "calarts_students.csv", "CalArts"),
     ("UCLA", "ucla_students.csv", "UCLA"),
     ("Columbia College Chicago", "columbia_students.csv", "Columbia College Chicago"),
+    ("Iowa", "iowa_students.csv", "University of Iowa"),
+    ("UW Art", "uw_art_students.csv", "University of Washington"),
+    ("BGSU", "bgsu_students.csv", "BGSU"),
 ]
 
 NO_EMAIL_VALUES = {"", "not found"}

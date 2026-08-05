@@ -620,3 +620,91 @@ at all, Batch 5), SCAD (real data exists but is non-current/2020-era, excluded p
 user decision, Batch 5). Cornell (Batch 3) was also a dead end — its specific
 exhibition URLs render a generic "upcoming event" shell with no names, even via
 crawl4ai — bringing the true "no usable data found" count to 4 schools out of 28.
+
+---
+
+## Batch 6 (New Doc: Ranks ~31-70) — 2026-08-04
+
+Context: the user supplied a new research document,
+`next urls art prize 31-50.md`, listing 28 more schools beyond the original project's
+scope. Per user decision, this batch covers only the doc's own "Tier 1" pick — the 4
+schools it flags as cleanest/no-JS-needed: University of Iowa, University of Washington
+(Henry Art Gallery), UT Knoxville, and BGSU. A 5-URL spot-check done during planning
+already found 2 of 5 top doc claims needed correction (same reliability pattern as
+every previous batch's source doc) — see plan file for details.
+
+### University of Iowa — confirmed excellent, 2 real parsing bugs fixed
+**Issue Type:** Confirmed working as claimed + source-side data quirks
+**Description:** `art.uiowa.edu/events/mfa-virtual-exhibitions` is exactly as clean as
+claimed: static HTML, ~18-21 named MFA students with discipline, each linking to an
+individual Matterport 3D exhibition tour. Spans 2024-2026 on one continuous page (not
+separate year-URLs) — per user decision, took the whole page rather than an arbitrary
+cutoff, tagging each student with their actual exhibition year.
+**Action Needed:** Two bugs fixed: (1) one entry's date range has a genuine source typo
+("April 8, 20024" instead of "2024"), which broke a naive first-4-digits year regex —
+fixed by taking the *last* year match in the date-range string instead of the first,
+which correctly resolves to the real year in both the typo case and normal cases;
+(2) several `portfolio_url` values were wrapped in Outlook Safelink email-protection
+redirects (e.g. `nam12.safelinks.protection.outlook.com/?url=...`) rather than pointing
+directly at Matterport — apparently pasted in from a forwarded email into the CMS —
+fixed by unwrapping the real destination URL from the `url=` query parameter. Also
+unescaped HTML entities in name/discipline fields (`&amp;` → `&`). Result: 18/18
+students, all portfolio URLs now clean Matterport links.
+**Status:** Resolved.
+
+### University of Washington (Henry Art Gallery) — confirmed working, discipline claim corrected
+**Issue Type:** Partially confirmed; doc overclaimed per-student discipline mapping
+**Description:** `henryart.org/exhibitions/2026-university-of-washington-mfa-mdes-thesis-exhibition`
+does list 10 real names in clean static HTML (`<h4>Artists</h4><div class='indent'>
+Name<br>Name<br>...</div>`), confirmed during pre-batch spot-check and again while
+building the scraper. However, the doc's claim of "name + discipline" per student does
+NOT hold — the page only describes the program's disciplines (New Genres, Painting +
+Drawing, 3D4M, MDes) collectively, with no per-student mapping. Per the plan, did not
+guess/fabricate which discipline each person belongs to.
+**Action Needed:** Built `uw_art_scraper.py`. `major` field set to a generic
+"MFA/MDes (UW Art — discipline not specified per student)" label rather than inventing
+a mapping. Scoped to the 2026 page only (current year), per the "most recent year"
+scope decision. Result: 10/10 students.
+**Status:** Resolved.
+
+### UT Knoxville — confirmed dead end, genuine infrastructure-level block
+**Issue Type:** Hard blocker — CAPTCHA + connection failures, not attempted to bypass
+**Description:** The doc's cited TRACE URL (`trace.tennessee.edu/utk_ewing/20/`) was
+already confirmed wrong during pre-batch spot-check (one document record, not a class
+roster). Per the plan, investigated the real collection index instead
+(`trace.tennessee.edu/utk_ewing/`) — this returns HTTP 405 with an AWS WAF
+**"Human Verification" CAPTCHA challenge page** (`x-amzn-waf-action: captcha` header,
+`window.gokuProps`/`awswaf.com` challenge script), both via plain fetch and via
+crawl4ai's headless browser (crawl4ai reached the same 405/CAPTCHA page, confirming
+this isn't a simple JS-rendering gap — it needs an actual human to solve a challenge).
+Per CLAUDE.md, did not attempt to solve or bypass this. The doc's two fallback URLs
+(`ewing-gallery.utk.edu/upcoming-exhibitions/`, `art.utk.edu/people/graduate-students/`)
+were also tried — both fail with a **TCP-level connection timeout** (`net::
+ERR_CONNECTION_TIMED_OUT`, confirmed via both curl and crawl4ai/Playwright), even
+though DNS resolves correctly for both hostnames — this looks like the entire
+`utk.edu` domain is unreachable from this environment/network, not a per-page issue.
+**Action Needed:** None — genuine hard blocker across all 3 known URLs for this school.
+Not scraped.
+**Status:** Confirmed dead end this session. Worth retrying from a different network
+environment in the future, since the TCP timeout pattern suggests this may be
+environment-specific rather than a permanent block on UTK's end.
+
+### BGSU — confirmed excellent, clean repository as claimed
+**Issue Type:** Confirmed working as claimed, no significant issues
+**Description:** `scholarworks.bgsu.edu/ms_art/` is exactly as clean as claimed: a
+Digital Commons/bepress-style repository with `<h3 id="year_YYYY">Theses from YYYY</h3>`
+section headers, each followed by `<p class="article-listing"><a href="record-url">
+Title</a>, Author Name</p>` entries. Scoped to 2025 (most recent complete year; 2026 has
+no entries yet this early in the year), per the year-scope decision.
+**Action Needed:** Built `bgsu_scraper.py`. Result: 6/6 students for 2025, matching the
+doc's "~5-8 MFA/year" estimate exactly. `portfolio_url` points to each thesis's
+ScholarWorks repository record (not a personal site) — noted in `notes`.
+**Status:** Resolved.
+
+### Batch 6 summary
+3 of 4 Tier-1 schools scraped successfully (Iowa 18, UW Art 10, BGSU 6 = 34 new
+students). UT Knoxville confirmed unreachable (CAPTCHA + connection timeouts across
+all 3 known URLs). Master workbook now has 25 tabs, 1,874 students total. Tier 2
+(SUNY New Paltz, NMSU, UNM, UGA, UIC, Tulane, Bard, Herron, Syracuse) and Tier 3
+(the JS-microsite independent colleges) from the new doc remain for a future batch,
+per the user's explicit scope choice for this session.
