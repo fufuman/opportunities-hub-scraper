@@ -793,6 +793,37 @@ they appear as live sites in search results — this is a DNS/tool-side limitati
 evidence the site doesn't exist. Worth trying a plain browser or `curl` manually for
 any site this tool reports as unresolvable before concluding no email exists.
 
+### MassArt — 4 of 11 emails found
+**Description:** All 11 students searched individually (Part I + Part II of the 2026
+MFA Thesis Exhibition). Most had personal portfolio sites, since photography/studio-art
+MFA students commonly maintain one.
+- **Olivia Greenberg**: confirmed — `oliviadylan129@gmail.com`, from her own site
+  `oliviadylanphotography.com/contact`.
+- **Anastasia Sierra**: confirmed — `info@anastasiasierra.com`, from her own site
+  `anastasiasierra.com/about` (also confirmed via her MassArt x SoWa artist profile,
+  which independently listed the same personal site).
+- **Shailee Thakkar**: confirmed — `shailee.v.thakkar@gmail.com`, from her own site
+  `shaileethakkar.com/aboutme` footer.
+- **Antonio Bailey**: confirmed — `antoniobaileylocal@gmail.com`, from his own site
+  `antoniobailey.com/about`.
+- **Suzi Grossman**: site found (`suzigrossman.com`) but the email is JS-obfuscated on
+  the live page; a `WebSearch` summary claimed `Suzi@suzigrossman.com` but a direct
+  `WebFetch` of the contact page could not independently confirm it — flagged as
+  **UNVERIFIED**, not written, per the confidence-gate rule (search-model summaries
+  aren't a substitute for confirming the actual page content).
+- **Lisa Spencer**: Visura profile page found but returned HTTP 403 on fetch — no
+  email confirmed.
+- **Camryn Connolly**: personal site found (`camrynconnolly.com`) but only a Squarespace
+  contact form is shown, no visible email.
+- **Michael d'Entremont / Christopher Gage Arotsky / Robin Jamkatel / Dylan Record**:
+  no personal site or usable contact info surfaced in search at all (MassArt x SoWa
+  gallery profile pages exist for some artists in this batch but did not exist/resolve
+  for these four specifically).
+**Action Needed:** None further this session. MassArt x SoWa (`sowa.massart.edu/artist/
+<name>`) is confirmed a useful secondary source — worth checking directly for any
+future MassArt name-only student, in addition to a generic search.
+**Status:** Resolved (partial — 4/11 confirmed, 1 flagged unverified, 6 no-finds).
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
