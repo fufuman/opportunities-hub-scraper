@@ -885,6 +885,45 @@ worth checking `/bio`, `/cv`, `/about`, or `/information` subpages specifically 
 a homepage alone doesn't show contact info, since 3 of 5 successful finds this batch
 were on a secondary page, not the homepage.
 
+### Manual follow-up round — user resolved 24 more emails across 5 schools
+**Description:** Paused after Temple/Tyler to let the user manually check the leads
+this session's tools couldn't reach (DNS failures, 403/503 errors, JS-obfuscated
+contact pages) plus a few names that had turned up no lead at all via automated
+search. The user visited sites directly and/or knew answers already, resolving:
+- **UW Art (+6, now 6/10)**: Li-Yuan Chiou (`lychiou@uw.edu`), Victoria Mackender
+  (`victoriaa961@gmail.com`, confirms the vamack.com DNS-blocked lead), Oscar Pearson
+  (`o2thescar@hotmail.com`), Chave Pichardo (`chavepichardostudios@gmail.com`),
+  Andrew Roibal (`AndrewRoibalArt@gmail.com`, also has a UW address
+  `aroibal@uw.edu`), Ryan Walters (`RyanWaltersFilms@gmail.com`, confirms the
+  ryanwalters.art DNS-blocked lead).
+- **MassArt (+2, now 6/11)**: Lisa Spencer (`lisaspencergallery@gmail.com`), Suzi
+  Grossman (`Photo@suzigrossman.com` — notably different from the earlier
+  **unverified** search-summary guess of `Suzi@suzigrossman.com`, confirming the
+  confidence-gate rule was right to hold that one back rather than write it).
+- **CMU (+2, now 13/14)**: Walter Smits (`smits.walt@gmail.com`, confirms the
+  waltersmits.com 503 lead), Yiying Wang (`yiyingwang194@gmail.com`, confirms the
+  yiyingwang666.com DNS-blocked lead).
+- **Temple/Tyler (+18, now 23/30)**: Natalia Purchiaroni, Macy West, Mika Obayashi,
+  Heather Swenson, Sophia Dell'Arciprete, Ari Zuaro (`@theclaystudio.org`, her
+  employer), Esther Park, Mollie Hansen, Maedeh Mehdipour (confirms the
+  maedehmehdipour.com 403 lead), Madeline Rodriguez, Ivy Jewell (`@theclaystudio.org`
+  — same employer as Ari Zuaro), Angelique Scott, Ben Solo (real name appears to be
+  Ben Weidlich, per the email `benweidlich.bs@gmail.com`; confirms the bensoloart.com
+  DNS-blocked lead), Logan Crompton (`@kcai.edu` — Kansas City Art Institute, likely
+  a current/subsequent affiliation), Boi Boy, Diego Juarez, Gianna Santucci, Pegah
+  Saebi (confirms the pegahsaebi.com DNS-blocked lead).
+**Action Needed:** None — all provided emails written directly as user-confirmed
+(highest confidence tier, no further verification needed).
+**Status:** Resolved. Updated running totals: BGSU 4/6, UW Art 6/10, MassArt 6/11,
+CMU 13/14, Temple/Tyler 23/30.
+
+**Validation of tooling notes:** every DNS-failure/403/503 lead flagged in the prior
+entries turned out to be a real, reachable site once the user checked manually
+(vamack.com, ryanwalters.art, waltersmits.com, yiyingwang666.com,
+maedehmehdipour.com, bensoloart.com, pegahsaebi.com) — confirms these were
+environment/tool-side limitations, not dead links, and validates flagging rather than
+discarding such leads.
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
