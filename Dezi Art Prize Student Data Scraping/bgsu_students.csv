@@ -1,7 +1,7 @@
 name,email,major,graduation_year,portfolio_url,college,notes
 Syed Fatmi,syedway.digital@gmail.com,MFA Studio Art,2025,https://syedway.com/,BGSU,"Thesis title: ""OMNISYS""; email and portfolio found via web search (personal site syedway.com, confirmed via matching thesis title/LinkedIn)"
-Nick Felaris,,MFA Studio Art,2025,https://scholarworks.bgsu.edu/ms_art/543,BGSU,"Thesis title: ""Nick Felaris Master of Fine Arts""; no email/personal portfolio published on source page (portfolio_url is the ScholarWorks repository record)"
+Nick Felaris,nickfelaris@hotmail.com,MFA Studio Art,2025,https://scholarworks.bgsu.edu/ms_art/543,BGSU,"Thesis title: ""Nick Felaris Master of Fine Arts""; email confirmed by user"
 Precious Gyekye,,MFA Studio Art,2025,https://scholarworks.bgsu.edu/ms_art/544,BGSU,"Thesis title: ""Unraveling Silence""; no email/personal portfolio published on source page (portfolio_url is the ScholarWorks repository record)"
 Peter Kiladejo,,MFA Studio Art,2025,https://scholarworks.bgsu.edu/ms_art/545,BGSU,"Thesis title: ""Adetope Peter Kiladejo Master of Fine Arts""; no email/personal portfolio published on source page (portfolio_url is the ScholarWorks repository record)"
-Rachel Krieger,,MFA Studio Art,2025,https://scholarworks.bgsu.edu/ms_art/546,BGSU,"Thesis title: ""Rachel Krieger""; no email/personal portfolio published on source page (portfolio_url is the ScholarWorks repository record)"
-Kamrun Mim,,MFA Studio Art,2025,https://kamrunnahermim.com/,BGSU,"Thesis title: ""Kamrun Mim""; personal site found via web search (kamrunnahermim.com) but returned HTTP 403 on fetch — could not retrieve email; try visiting contact page manually"
+Rachel Krieger,rachelle@rachellekrieger.com,MFA Studio Art,2025,https://www.rachellekrieger.com/,BGSU,"Thesis title: ""Rachel Krieger""; email and portfolio confirmed by user via rachellekrieger.com contact page"
+Kamrun Mim,kamrunmim.print@gmail.com,MFA Studio Art,2025,https://kamrunnahermim.wordpress.com/,BGSU,"Thesis title: ""Kamrun Mim""; email and portfolio confirmed by user via kamrunnahermim.wordpress.com/about (bio/CV section)"

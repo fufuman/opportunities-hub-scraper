@@ -722,26 +722,38 @@ an "UNVERIFIED possible email" lead for manual review. No pattern-guessing email
 (e.g. assuming `firstname.lastname@college.edu` without a verified source), no
 attempts to bypass logins/CAPTCHAs/blocked pages.
 
-### BGSU — 1 of 6 emails found
+### BGSU — 4 of 6 emails found
 **Description:** Ran individual searches per student.
 - **Syed Fatmi**: confirmed high-confidence — `syedway.digital@gmail.com`, found on his
   own portfolio site `syedway.com` (matches thesis title "OMNISYS" and LinkedIn).
   Updated `portfolio_url` from the bare ScholarWorks record to his real personal site.
-- **Kamrun Mim**: personal site found (`kamrunnahermim.com`) but the site returns
-  HTTP 403 on fetch (blocks the fetch tool) — couldn't retrieve the email. Noted in CSV
-  as a manual-follow-up lead; `portfolio_url` updated to the real site.
-- **Precious Gyekye**: confirmed as a current BGSU Graduate Teaching Associate, but no
-  email found — BGSU's directory page is JS-rendered (not fetchable statically), and
+- **Kamrun Mim**: initially blocked (`kamrunnahermim.com` 403'd on fetch), but the user
+  found the email manually — `kamrunmim.print@gmail.com` via
+  `kamrunnahermim.wordpress.com/about` (bio/CV section), a different domain
+  (Wordpress, not the .com site) than what search first surfaced. `portfolio_url`
+  updated to the Wordpress site.
+- **Rachel Krieger**: user manually confirmed `rachelle@rachellekrieger.com` via
+  `rachellekrieger.com/contactinfo` — this was one of several same-name candidates
+  found in search that couldn't be disambiguated automatically; the user's manual
+  check resolved it. `portfolio_url` updated to her site.
+- **Nick Felaris**: user manually confirmed `nickfelaris@hotmail.com` (source not
+  specified in detail, taken as user-verified).
+- **Precious Gyekye**: still not found — confirmed as a current BGSU Graduate Teaching
+  Associate, but BGSU's directory page is JS-rendered (not fetchable statically) and
   the only "contact info" surfaced was a masked ZoomInfo listing (data broker, blocked
   on fetch anyway) — not used as a source.
-- **Peter Kiladejo / Rachel Krieger / Nick Felaris**: no confirmed match. Same-name
-  people exist online (a Nigerian gallery-represented artist "Adetope Peter Kiladejo,"
-  several unrelated "Rachel Krieger"s, a 2020 Toledo graffiti-artist Instagram for
-  "Nick Felaris") but none could be confirmed as the same BGSU MFA student, so nothing
-  was written.
-**Action Needed:** None further this session — remaining 5 need either a different
-search angle or direct manual outreach.
-**Status:** Resolved (partial — 1/6 found, per confidence-gate rules).
+- **Peter Kiladejo**: still not found — a same-name Nigerian gallery-represented artist
+  ("Adetope Peter Kiladejo") exists online but couldn't be confirmed as the same BGSU
+  MFA student, so nothing was written.
+**Action Needed:** Precious Gyekye and Peter Kiladejo remain open — may need manual
+lookup (same pattern as Kamrun Mim/Rachel Krieger, where a human catch found what
+automated search missed).
+**Status:** Resolved (partial — 4/6 found; 2 remain, per confidence-gate rules).
+
+**Pattern noted:** for ambiguous common-name cases, the user's manual verification (a
+quick targeted search + visiting the right contact page) succeeded twice where
+automated search alone stalled on multiple same-name candidates — worth flagging
+ambiguous cases back to the user rather than giving up on them outright.
 
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
