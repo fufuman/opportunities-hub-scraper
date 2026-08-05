@@ -846,6 +846,45 @@ portfolio_url" rule, before falling back to search.
 couldn't be reached this session — worth a manual check or retry.
 **Status:** Resolved (partial — 3/6 found this pass; CMU now 11/14 total with email).
 
+### Temple/Tyler — 5 of 30 emails found
+**Description:** Largest batch so far (30 name-only students, none had a
+`portfolio_url` already on file — the original scrape only captured names from
+exhibition schedule text). Tyler's MFA program is well-documented: nearly every
+student has an individual `tyler.temple.edu/<name>-mfa-2025` bio page (never had a
+direct email) and many maintain personal portfolio sites, which was the more
+productive lead.
+- **Charles Jarboe** (MFA Glass): confirmed — `charles.jarboe@gmail.com`, own site.
+- **Amanda Crain-Freeland** (MFA Sculpture): confirmed — `amandancrain@gmail.com`,
+  own site's CV page (her main homepage had no email, only Instagram).
+- **Rae Helms** (MFA Printmaking): confirmed — `Raehelmsprint@gmail.com`, own site.
+- **Francesca Lally** (MFA Printmaking): confirmed — `francescalally@gmail.com`,
+  own site (listed as "francesca lally at gmail dot com", an anti-scrape format).
+- **Lilly Buttitta** (MFA Painting): confirmed — `lbuttittaart@gmail.com`, own site.
+- 4 more real personal sites were found but had no visible email (Mika Obayashi,
+  Sophia Dell'Arciprete, Ari Zuaro, Diego Juarez) — Squarespace/WordPress sites with
+  only an Instagram link or an unfetched `/contact` page.
+- 4 sites/leads exist but couldn't be reached this session — **flagged for manual
+  follow-up**: Maedeh Mehdipour (`maedehmehdipour.com`, HTTP 403), Ben Solo
+  (`bensoloart.com`, DNS failure), Pegah Saebi (`pegahsaebi.com`, DNS failure), Mo
+  (Maria-Fernanda) Nunez Alzate (`fernandanunez.com`, HTTP 503). Also noted: Logan
+  Crompton has a link-in-bio page (`scoby.page/log3y-logan-crompton`) not yet checked.
+- Remaining ~17 students (Natalia Purchiaroni, Macy West, Heather Swenson, Theodora
+  Dagkli Andonopoulos, Jess Lauro, Esther Park, Mollie Hansen, Ally Messer, Madeline
+  Rodriguez, Ruoxua Fan, Ivy Jewell, Angelique Scott, Boi Boy, Gianna Santucci, Dora
+  Moghaddamikhomami, Marissa Raybuck): no personal site surfaced in search at all,
+  only Tyler bio pages / LinkedIn / gallery mentions with no email. No email found.
+**Action Needed:** 4 real sites need a manual visit (403/DNS/503 failures on this
+tool's side, not confirmed dead). Also worth trying Tyler's actual bio pages directly
+for the remaining students in a future pass — several 404'd or weren't tried when a
+better lead (a personal site) was already found first.
+**Status:** Resolved (partial — 6/30 confirmed this pass).
+
+**Pattern noted:** Tyler MFA students very commonly have a personal portfolio site
+with a "Bio" or "CV" page containing a plain-text email (not always the homepage) —
+worth checking `/bio`, `/cv`, `/about`, or `/information` subpages specifically when
+a homepage alone doesn't show contact info, since 3 of 5 successful finds this batch
+were on a secondary page, not the homepage.
+
 **Also fixed:** the project's Excel-building dependency (`openpyxl`) was missing from
 `.venv_crawl4ai` (unclear why — possibly never persisted from an earlier session).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
