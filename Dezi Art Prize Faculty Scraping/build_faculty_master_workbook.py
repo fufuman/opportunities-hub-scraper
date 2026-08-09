@@ -248,6 +248,76 @@ SOURCE_CITATIONS = {
         "country": "United Kingdom",
         "city": "London, England",
     },
+    "Yale": {
+        "name": "Yale School of Art - the brief correctly found the "
+                "/about/people/faculty-and-staff listing page has no emails, "
+                "classifying Yale as Tier 3. However each of the 74 people "
+                "listed (Academic Leadership, Graphic Design, Painting/"
+                "Printmaking, Photography, Sculpture, Interdepartmental, "
+                "Undergraduate, Yale Norfolk, Faculty Emeriti sections; Faculty "
+                "Governing Board and Administration/Staff excluded) links to "
+                "their own profile page, and SOME publish a direct email there "
+                "(appears to be individual choice - several senior faculty link "
+                "to a personal site/Substack instead). Only 6 of 49 in-scope "
+                "profiles checked had a public email.",
+        "url": "https://www.art.yale.edu/about/people/faculty-and-staff "
+               "(plus 49 individual /<Name> profile pages)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "New Haven, CT",
+    },
+    "CMU": {
+        "name": "Carnegie Mellon University, School of Art - the brief's "
+                "warning (\"directory requires Andrew login, do NOT scrape\") "
+                "correctly applies to CMU's university-wide people directory, "
+                "which was NOT used here. This is a different, fully public "
+                "page - art.cmu.edu/people/faculty/ - the School of Art's own "
+                "faculty listing, not login-walled. Individual profile pages "
+                "publish a real institutional email (@andrew.cmu.edu or @cmu.edu) "
+                "in a structured JSON metadata field. Medium classified from the "
+                "discipline label shown directly on the listing (e.g. 'Drawing, "
+                "Painting, Print, & Photo', 'Electronic & Time Based Media' - "
+                "the latter mapped to Filmmaking as the closest of the 9 "
+                "in-scope mediums, though it also covers interactive/digital "
+                "work; an approximate call).",
+        "url": "https://art.cmu.edu/people/faculty/ (plus 14 individual /people/<slug>/ pages)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Pittsburgh, PA",
+    },
+    "GSA": {
+        "name": "Glasgow School of Art - the brief correctly found the /staff "
+                "listing page has no emails, classifying GSA as Tier 3. However "
+                "individual profile pages DO publish a real email (e.g. "
+                "'Email: N.Oddy@gsa.ac.uk') even though the listing itself "
+                "doesn't show it. ~197 total staff across all departments "
+                "(architecture, design history, admin, etc., 2 pages); medium "
+                "classified from job title text, keeping only the ~29 whose "
+                "title names an in-scope medium (e.g. 'Lecturer in Painting and "
+                "Printmaking', 'Lecturer Sculpture and Environmental Art').",
+        "url": "https://www.gsa.ac.uk/staff (2 pages, plus ~29 individual /staff/user-<id> pages)",
+        "accessed": "2026-08-09",
+        "country": "United Kingdom",
+        "city": "Glasgow, Scotland",
+    },
+    "Kunstakademie Dusseldorf": {
+        "name": "Kunstakademie Dusseldorf - the brief's Tier 3 classification "
+                "(no emails, use postmaster@) is correct for the vast majority: "
+                "checked all 24 'Freie Kunst' (Free Art) professors' individual "
+                "profile pages (JS-rendered, required crawl4ai) and only 1 "
+                "(Alexandra Bircken) publishes an email, included in her "
+                "application-instructions text ('send your portfolio to "
+                "alexandra.bircken@kunstakademie-duesseldorf.de'). The other 23 "
+                "genuinely have no email anywhere on their page, confirmed by "
+                "direct inspection, not a fetch failure. Baukunst (Architecture) "
+                "and Kunstbezogene Wissenschaften (art theory/sciences) sections "
+                "excluded as out of scope.",
+        "url": "https://kunstakademie-duesseldorf.de/studienangebot-und-bewerbung/professor-innen/ "
+               "(plus 24 individual profile pages)",
+        "accessed": "2026-08-09",
+        "country": "Germany",
+        "city": "Dusseldorf",
+    },
 }
 
 
@@ -316,6 +386,10 @@ def main():
     parser.add_argument("--cornell-csv", default="cornell_faculty.csv")
     parser.add_argument("--syracuse-csv", default="syracuse_faculty.csv")
     parser.add_argument("--slade-csv", default="slade_faculty.csv")
+    parser.add_argument("--yale-csv", default="yale_faculty.csv")
+    parser.add_argument("--cmu-csv", default="cmu_faculty.csv")
+    parser.add_argument("--gsa-csv", default="gsa_faculty.csv")
+    parser.add_argument("--duesseldorf-csv", default="duesseldorf_faculty.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -340,6 +414,10 @@ def main():
         ("Cornell", args.cornell_csv, "Cornell"),
         ("Syracuse", args.syracuse_csv, "Syracuse"),
         ("Slade", args.slade_csv, "Slade"),
+        ("Yale", args.yale_csv, "Yale"),
+        ("CMU", args.cmu_csv, "CMU"),
+        ("GSA", args.gsa_csv, "GSA"),
+        ("Kunstakademie Dusseldorf", args.duesseldorf_csv, "Kunstakademie Dusseldorf"),
     ]
 
     for sheet_title, csv_path, school_label in sources:

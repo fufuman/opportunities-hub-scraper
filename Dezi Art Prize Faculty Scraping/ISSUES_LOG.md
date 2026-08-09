@@ -426,3 +426,79 @@ brief's exact URL. UdK Berlin is the first school this project has fully given u
 on for lack of a findable data source, as opposed to giving up on it having public
 emails (CIA) — worth flagging clearly as "needs manual URL discovery," not
 "scraped, zero results," when reporting status.
+
+---
+
+## Batch 7 (2026-08-09): Tier 3 re-investigation — user asked to search harder before accepting "no emails"
+
+**Result: 50 new faculty rows (Yale 6, CMU 14, GSA 29, Kunstakademie Dusseldorf 1).**
+`master_faculty.xlsx` rebuilt with 20 sheets total, 611 faculty rows overall. Per
+user request, went back through the Tier 3 list (schools the brief said have no
+individual public faculty emails) and tried alternate pages/discovery methods
+instead of accepting the brief's "use department contact" verdict at face value.
+Checked: Yale, SCAD, CMU, GSA, RCA, CSULB, UAL (Camberwell), Goldsmiths, Antwerp
+(AP Hogeschool), Kunstakademie Dusseldorf, Gerrit Rietveld Academie, Srishti
+Manipal. Result: **4 of these 12 turned out to have real, findable individual
+emails the brief missed or under-searched; the rest confirmed genuinely no public
+emails.**
+
+### Schools where the brief was WRONG — real emails found
+- **Yale School of Art** (6 emails): the listing page genuinely has no emails
+  (brief correct on that), but each person links to their own profile page, and
+  roughly 1 in 8 checked publish a direct email there (personal choice — several
+  senior/famous faculty link to a personal site/Substack instead).
+- **Carnegie Mellon School of Art** (14 emails): the brief's "do NOT scrape, login
+  required" warning is correct for CMU's university-wide people directory, but
+  `art.cmu.edu/people/faculty/` is a **completely different, fully public** School
+  of Art page with individual profiles publishing real institutional emails in a
+  structured JSON metadata field. The brief's warning was about the wrong
+  directory.
+- **Glasgow School of Art** (29 emails): same pattern as Ohio State/UIC — listing
+  page has no email, but individual profile pages do (e.g. "Email:
+  N.Oddy@gsa.ac.uk"), just not surfaced on the directory itself.
+- **Kunstakademie Dusseldorf** (1 email): 23 of 24 "Freie Kunst" professors
+  genuinely have no email anywhere (confirmed by direct inspection of each
+  JS-rendered profile, not a fetch failure) — but one (Alexandra Bircken)
+  includes her email in her own application-instructions text. A single real
+  find, not worth over-generalizing from, but shows individual professor choice
+  varies even within one school.
+
+### Schools where the brief was RIGHT — confirmed no public emails
+SCAD (JS filter widget with a 403 on direct query params — looks like deliberate
+anti-bot protection, not just a missing feature), RCA, UAL/Camberwell, Goldsmiths,
+Antwerp/AP Hogeschool (checked a real profile page directly — genuinely no
+personal email, only the same academie@ap.be general contact the brief already
+had), Srishti Manipal (checked a real profile page directly — only the general
+admissions.smi@manipal.edu address). No data added for any of these.
+
+### CSULB — inconclusive, fetch tool failure
+Both `www.csulb.edu` and `www.art.csulb.edu` returned `ECONNREFUSED` across
+multiple attempts and tools (WebFetch, direct fetch). Per this project's standing
+rule (a tool failure is not evidence a site doesn't exist — every previously
+flagged "unreachable" site in the student-scraper project turned out to be real),
+this is flagged for manual follow-up, not treated as confirmed Tier 3.
+
+### Important correction — a fabricated WebFetch answer was caught and reversed
+For **Gerrit Rietveld Academie**, an earlier WebFetch call returned a specific,
+confident-sounding list of 14 department heads with named emails (e.g. "Ceramics
+- Jonas Vansteenkiste - jonas.vansteenkiste@rietveldacademie.nl"). This was
+initially written to a CSV. Before committing it, independently fetched the same
+URL directly (both plain HTTP and full crawl4ai JS rendering) and confirmed **none
+of that content exists on the real page** — the actual page is just a navigation
+menu of department names (no staff names) plus a short list of generic
+administrative contacts (admissions, finance, student office). The WebFetch
+answer appears to have been fabricated rather than read from the real page. The
+CSV was deleted before being committed anywhere. **Lesson: verify specific
+names/emails from a WebFetch summary against the raw HTML before writing them to
+a CSV, the same discipline already used for every scraper in this project — this
+is the first time it caught a hallucination rather than just a wrong URL guess.**
+Rietveld remains Tier 3 (no data added) pending a real staff-directory URL if one
+exists.
+
+### General pattern for this batch
+The "search harder" instruction paid off materially — 50 real rows recovered from
+schools the brief wrote off, at roughly a 1-in-3 hit rate across the schools
+checked. The clearest signal across all 4 successes: **a listing page having no
+emails does not mean the individual profile pages don't have them** — worth
+always checking at least one profile page directly before accepting a school as
+Tier 3, rather than trusting the brief's own page-level check.
