@@ -218,6 +218,36 @@ SOURCE_CITATIONS = {
         "country": "United States",
         "city": "Ithaca, NY",
     },
+    "Syracuse": {
+        "name": "Syracuse University, College of Visual and Performing Arts, School "
+                "of Art - /academics/art/contact/ page (the master faculty-staff "
+                "directory is a JS search widget with no default results, "
+                "confirmed unusable per the brief). This page has the School of "
+                "Art Director (medium classified from bio text on his own profile "
+                "page - no discipline given on the contact page for this role) "
+                "plus 4 'Area Leads' with a discipline label given directly "
+                "(e.g. 'Printmaking', 'Illustration B.F.A.') but email only on "
+                "their individual profile page. 1 area lead (Studio Arts B.F.A./"
+                "B.S., generalist label with no specific medium) excluded rather "
+                "than guessed.",
+        "url": "https://vpa.syracuse.edu/academics/art/contact/ (plus 4 individual "
+               "/faculty-staff/<slug>/ profile pages)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Syracuse, NY",
+    },
+    "Slade": {
+        "name": "Slade School of Fine Art, University College London (UCL) - "
+                "/people/academic/ listing (46 people, single page, no "
+                "pagination). Medium classified from title text shown directly "
+                "on the listing (e.g. 'Lecturer, Painting', 'Associate Professor, "
+                "Sculpture'); email only on individual profile pages - required a "
+                "click-through pass for the 21 in-scope people.",
+        "url": "https://www.ucl.ac.uk/slade/people/academic/ (plus 21 individual profile pages)",
+        "accessed": "2026-08-09",
+        "country": "United Kingdom",
+        "city": "London, England",
+    },
 }
 
 
@@ -284,6 +314,8 @@ def main():
     parser.add_argument("--uic-csv", default="uic_faculty.csv")
     parser.add_argument("--rutgers-csv", default="rutgers_faculty.csv")
     parser.add_argument("--cornell-csv", default="cornell_faculty.csv")
+    parser.add_argument("--syracuse-csv", default="syracuse_faculty.csv")
+    parser.add_argument("--slade-csv", default="slade_faculty.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -306,6 +338,8 @@ def main():
         ("UIC", args.uic_csv, "UIC"),
         ("Rutgers", args.rutgers_csv, "Rutgers"),
         ("Cornell", args.cornell_csv, "Cornell"),
+        ("Syracuse", args.syracuse_csv, "Syracuse"),
+        ("Slade", args.slade_csv, "Slade"),
     ]
 
     for sheet_title, csv_path, school_label in sources:

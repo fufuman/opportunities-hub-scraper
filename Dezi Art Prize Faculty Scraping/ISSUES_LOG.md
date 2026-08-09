@@ -366,3 +366,63 @@ either direction: CIA was optimistically classified as Tier 2 but is really Tier
 actually Tier 1-quality (direct emails). Worth treating every school's tier
 classification as a hypothesis to verify, not a given, same as URLs and page
 counts have been throughout this project.
+
+---
+
+## Batch 6 (2026-08-09): Syracuse, Slade (UCL) — Tier 2 complete; UdK Berlin skipped
+
+**Result: 25 new faculty rows (Syracuse 4, Slade 21). UdK Berlin skipped entirely**
+— no data added. `master_faculty.xlsx` rebuilt with 16 sheets total, 531 faculty
+rows overall. This completes all attemptable Tier 2 schools from the original
+brief (CIA and UdK Berlin both skipped; 4 of 6 Tier 2 schools yielded data).
+
+### UdK Berlin — SKIPPED, no working staff-directory URL found
+The brief's claimed path (Fine Art teaching staff pages with space-obfuscated
+emails) doesn't match the live site. Checked the English `/people/` hub (nav-only,
+no roster), the Institute of Fine Arts overview page (descriptive text only, one
+link back to the same dead-end `/people/` hub, no individual profile links at
+all), and the parallel Art Didactics institute page (same pattern, confirming
+it's not specific to Fine Arts). Per user's "try 2-3 educated German guesses"
+allowance, tried `/studium/bildende-kunst/` (no roster, points to StudyGuide
+general contact) and `/universitaet/fakultaet-bildende-kunst/` (overview page
+only, points to the same `/personen/` German-language hub — presumably the same
+nav-only dead end as the English `/people/` version). Stopped after 3 attempts
+per the project's standing "don't keep guessing URLs" rule. If this school is
+wanted, it likely needs a human browsing the German-language site directly to
+find the real per-institute staff roster (if one exists) or confirm none is
+public.
+
+### Syracuse University, VPA School of Art — 4 rows have emails
+Confirmed the brief's own finding: the master `/faculty-staff/` directory is a JS
+search widget with zero default results (a real site limitation, not a fetch
+quirk — independently reproduced). The `/academics/art/contact/` page the brief
+also flagged has only 2 people with a direct email (School of Art Director +
+Administrative Assistant — the latter excluded as non-faculty) plus 4 "Area
+Leads" named with a discipline label (e.g. "Printmaking", "Illustration B.F.A.")
+but email only on their own profile page — required a click-through pass for
+those 4. The Director's profile page has no discipline field at all; classified
+from his bio paragraph instead (same bio-fallback pattern as Ohio State/Cornell,
+using the page's `biography-content` container to avoid the sitewide nav-menu
+keyword-collision bug found on Ohio State). 1 of the 4 area leads (label "Studio
+Arts B.F.A., Studio Arts B.S." — no specific medium named) correctly excluded
+rather than guessed.
+
+### Slade School of Fine Art, UCL — 21 rows have emails
+Brief's suggested `/people/key-staff/` page is administrative/technical staff
+only (confirmed) — real academic staff live at `/people/academic/` instead
+(found via WebFetch surfacing the actual link text after the `/people/`
+landing-hub page didn't show a usable roster directly). Single page, 46 people,
+no pagination. Title text gives a direct, reliable medium signal (e.g. "Lecturer,
+Painting", "Associate Professor, Sculpture") — email only on individual profile
+pages, requiring a click-through pass for the 21 in-scope people (of 46 total;
+the rest are Art History, Fine Art Media/general, or admin-adjacent roles with no
+matching medium keyword).
+
+### General pattern for this batch
+Two more "the brief's named URL isn't the right one, but a nearby page is" cases
+(Slade's key-staff vs. academic page; Syracuse's directory vs. contact page) —
+consistent with the whole project's pattern of verifying rather than trusting a
+brief's exact URL. UdK Berlin is the first school this project has fully given up
+on for lack of a findable data source, as opposed to giving up on it having public
+emails (CIA) — worth flagging clearly as "needs manual URL discovery," not
+"scraped, zero results," when reporting status.
