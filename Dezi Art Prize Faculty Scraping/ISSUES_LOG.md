@@ -157,3 +157,67 @@ All 3 schools in this batch had a **reliable, page-visible medium/discipline
 signal** (Academic Area / Title-Position / Designation), unlike Ohio State which
 needed a profile click-through fallback — worth checking for a similar field
 before assuming a school needs that heavier approach.
+
+---
+
+## Batch 3 (2026-08-09): RIT, Edinburgh College of Art, Seoul National University
+
+**Result: 183 new faculty rows (RIT 106, Edinburgh 44, SNU 33).** `master_faculty.xlsx`
+rebuilt with 8 sheets total, 366 faculty rows overall.
+
+### Rochester Institute of Technology, College of Art and Design — 106 rows have emails
+**The brief only gave 2 confirmed program-directory URLs and said "try similar
+patterns" without giving IDs.** Guessing sequential numeric IDs directly (e.g.
+411487, 411488...) turned out to be unsafe — RIT's server returns HTTP 200 for
+essentially any ID in range, including ones with an empty `<title>` (e.g. 411500),
+so a wrong guess wouldn't even fail loudly. Instead, fetched each of RIT's 20
+official program landing pages (`/artdesign/study/<slug>`, found via
+`/artdesign/study/undergraduate` and `/artdesign/study/graduate`) and read each
+one's own "All Program Faculty" link to get its real `program-directory/<id>` —
+no guessing. 3 programs (Furniture Design AOS, Photographic Arts Exploration,
+Studio Arts Exploration) have no such link and were skipped; Art Education MST
+excluded as out-of-scope.
+
+Medium was assigned **per-program** (e.g. every Ceramics MFA faculty row gets
+"Sculpture"), not from a per-person field — RIT's directory cards only show a
+generic department name (e.g. "School of Design") with no finer-grained signal,
+so the program itself is the medium signal here. Many faculty are cross-listed on
+both a BFA and MFA program page for the same area (e.g. Photography); deduped by
+email, keeping the first page's assignment. Large program-to-program variance in
+count (Film and Animation BFA: 20, Interior Design BFA: 2) reflects real program
+size, not a parsing issue.
+
+### Edinburgh College of Art, University of Edinburgh — 44 rows have emails
+Unfiltered `/people` directory is 38 pages (~900 entries) mixing postgrad research
+students, professional services staff, and academic staff together with no
+reliable role-text way to exclude students after the fact (many students' roles
+just say "Postgraduate Research Student", which is filterable, but so is
+"Lecturer" for real early-career staff — the two aren't reliably distinguishable
+from role text alone if fetched unfiltered). Found the directory's own filter
+form uses `field_people_type_target_id[N]` checkboxes with N=17 for "Academic
+Staff" and N=16 for "Key Academic Office Holders" — passing those as query params
+server-side filters down to 13 pages before any scraping happens, excluding
+Honorary/Emeritus, Postgrad Research Students, Professional Services, and Student
+Representation entirely. Emails on this page are plain text (not `mailto:` links)
+inside a styled `<span>`, not an `<a>` tag — no crawl4ai needed despite that.
+Medium classified from the role/title text shown directly on each card (e.g.
+"Teaching Fellow - Design (Textiles)", "Programme Director, Performance
+Costume").
+
+### Seoul National University, College of Fine Arts — 33 rows have emails
+All 5 department category pages from the brief (Design, Painting, Sculpture,
+Craft, Oriental Painting) confirmed live and scraped. JS-rendered — required
+crawl4ai (plain fetch returns 0 emails; crawl4ai finds them immediately). Medium
+classified primarily from each person's research-area text (e.g. "Metalwork and
+Jewelry" → Sculpture, "Spatial Design, Parametric Design" → Design), with a
+per-department fallback (e.g. anyone on the Painting page with no medium keyword
+in their area text, like "Theory of Art", still gets tagged Painting/Drawing from
+the department itself) rather than being silently dropped.
+
+### General pattern for this batch
+Two different "don't guess" lessons reinforced: RIT's sequential-ID temptation
+would have silently produced wrong/duplicate data since invalid IDs don't 404;
+Edinburgh's unfiltered directory would have required guessing at role-text
+patterns to exclude students where the site's own filter mechanism does it
+reliably. Worth checking for a site's own filter/query-param mechanism before
+building custom exclusion logic.

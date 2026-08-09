@@ -79,6 +79,48 @@ SOURCE_CITATIONS = {
         "country": "United States",
         "city": "Austin, TX",
     },
+    "RIT": {
+        "name": "Rochester Institute of Technology, College of Art and Design - "
+                "20 per-program faculty directory pages (program-directory/<id>), "
+                "IDs found via each program's official landing page rather than "
+                "guessed. Covers all in-scope BFA/MFA programs (Art Education MST "
+                "excluded); Furniture Design AOS, Photographic Arts Exploration, "
+                "and Studio Arts Exploration have no faculty-directory link and "
+                "were skipped. Medium assigned per-program (e.g. Ceramics MFA -> "
+                "Sculpture), not from a per-person field. Faculty cross-listed on "
+                "multiple program pages (e.g. BFA + MFA in the same area) "
+                "deduped, keeping the first page's medium assignment.",
+        "url": "https://www.rit.edu/artdesign/program-directory/411480 (and 19 more IDs)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Rochester, NY",
+    },
+    "Edinburgh": {
+        "name": "Edinburgh College of Art, University of Edinburgh - /people "
+                "directory filtered server-side to Academic Staff + Key Academic "
+                "Office Holders only (excludes Honorary/Emeritus, Postgraduate "
+                "Research Students, Professional Services, Student "
+                "Representation), 13 pages. Medium classified from the role/title "
+                "text shown directly on each card.",
+        "url": "https://www.eca.ed.ac.uk/people?field_people_type_target_id%5B17%5D="
+               "17&field_people_type_target_id%5B16%5D=16&page=0 (through page=12)",
+        "accessed": "2026-08-09",
+        "country": "United Kingdom",
+        "city": "Edinburgh, Scotland",
+    },
+    "SNU": {
+        "name": "Seoul National University, College of Fine Arts - 5 per-department "
+                "faculty pages (Design, Painting, Sculpture, Craft, Oriental "
+                "Painting). JS-rendered - required crawl4ai. Medium classified "
+                "from each person's research-area text, falling back to the "
+                "department itself when the area text has no medium keyword "
+                "(e.g. 'Theory of Art').",
+        "url": "https://art.snu.ac.kr/en/category/design-en/?catemenu=Faculty&type=major "
+               "(and 4 more department category pages)",
+        "accessed": "2026-08-09",
+        "country": "South Korea",
+        "city": "Seoul",
+    },
 }
 
 
@@ -136,6 +178,9 @@ def main():
     parser.add_argument("--uga-csv", default="uga_faculty.csv")
     parser.add_argument("--iowa-csv", default="iowa_faculty.csv")
     parser.add_argument("--ut-austin-csv", default="ut_austin_faculty.csv")
+    parser.add_argument("--rit-csv", default="rit_faculty.csv")
+    parser.add_argument("--edinburgh-csv", default="edinburgh_faculty.csv")
+    parser.add_argument("--snu-csv", default="snu_faculty.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -149,6 +194,9 @@ def main():
         ("UGA", args.uga_csv, "UGA"),
         ("Iowa", args.iowa_csv, "University of Iowa"),
         ("UT Austin", args.ut_austin_csv, "UT Austin"),
+        ("RIT", args.rit_csv, "RIT"),
+        ("Edinburgh", args.edinburgh_csv, "Edinburgh"),
+        ("SNU", args.snu_csv, "SNU"),
     ]
 
     for sheet_title, csv_path, school_label in sources:
