@@ -221,3 +221,86 @@ Edinburgh's unfiltered directory would have required guessing at role-text
 patterns to exclude students where the site's own filter mechanism does it
 reliably. Worth checking for a site's own filter/query-param mechanism before
 building custom exclusion logic.
+
+---
+
+## Batch 4 (2026-08-09): VCU, NID Ahmedabad, Jamia Millia Islamia, UIC — Tier 1 complete
+
+**Result: 104 new faculty rows (VCU 78, NID 8, Jamia 7, UIC 11).** `master_faculty.xlsx`
+rebuilt with 12 sheets total, 470 faculty rows overall. This completes all 13 Tier 1
+schools from the original research brief.
+
+### Virginia Commonwealth University, School of the Arts (VCUarts) — 78 rows have emails
+The brief gave no explicit URLs, just "navigate department by department from
+arts.vcu.edu." Found each of the 8 in-scope departments' own landing page
+(`arts.vcu.edu/department/<slug>/`) links to a shared `/directory/` filtered via
+a `department[]` query param — one clean directory, not 8 separate page layouts.
+**Real bug caught and fixed**: department directory pages mix teaching faculty
+with administrative/support staff under the same card layout (e.g. "Administrative
+Affairs Coordinator", "Equipment and Facilities Coordinator") with no separate
+field distinguishing them — an early version of the CSV included 6 non-teaching
+staff. Fixed with a title-text exclusion filter (Coordinator/Administrative/
+Manager/Technician/Advisor). Cross-listed faculty across departments deduped by
+email.
+
+### NID Ahmedabad — 8 rows have emails (flagged as possibly incomplete, not a scraper gap)
+`/people/faculty` has no pagination and lists only 9 people (1 Director + 8
+faculty), covering just Industrial Design, Textile & Apparel Design, and
+Communication Design — no Ceramic/Glass or Film/Animation faculty as the brief
+expected. Checked NID's own academic program pages
+(`/academics/b-des-program/*`): only Industrial Design, Communication Design, and
+Textile and Apparel Design exist as current B.Des specializations at this campus.
+Ceramic and Glass Design / Animation Film Design are not listed anywhere on the
+site (may be offered at a different NID campus — Gandhinagar, Bengaluru, etc. —
+or may have been discontinued/restructured since the brief was written). Treated
+the 9-person page as likely the genuine complete current roster rather than a
+fetch failure, per user decision after being asked.
+
+### Jamia Millia Islamia, Faculty of Fine Arts — 7 rows have emails
+The brief's two suggested entry points (`/ffa` hub, university-wide
+`Faculty-Dashboard/All-Faculty` search, and the FFA-level `Staff-Member` search)
+are all JS-driven search widgets that return **zero results by default** — a
+plain fetch shows just an empty search form, and even crawl4ai-rendering those
+specific pages doesn't trigger a default search. The fix was to go one level
+deeper: each **department's own** "Faculty Members" page
+(`/ACADEMICS/Departments/Department-Of-<X>/Faculty-Members`) auto-loads that
+department's roster by default when rendered via crawl4ai (plain fetch still
+returns nothing — genuinely JS-populated). Scraped Painting, Sculpture, and
+Applied Art (all in-scope); Graphic Art department not attempted this pass. Small
+counts (1-3 people per department) are real, not a parsing gap — small
+departments are typical for Indian public university fine arts programs.
+
+### University of Illinois Chicago, School of Art and Art History — 11 rows have emails
+Art History's directory (confirmed to have direct inline emails, matching the
+brief) was correctly skipped — Art History is out of scope per the user's medium
+list. Used the Studio Art faculty listing instead
+(`/content/art-faculty`), split into sections (Studio Arts, Photography, New
+Media Arts, Moving Image, Interdisciplinary Degree in the Arts) that map cleanly
+to mediums; Art Education section excluded. **Real bug caught and fixed**: the
+page uses two different HTML markup patterns for name+title pairs
+(`<a>Name</a><br />Title` for most entries vs. `<div><a>Name</a></div><div>Title</div>`
+for a few, e.g. Nate Young) — an early version of the person-matching regex only
+handled the first pattern and silently dropped anyone using the second, undercounting
+by several people across sections. Fixed with a regex that matches either
+variant. Confirmed emails are genuinely only on individual profile pages (not the
+listing) — required a click-through pass like Ohio State. Emeriti section has no
+profile links at all (plain text names only, e.g. "Morris Barazani<br />Professor
+Emeritus") and could not be scraped this way — skipped, not attempted via any
+fallback.
+
+Also noted: `curl` on this session's machine fails with a schannel TLS error
+(`SEC_E_UNSUPPORTED_FUNCTION`) specifically on `artandarthistory.uic.edu` — a
+local curl/Windows quirk, not a real site block. Python's `urllib.request` (what
+the actual scrapers use) fetched it fine. Worth remembering if `curl` fails
+oddly on a future school — try Python directly before assuming the site is down.
+
+### General pattern for this batch
+All 13 Tier 1 schools are now done. Two more "the brief's suggested URL doesn't
+actually work as described" cases (NID's page being smaller than expected, Jamia's
+top-level search pages returning nothing) reinforce the standing rule: verify
+before scraping, and when a page genuinely seems incomplete or non-functional,
+dig one level deeper (department-specific pages, program pages) before concluding
+data doesn't exist. Next up per the original priority order: Tier 2 schools
+(Cleveland Institute of Art, Rutgers Mason Gross, Cornell AAP, Syracuse VPA, Slade
+UCL, UdK Berlin) — all require profile click-through, the pattern already proven
+out on Ohio State and UIC.

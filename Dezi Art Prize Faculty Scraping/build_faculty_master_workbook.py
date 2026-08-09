@@ -121,6 +121,70 @@ SOURCE_CITATIONS = {
         "country": "South Korea",
         "city": "Seoul",
     },
+    "VCU": {
+        "name": "Virginia Commonwealth University, School of the Arts (VCUarts) - "
+                "shared /directory/ filtered per-department via query param, 8 "
+                "in-scope departments (Painting + Printmaking, Kinetic Imaging, "
+                "Sculpture + Extended Media, Photography + Film, Communication "
+                "Arts, Graphic Design, Craft and Material Studies, Fashion Design "
+                "and Merchandising). Department pages mix teaching faculty with "
+                "administrative/support staff under the same listing; rows with "
+                "a clearly non-teaching title (Coordinator, Administrative, "
+                "Manager, Technician, Advisor) were excluded.",
+        "url": "https://arts.vcu.edu/directory/?department%5B%5D=painting-printmaking "
+               "(and 7 more department query values)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Richmond, VA",
+    },
+    "NID Ahmedabad": {
+        "name": "National Institute of Design, Ahmedabad - /people/faculty page. "
+                "NOTE: this page has no pagination and lists only 9 faculty total "
+                "(Industrial Design, Textile & Apparel Design, Communication "
+                "Design) - Ceramic/Glass and Film/Animation faculty mentioned in "
+                "the research brief were NOT found; confirmed via the site's own "
+                "academic program pages that Ceramic and Glass Design and "
+                "Animation Film Design are not current B.Des specializations at "
+                "this campus (may exist at a different NID campus, or may have "
+                "been discontinued/restructured). This may be the complete "
+                "current roster shown on the public site, not a scraper gap.",
+        "url": "https://www.nid.ac.in/people/faculty",
+        "accessed": "2026-08-09",
+        "country": "India",
+        "city": "Ahmedabad",
+    },
+    "Jamia Millia Islamia": {
+        "name": "Jamia Millia Islamia, Faculty of Fine Arts - per-department "
+                "'Faculty Members' pages (Painting, Sculpture, Applied Art). "
+                "These pages are JS-driven search widgets that return no static "
+                "data on a plain fetch, but auto-load that department's own "
+                "roster by default when rendered - required crawl4ai. The "
+                "university-wide faculty search and the FFA-level staff search "
+                "page do NOT auto-load results and were not usable. Art "
+                "Education and Art History departments excluded (out of scope); "
+                "Graphic Art department not attempted this pass.",
+        "url": "https://jmi.ac.in/ACADEMICS/Departments/Department-Of-Painting/Faculty-Members "
+               "(and Department-Of-Sculpture, Department-Of-Applied-Art)",
+        "accessed": "2026-08-09",
+        "country": "India",
+        "city": "New Delhi",
+    },
+    "UIC": {
+        "name": "University of Illinois Chicago, School of Art and Art History - "
+                "/content/art-faculty studio listing page (Art History faculty "
+                "excluded per user's medium scope), split into sections (Studio "
+                "Arts, Photography, New Media Arts, Moving Image, Interdisciplinary "
+                "Degree in the Arts; Art Education section excluded). Names link "
+                "to individual profile pages where email is the only place it's "
+                "published - required a profile click-through pass, same pattern "
+                "as Ohio State. Emeriti section has no profile links at all (plain "
+                "text names only) and could not be scraped this way - skipped.",
+        "url": "https://artandarthistory.uic.edu/content/art-faculty "
+               "(plus 13 individual /profile/<slug> pages)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Chicago, IL",
+    },
 }
 
 
@@ -181,6 +245,10 @@ def main():
     parser.add_argument("--rit-csv", default="rit_faculty.csv")
     parser.add_argument("--edinburgh-csv", default="edinburgh_faculty.csv")
     parser.add_argument("--snu-csv", default="snu_faculty.csv")
+    parser.add_argument("--vcu-csv", default="vcu_faculty.csv")
+    parser.add_argument("--nid-csv", default="nid_faculty.csv")
+    parser.add_argument("--jamia-csv", default="jamia_faculty.csv")
+    parser.add_argument("--uic-csv", default="uic_faculty.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -197,6 +265,10 @@ def main():
         ("RIT", args.rit_csv, "RIT"),
         ("Edinburgh", args.edinburgh_csv, "Edinburgh"),
         ("SNU", args.snu_csv, "SNU"),
+        ("VCU", args.vcu_csv, "VCU"),
+        ("NID Ahmedabad", args.nid_csv, "NID Ahmedabad"),
+        ("Jamia Millia Islamia", args.jamia_csv, "Jamia Millia Islamia"),
+        ("UIC", args.uic_csv, "UIC"),
     ]
 
     for sheet_title, csv_path, school_label in sources:
