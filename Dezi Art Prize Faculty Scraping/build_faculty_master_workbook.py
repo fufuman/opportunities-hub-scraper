@@ -185,6 +185,39 @@ SOURCE_CITATIONS = {
         "country": "United States",
         "city": "Chicago, IL",
     },
+    "Rutgers": {
+        "name": "Rutgers University, Mason Gross School of the Arts - Art & Design "
+                "department faculty/staff page. Emails ARE visible directly on the "
+                "listing (better than the research brief's Tier 2 classification "
+                "implied) - no profile click-through needed. Only faculty whose "
+                "title text names a specific medium were kept (e.g. 'Associate "
+                "Professor in Photography'); generic titles ('Professor') with no "
+                "medium signal were left out rather than guessed, since this page "
+                "has no separate discipline field. One email format quirk: a few "
+                "hrefs are 'mailto:Name <email>' URL-encoded rather than a bare "
+                "address - the actual address was extracted from either form.",
+        "url": "https://www.masongross.rutgers.edu/degrees-programs/art-design/faculty-staff/",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "New Brunswick, NJ",
+    },
+    "Cornell": {
+        "name": "Cornell University, Department of Art (AAP) - /art/art-people "
+                "listing (41 entries, 5 duplicates from dual program listings, "
+                "deduped to 36 unique profiles) with emails only on individual "
+                "profile pages - required a click-through pass like Ohio State. "
+                "Medium classified from title/role text first, falling back to "
+                "each profile's bio paragraph when the role alone was generic "
+                "(e.g. 'Professor'). 5 rows have email_type=department_general: "
+                "several visiting/affiliated faculty list the shared "
+                "imagetext@cornell.edu program mailbox as their own contact on "
+                "their profile page, not a personal address - flagged rather than "
+                "treated as equivalent to a direct personal email.",
+        "url": "https://aap.cornell.edu/art/art-people (plus 36 individual /people/<slug>/ pages)",
+        "accessed": "2026-08-09",
+        "country": "United States",
+        "city": "Ithaca, NY",
+    },
 }
 
 
@@ -249,6 +282,8 @@ def main():
     parser.add_argument("--nid-csv", default="nid_faculty.csv")
     parser.add_argument("--jamia-csv", default="jamia_faculty.csv")
     parser.add_argument("--uic-csv", default="uic_faculty.csv")
+    parser.add_argument("--rutgers-csv", default="rutgers_faculty.csv")
+    parser.add_argument("--cornell-csv", default="cornell_faculty.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -269,6 +304,8 @@ def main():
         ("NID Ahmedabad", args.nid_csv, "NID Ahmedabad"),
         ("Jamia Millia Islamia", args.jamia_csv, "Jamia Millia Islamia"),
         ("UIC", args.uic_csv, "UIC"),
+        ("Rutgers", args.rutgers_csv, "Rutgers"),
+        ("Cornell", args.cornell_csv, "Cornell"),
     ]
 
     for sheet_title, csv_path, school_label in sources:

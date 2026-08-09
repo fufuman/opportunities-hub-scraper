@@ -304,3 +304,65 @@ data doesn't exist. Next up per the original priority order: Tier 2 schools
 (Cleveland Institute of Art, Rutgers Mason Gross, Cornell AAP, Syracuse VPA, Slade
 UCL, UdK Berlin) — all require profile click-through, the pattern already proven
 out on Ohio State and UIC.
+
+---
+
+## Batch 5 (2026-08-09): Cleveland Institute of Art (skipped), Rutgers, Cornell — Tier 2 begins
+
+**Result: 36 new faculty rows (Rutgers 8, Cornell 28). Cleveland Institute of Art
+skipped entirely** — no data added for it. `master_faculty.xlsx` rebuilt with 14
+sheets total, 506 faculty rows overall.
+
+### Cleveland Institute of Art — SKIPPED, not actually Tier 2
+The brief classified CIA as Tier 2 (emails on individual profile pages). Checked 3
+of ~181 profile pages (via crawl4ai — plain fetch 307-redirects to a bot-check
+page with no useful content) and **none had a public email** — every profile uses
+a "direct contact form" widget instead of publishing an address. This makes CIA
+functionally Tier 3 (no public emails), not Tier 2. Per user decision after being
+asked, skipped scraping entirely rather than capturing 181 names with no emails;
+no general school contact email was found either (not fabricated). If this school
+matters enough to revisit, the actual roster + discipline data (visible directly
+on the listing cards, no click-through needed for that part) is easy to re-scrape
+later if a contact-form-based outreach approach becomes acceptable.
+
+### Rutgers University, Mason Gross School of the Arts — 8 rows have emails
+Better than the brief's Tier 2 classification: **emails ARE visible directly** on
+the Art & Design faculty/staff listing page, no profile click-through needed. Only
+32 total people on the page; only 8 have a title specific enough to classify a
+medium (e.g. "Associate Professor in Photography", "Director of the Rutgers
+Printmaking Collaborative") — the rest have generic titles ("Professor") with no
+separate discipline field to fall back on, so were left out rather than guessed.
+**Real bug caught and fixed**: a few `mailto:` hrefs are formatted as URL-encoded
+`"Name <email>"` rather than a bare address (e.g.
+`mailto:Miranda%20Lichtenstein%20&lt;mlichtenstein@mgsa.rutgers.edu&gt;`) — an
+early version captured the whole encoded string as the "email"; fixed by
+extracting just the actual address pattern from whichever format the href uses.
+
+### Cornell University, Department of Art (AAP) — 28 rows have emails
+Confirmed Tier 2 as the brief said: the `/art/art-people` listing (41 entries, 5
+of them duplicates from dual program listings — deduped to 36 unique profiles)
+shows no per-person email, only a department general address. Required a full
+profile click-through pass. Medium classified from title/role text first (mostly
+generic — "Professor", "Chair"), falling back to each profile's bio paragraph
+(e.g. "...examine feminist care networks... archival and authored photographs..."
+→ Photography/Sculpture) when the role alone gave no signal — same pattern as
+Ohio State's bio-text fallback, and same lesson learned there about isolating the
+actual bio container (`person-topper__bio`) rather than the whole page, to avoid
+sitewide nav boilerplate swamping the keyword match.
+
+**Real data-quality finding, not a bug**: 5 of the 28 rows resolve to the same
+`imagetext@cornell.edu` address — checked several of these individually and
+confirmed each profile page genuinely lists that shared program mailbox as their
+own contact (likely visiting/affiliated faculty routed through a specific MFA
+program's inbox rather than having a personal Cornell address). Flagged these
+with `email_type=department_general` instead of `profile`, since they're not
+actually that individual's personal email even though the source page presents
+them that way.
+
+### General pattern for this batch
+First genuine "brief was wrong about which tier a school belongs to" case in
+either direction: CIA was optimistically classified as Tier 2 but is really Tier 3
+(no emails at all), while Rutgers was pessimistically classified as Tier 2 but is
+actually Tier 1-quality (direct emails). Worth treating every school's tier
+classification as a hypothesis to verify, not a given, same as URLs and page
+counts have been throughout this project.
