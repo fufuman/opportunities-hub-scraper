@@ -31,6 +31,7 @@ SOURCES = [
     ("Iowa", "iowa_students.csv", "University of Iowa"),
     ("UW Art", "uw_art_students.csv", "University of Washington"),
     ("BGSU", "bgsu_students.csv", "BGSU"),
+    ("CalArts Animation", "calarts_animation_students.csv", "CalArts (Animation)"),
 ]
 
 NO_EMAIL_VALUES = {"", "not found"}

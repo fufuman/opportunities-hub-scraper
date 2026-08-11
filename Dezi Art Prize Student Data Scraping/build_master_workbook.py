@@ -210,6 +210,19 @@ SOURCE_CITATIONS = {
         "url": "https://scholarworks.bgsu.edu/ms_art/",
         "accessed": "2026-08-04",
     },
+    "CalArts (Animation)": {
+        "name": "CalArts Film/Video Animation Student Portfolios, 2026 — Character "
+                "Animation (BFA 1-4, Affiliates, Recent Alumni) and Experimental "
+                "Animation (BFA 1-4, MFA 1-3, Recent Alumni), 14 pages total. Each "
+                "student entry includes name, class year, specialization, and "
+                "Resume/Email/Portfolio/social links in plain static HTML (no JS "
+                "rendering needed). Distinct from the separate 'CalArts' source "
+                "(High Pass BFA exhibition, names only, no email).",
+        "url": "https://calarts.edu/filmvideo/animation-student-portfolios/2026/"
+               "character-animation and .../experimental-animation (14 sub-pages: "
+               "bfa-1 through bfa-4, affiliates, recent-alumni, mfa-1 through mfa-3)",
+        "accessed": "2026-08-07",
+    },
 }
 
 
@@ -304,6 +317,7 @@ def main():
     parser.add_argument("--iowa-csv", default="iowa_students.csv")
     parser.add_argument("--uw-art-csv", default="uw_art_students.csv")
     parser.add_argument("--bgsu-csv", default="bgsu_students.csv")
+    parser.add_argument("--calarts-animation-csv", default="calarts_animation_students.csv")
     args = parser.parse_args()
 
     wb = Workbook()
@@ -337,6 +351,7 @@ def main():
         ("Iowa", args.iowa_csv, "University of Iowa"),
         ("UW Art", args.uw_art_csv, "University of Washington"),
         ("BGSU", args.bgsu_csv, "BGSU"),
+        ("CalArts Animation", args.calarts_animation_csv, "CalArts (Animation)"),
     ]
 
     for sheet_title, csv_path, college_name in sources:

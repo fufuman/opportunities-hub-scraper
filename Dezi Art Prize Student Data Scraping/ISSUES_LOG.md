@@ -963,3 +963,27 @@ the plan (Cranbrook, UCLA undergrad portions, CalArts, SVA).
 Reinstalled via `.venv_crawl4ai/Scripts/python.exe -m pip install openpyxl`. Workbook
 rebuild scripts should be run with `../.venv_crawl4ai/Scripts/python.exe`, not system
 `python`, going forward.
+
+### CalArts (Animation) — new high-value source, 251/251 emails found
+**Issue Type:** New source, confirmed excellent, no significant issues
+**Description:** User provided a direct link to CalArts Film/Video's animation
+student portfolio pages (`calarts.edu/filmvideo/animation-student-portfolios/2026/`),
+distinct from the existing "CalArts" source (High Pass BFA exhibition, names only).
+Assessed before scraping per project discipline: confirmed via `curl` that all 14
+sub-pages (Character Animation: BFA 1-4, Affiliates, Recent Alumni; Experimental
+Animation: BFA 1-4, MFA 1-3, Recent Alumni) are plain static HTML with real
+`mailto:` links per student — no JS rendering needed, no crawl4ai required. Verified
+a clean 1:1 name-to-email ratio with zero noise (no admissions/office/faculty emails
+mixed in) before committing to the full scrape.
+**Action Needed:** Built `calarts_animation_scraper.py`. Parses each student block
+(name in "Last, First" format, flipped to "First Last"; class year/specialization
+subtitle; a list of labeled links — Resume/Email/Portfolio/Instagram/LinkedIn/
+Vimeo/Youtube). `portfolio_url` prefers the actual Portfolio link, falling back to
+Instagram/Vimeo/LinkedIn/Youtube if no dedicated portfolio site was listed; Resume
+and any secondary social links are preserved in `notes`. Result: **251 students,
+251 with a confirmed email (100%)** — by far the highest-yield source in the project.
+Added as a new "CalArts Animation" sheet, kept separate from the existing "CalArts"
+sheet (different source page, different scope — High Pass is BFA-only names-only,
+this is BFA+MFA+alumni with real emails).
+**Status:** Resolved. Master workbook now includes both CalArts sheets;
+`master_students_with_email.xlsx` gained 251 rows in one pass.
