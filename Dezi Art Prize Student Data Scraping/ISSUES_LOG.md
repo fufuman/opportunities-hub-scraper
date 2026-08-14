@@ -1045,3 +1045,63 @@ site before concluding it's the wrong person.
 
 **Status:** Resolved. `master_students_with_email.xlsx` gained 6 new VCU rows
 (6/13 with email now, up from 0/13).
+
+### Ohio State — email discovery pass, 4/21 confirmed (2025 cohort only)
+**Issue Type:** Email discovery, resolved for the 2025 cohort; 2026 cohort
+deliberately left untouched
+**Description:** All 21 name-only rows share the same `portfolio_url` (the source
+exhibition page, not a personal site), so went straight to web search per
+student, same as VCU. The 21 rows split into two cohorts with very different
+confidence: 13 names from the 2025 "Desire Lines" show (clean comma-separated
+list, high confidence) and 8 names from the 2026 "Waiting for the Light to
+Change" show that were already flagged `UNVERIFIED name reconstruction` from an
+earlier session (source text is a genuinely ambiguous run-on "Lastname, Firstname
+Lastname, Firstname..." string with no delimiter between people).
+**Action Needed / Findings (2025 cohort, 4/13 found):**
+- **Mandy Darrington** (mandylynndarrington@gmail.com) — own site
+  mandydarrington.com/about, obfuscated as "mandylynndarrington [at] gmail [dot]
+  com".
+- **William Evans** (evans_william@live.com) — own site williamevans.studio/about,
+  plain text.
+- **Andrew Mehall** (mehall.11@osu.edu) — OSU Department of Art directory
+  profile, institutional address.
+- **Ivan David Ng** (info@ivandavidng.com) — own site ivandavidng.com/about,
+  plain text.
+- **No email found** (confirmed real via exhibition/press records, no personal
+  site or no email on an existing site, checked via interactive Playwright
+  probe where a site existed): Annelise Duque, Breana Hendricks, Josiah Jamison,
+  Matty Machado, Zaza Naylor, Julian Robbins, Isabella Saraceni, Alex Trippe,
+  James Waite.
+- Several OSU Department of Art directory URLs surfaced by web search (e.g.
+  `art.osu.edu/people/duque.22`, `.../saraceni.4`, `.../trippe.5`,
+  `.../naylor.135`, `.../ng.463`) turned out to be **404 — stale/incorrect search
+  snippets**, not real profile pages; only `mehall.11` actually resolved.
+  Confirms the project's standing lesson (verify before trusting) applies to
+  search-engine snippet URLs too, not just doc-sourced URLs.
+
+**2026 cohort — deliberately NOT touched this pass, near-miss caught and
+reversed:** Attempted to independently verify the 8 UNVERIFIED reconstructed
+names by re-deriving the token-shift parsing logic by hand from the exact source
+string ("Banerjee, Shaheen Beardsley, Maria Conlon, Onni Estabrook, Samuel Lo,
+Takahiro Okubo, Shruti Shankar, Sam Wrigglesworth, Xuan") — confirmed the
+existing 8 reconstructed names in the CSV are mathematically correct as parsed.
+**However, a real mistake was caught mid-process:** search results surfaced a
+working OSU directory profile for a "Onni Estabrook" (estabrook.17@osu.edu,
+bio'd as a Lecturer with a BFA from a different school) and this was briefly,
+incorrectly treated as confirmation for our reconstructed "Samuel Estabrook" —
+a **surname-only match, not a full-name match**; the Lecturer bio doesn't fit a
+current 2026 MFA candidate at all and is almost certainly an unrelated person.
+Caught before writing anything to the CSV. Per user decision after being told
+about the near-miss, **stopped entirely rather than continuing** — all 8 2026
+rows are unchanged from before this session (still name-only, still flagged
+UNVERIFIED). **Lesson for future sessions**: for reconstructed/ambiguous names,
+a search hit matching only the surname (not the exact full name) is not
+sufficient corroboration, even when the reconstruction logic itself checks out —
+person-identity confirmation and name-parsing confirmation are two separate
+things and neither substitutes for the other.
+
+**Status:** Resolved for the 2025 cohort (4/13 found). 2026 cohort intentionally
+left as-is — do not attempt email discovery on those 8 names without a stronger
+identity-verification method than has been tried so far (e.g. a real OSU MFA
+student directory/roster page that could independently confirm the reconstructed
+names exist as written, not just plausible surname matches).
