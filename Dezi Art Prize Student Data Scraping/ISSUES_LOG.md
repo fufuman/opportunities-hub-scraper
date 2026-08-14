@@ -987,3 +987,61 @@ sheet (different source page, different scope — High Pass is BFA-only names-on
 this is BFA+MFA+alumni with real emails).
 **Status:** Resolved. Master workbook now includes both CalArts sheets;
 `master_students_with_email.xlsx` gained 251 rows in one pass.
+
+### VCU — email discovery pass, 6/13 confirmed
+**Issue Type:** Email discovery, resolved
+**Description:** Worked all 13 name-only VCU MFA Fine Arts (2025) students — none
+had a `portfolio_url` already, so went straight to targeted web searches per
+student. **6 of 13 (46%) found**, above the project's overall ~40% average.
+**Action Needed / Findings:**
+- **Aya Khalife** (khalifehaya7@gmail.com) — own site ayakhalife.com, a JS-rendered
+  Readymag site. First-pass automated checks (plain fetch, crawl4ai passive
+  render) missed the email entirely because it only appeared on the root `/` page,
+  not the specific sub-pages checked first; also initially misidentified the site
+  as belonging to a different, same-named Beirut-based designer until the user
+  manually confirmed VCU affiliation via her CV/education page and provided the
+  address directly (right-click → copy email address on a "Reach out" link).
+- **Rebecca Oh** (rebeccaohart@gmail.com), **David Guarnizo** (guarnizode@vcu.edu,
+  VCU institutional address from the official arts.vcu.edu directory) — both
+  found via plain web search + direct site verification, straightforward.
+- **Tyna Ontko** (ontkotyna@gmail.com) and **Molly Garrett** (hi@mollygarrett.com)
+  — both emails were text-obfuscated on the student's own contact page (formats
+  "name(at)gmail(dot)com" and "hi [at] domain.com") rather than real `mailto:`
+  links, so plain-text email regexes missed them; found by reading the actual
+  page text.
+- **Amy Duval** (amys.duval@gmail.com) — own site duvalceramics.ca (Squarespace,
+  JS-rendered); email only appeared after the new `interactive_email_finder.py`
+  tool (see below) interacted with the contact page.
+- **Suzy Slykin → corrected to Suzy Lykins**: the source ICA exhibition caption
+  had a misspelling; confirmed the correct spelling via a matching thesis title
+  ("Post Opera") on VCU Scholars Compass. No email found under the corrected
+  name either.
+- **No email found** (genuine dead ends, confirmed real via VCU/exhibition
+  records but no personal site or published email): Debra Dowden-Crockett,
+  August Neuscheler, Diego Pablo Málaga, Aleckxi Hristou-Dorhofer, brooklin
+  grantz, Alex Bacon (name ambiguity flagged — an unrelated NYC art historian
+  shares the name and has a similarly-named site, confirmed NOT the same person).
+
+**New tool built this pass:** `interactive_email_finder.py` — a Playwright-driven
+fallback for portfolio sites where a plain fetch or crawl4ai's passive render
+finds no email. Loads the page with a real headless browser, hovers/clicks
+anything that looks like a contact affordance (text matching "contact", "reach
+out", "get in touch", etc.), then diffs `mailto:` hrefs and email-shaped text
+before vs. after interaction. Filters out site-builder placeholder/boilerplate
+addresses (Readymag's `@readymag.com` footer addresses, Squarespace's literal
+`user@domain.com` template placeholder, common `name@example.com`-style
+placeholders) so they don't get mistaken for a real lead. Usage:
+`../.venv_crawl4ai/Scripts/python.exe interactive_email_finder.py <url>`. Worth
+reaching for whenever a student's own portfolio site is found but crawl4ai's
+passive render comes up empty — this pass it correctly surfaced Amy Duval's
+email where the passive approach had failed.
+
+**Process note:** a WebFetch summary is not always trustworthy for
+specific facts like affiliation — Aya Khalife's site was nearly written off as
+belonging to the wrong person based on the homepage alone; the correct call came
+from checking a deeper page (her CV/education section) rather than trusting the
+first page fetched. Worth checking more than one page on an ambiguous-identity
+site before concluding it's the wrong person.
+
+**Status:** Resolved. `master_students_with_email.xlsx` gained 6 new VCU rows
+(6/13 with email now, up from 0/13).
