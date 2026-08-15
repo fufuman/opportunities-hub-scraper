@@ -52,6 +52,11 @@ SOURCES = [
     ("BGSU", "bgsu_students.csv", "BGSU"),
     ("CalArts Animation", "calarts_animation_students.csv", "CalArts (Animation)"),
     ("UAL Central Saint Martins", "ual_csm_students.csv", "UAL Central Saint Martins"),
+    ("Alfred University", "alfred_students.csv", "Alfred University"),
+    ("Cornell", "cornell_students.csv", "Cornell"),
+    ("UT Austin", "ut_austin_students.csv", "UT Austin"),
+    ("Cooper Union", "cooper_union_students.csv", "Cooper Union"),
+    ("SCAD", "scad_students.csv", "SCAD"),
 ]
 
 RESPONSE_OPTIONS = "No response,Interested,Not interested,Bounced,Follow-up needed"
@@ -269,6 +274,78 @@ SOURCE_CITATIONS = {
         "url": "https://ualshowcase.arts.ac.uk/c/central-saint-martins"
                "?collection=ual~sp-showcase&meta_college_sand=Central+Saint+Martins "
                "(paginated, num_ranks=12, start_rank increments of 12)",
+        "accessed": "2026-08-15",
+    },
+    "Alfred University": {
+        "name": "Alfred University press releases and event pages naming 2026 and 2025 "
+                "MFA Thesis Shows (Ceramic Art, Painting, Sculpture-Dimensional Studies, "
+                "Electronic Integrated Arts). The original per-student thesis subpage "
+                "system this project's source research relied on "
+                "(thesis-exhibits/{year}/mfa/{lastname}/) has since been retired — every "
+                "such URL now redirects to a generic photo-gallery hub with no "
+                "consolidated roster, so this is a known-partial cohort pieced together "
+                "from press releases and search-indexed event pages, not a single clean "
+                "source.",
+        "url": "https://www.alfred.edu/about/news/pressreleases/general/2026/"
+               "nyscc-at-alfred-university-set-to-host-2026-mfa-thesis-shows.cfm "
+               "(and 1 more 2026 press release, plus the 2025 MFA Thesis Exhibitions "
+               "event calendar page)",
+        "accessed": "2026-08-15",
+    },
+    "Cornell": {
+        "name": "Cornell AAP (College of Architecture, Art, and Planning) event pages for "
+                "several small named MFA/BFA thesis group shows — Cornell's Department of "
+                "Art does not publish one consolidated roster; cohorts are split across "
+                "many 5-10 person exhibitions (MFA Image Text 'SELF/ASSEMBLY', MFA "
+                "Creative Visual Arts, BFA 'Thesis Group Exhibition', 'Space of "
+                "Becoming', 'Senior B.F.A. Thesis Exhibition', 'with a trace'). 2 more "
+                "2026 BFA sub-shows (FLEXION, 'North, South, East, West') referenced in "
+                "search results but their pages were never located, so those names are a "
+                "known gap.",
+        "url": "https://aap.cornell.edu/events/beyond-aap/m-f-a-image-text-26-thesis-show-"
+               "self-assembly/ (and 5 more aap.cornell.edu event pages)",
+        "accessed": "2026-08-15",
+    },
+    "UT Austin": {
+        "name": "UT Austin Visual Arts Center (utvac.org) event pages for the Studio Art "
+                "MFA Thesis Exhibitions (2025 'Acceleration Without Arrival', 2026 'Half "
+                "a Second or Less') and the 2026 Senior Art Exhibition ('Proof of Life') "
+                "— each a single clean, complete roster page, the highest-yield source "
+                "among the 5 schools added in this pass. A separate 2026 Design MFA show "
+                "('Known Otherwise', School of Design and Creative Technologies) was "
+                "deliberately excluded as a different department outside this project's "
+                "medium scope.",
+        "url": "https://utvac.org/event/proof-life-2026-senior-art-exhibition (and 2 more "
+               "utvac.org event pages)",
+        "accessed": "2026-08-15",
+    },
+    "Cooper Union": {
+        "name": "Cooper Union 'Class of 2026: In Their Own Words' feature article — the "
+                "only 2 students explicitly confirmed as School of Art via an 'A'26' "
+                "suffix. Cooper Union's annual End of Year Show has no roster page at "
+                "all (names attributed by tradition only) and its opening-night photo "
+                "gallery mixes all 3 schools (Architecture/Art/Engineering) together "
+                "with no reliable way to isolate Art students without an explicit "
+                "suffix — ~20 other names seen in photo captions were excluded as "
+                "either confirmed non-Art or unverifiable.",
+        "url": "https://cooper.edu/about/news/class-2026-their-own-words",
+        "accessed": "2026-08-15",
+    },
+    "SCAD": {
+        "name": "SCAD Thesis Digital Collection (library.scad.edu), a static/plain-HTML "
+                "library catalog covering 50+ programs since Fall 2010 (MFA) / Spring "
+                "2020 (undergrad) — scoped to 2025-2026 only, matching this project's "
+                "convention for every other school (current/recent cohorts, not full "
+                "historical archives). 11 of SCAD's 50+ programs map to this project's "
+                "in-scope mediums: Painting, Illustration, Printmaking (-> Painting/"
+                "Drawing), Sculpture, Fibers (-> Fiber and Material Arts), Photography, "
+                "Animation (-> 2D/3D Animation), Film & Television (-> Filmmaking), "
+                "Graphic Design (-> Design), User Experience (UX) Design (-> UI/UX "
+                "Design), Fashion. Scraped via a purpose-built script "
+                "(scad_scraper.py) since the catalog is far too large to browse "
+                "manually (486 total Painting results alone, back to 2010).",
+        "url": "https://library.scad.edu/screens/theses.html (11 saved-search URLs, "
+               "one per in-scope program)",
         "accessed": "2026-08-15",
     },
 }

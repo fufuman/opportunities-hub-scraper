@@ -1472,3 +1472,192 @@ student events page for all 5.
   personal site, no Instagram, no email found anywhere.
 
 **Status:** MassArt now 4/11 no-email (was 5).
+
+## Batch 15 (2026-08-15): New school — Alfred University, thin roster (site restructured)
+
+Resuming the original priority-28 school list — 5 schools were never scraped
+(Alfred, Cornell, UT Austin, Cooper Union, SCAD). Started with Alfred per
+user's "finish the original 28 first" decision.
+
+**Result: 14 names only, 0 emails — the source described in the original
+research plan no longer exists.**
+
+The original plan (`art_school_scraping_urls.md`) pointed to a per-student
+thesis subpage system (`thesis-exhibits/{semester-year}/mfa/{lastname}/`)
+with individual student pages. Every one of those URLs now 301-redirects to a
+generic `/galleries/` hub page — confirmed on 3 different year/student
+combinations (spring-2022, spring-2023, spring-2024/mfa/mcmaster). The
+`Fosdick-Nelson Gallery > Exhibits` archive itself only goes up to 2023-2024
+and doesn't have a 2024-2025 or 2025-2026 entry yet, despite those shows
+having already happened. The site was restructured since the original
+research pass and no longer exposes a consolidated roster anywhere.
+
+What was actually recoverable, via press releases and search-indexed event
+pages (not a single clean source):
+- **2026 cohort (10 names):** Amanda Gentry, Max Heaton, Hazel Liu, Yuxuan
+  Wang, Justin Donica, Ignacio Luera, Krist Lee, GH Wood, Marita Manson,
+  Elizabeth Scott — pieced together from 2 separate press releases covering
+  only the season's first and last weeks; the middle 3 weeks (~April 18, 25,
+  May 2) have no indexed press release at all, so this is a known-incomplete
+  cohort, not a full one.
+- **2025 cohort (4 names):** Michelle Seo, Toomas Toomepuu, David Park, Erin
+  Berry — from a search-engine summary of the 2025 MFA Thesis Exhibitions
+  event page, itself likely incomplete (the page describes a full
+  Saturday-by-Saturday season like 2026's).
+- **Older years:** Only 1-2 stray names per year surfaced from photo-caption
+  text on the 2022-2023 and 2023-2024 gallery archive pages ("Jaclyn Head,
+  MFA 2022"; "Gabrielle Egnaters and Kate Herron, MFA 2023") — not usable as
+  rosters, not added.
+
+No emails or portfolio links found anywhere for any of the 14 (matches the
+original research's own caveat that Tier-1 school pages "consistently"
+lack this info). User confirmed proceeding with this thin, known-partial
+14-name roster rather than digging further or skipping the school outright.
+
+**Status:** New file `alfred_students.csv`, 14/14 no-email. Not yet added to
+`build_master_workbook.py` SOURCES (pending — will be added once all 5
+remaining original-28 schools are scraped in this pass). Not yet committed.
+
+## Batch 16 (2026-08-15): New school — Cornell, fragmented across many small shows
+
+Second of the 5 remaining original-28 schools.
+
+**Result: 37 names, 0 emails.** Cornell's Department of Art doesn't publish a
+single roster page — its MFA/BFA thesis shows are split into many small
+named group exhibitions (5-10 students each) rather than one class list, so
+the roster had to be assembled by finding and cross-referencing several
+separate event pages:
+- **MFA Image Text '26 (10):** SELF/ASSEMBLY thesis show at Foreign &
+  Domestic Gallery — the one genuinely complete, clean cohort list found.
+- **MFA Creative Visual Arts '26 (7):** pieced together from a search-engine
+  summary (no single source page fetched directly) — flagged as
+  slightly less independently verified than the Image Text list.
+- **BFA '25 (9 + 1 + 6, ~14 unique after overlap):** three different named
+  sub-shows — "Thesis Group Exhibition" (9), "Space of Becoming" (5, 4
+  overlapping + Alex Park new), and a separate "Senior B.F.A. Thesis
+  Exhibition" (6, 5 overlapping + Amy Lee new, which itself overlaps
+  Space of Becoming) — confirms the 2025 BFA class is genuinely split
+  across multiple mini-shows rather than one exhibition.
+- **BFA '26 ("with a trace", 4):** only 4 names resolved even though the
+  page describes "five B.F.A. '26 students" — the 5th name wasn't
+  recoverable from the fetched page content.
+
+Two more 2026 BFA sub-shows (FLEXION, 4 students; "North, South, East, West",
+count unknown) were referenced in search snippets but their exact page URLs
+never surfaced, so no names were recoverable for either — acknowledged gap,
+not pursued further per user's "take what's found, close it out" call (small
+program, diminishing returns on continued digging).
+
+No emails or portfolio links found for anyone — matches the original
+research's note that Cornell pages don't publish contact info.
+
+**Status:** New file `cornell_students.csv`, 37/37 no-email. Not yet added to
+SOURCES. Not yet committed.
+
+## Batch 17 (2026-08-15): New school — UT Austin, strongest yield of the 5
+
+Third of the 5 remaining original-28 schools.
+
+**Result: 78 names, 0 emails — the cleanest, highest-yield source of this
+batch.** Unlike Alfred/Cornell, UT Austin's exhibitions each have one clean,
+complete roster page on the Visual Arts Center site (utvac.org):
+- **MFA Studio Art 2025 ("Acceleration Without Arrival", 14):** full roster
+  fetched directly from its own utvac.org event page — all 14 names
+  confirmed against the "14 graduating MFA artists" count mentioned in press
+  coverage.
+- **MFA Studio Art 2026 ("Half a Second or Less", 7):** full roster, own
+  event page, matches announced count exactly.
+- **BFA Studio Art 2026 ("Proof of Life", 57):** the standout find — a
+  single senior-exhibition page listing the full graduating BFA cohort by
+  name (painting/drawing/print/sculpture/video/photography). One name
+  ("Genavieve G.") is truncated on the source page itself with no
+  recoverable last name; kept as-is with a note. This is by far the largest
+  single-page roster found in this batch of 5 schools.
+
+Also found and deliberately excluded: a "Known Otherwise: 2026 Design MFA
+Thesis Exhibition" (8 grads) — this is UT's separate School of Design and
+Creative Technologies, not the Department of Art and Art History, and Design
+isn't a confirmed in-scope medium per the project's existing scope rules; not
+scraped.
+
+No emails or portfolio links found for anyone (matches every other school in
+this batch).
+
+**Status:** New file `ut_austin_students.csv`, 78/78 no-email. Not yet added
+to SOURCES. Not yet committed.
+
+## Batch 18 (2026-08-15): New school — Cooper Union, thin/confirmed only
+
+Fourth of the 5 remaining original-28 schools. Confirms the original plan
+doc's own caveat verbatim: "Cooper's tradition is to list works by artist
+name only without additional info. Disambiguation may be harder."
+
+**Result: 2 names, 0 emails — deliberately kept small over guessing.**
+Cooper Union's 2026 End of Year Show (the annual public exhibition) has no
+roster page — the event page itself lists zero names. Photo-caption names
+from the opening-night gallery page mix all 3 of Cooper Union's schools
+(Architecture, Art, Engineering) together with no reliable way to tell which
+school a name belongs to unless a class-suffix happens to be visible (e.g.
+"EE'26" = Electrical Engineering, "CE'26" = Civil Engineering, "A'26" =
+Art). Of ~23 names surfaced from photo captions, 9 had an explicit
+non-Art suffix (excluded) and the remaining ~13 had no suffix at all
+(ambiguous — could be Art or Architecture, excluded rather than guessed).
+
+Only 2 names came with an explicit, unambiguous "A'26" (School of Art)
+confirmation, both from a separate "Class of 2026: In Their Own Words"
+feature article: Skye Jones (installation art) and Regina Cervantes Ellis
+(graphic design research via the Rhoda Lubalin Fellowship). User confirmed
+taking only these 2 rather than guessing at the ambiguous names or skipping
+the school outright.
+
+No emails or portfolio links found for either.
+
+**Status:** New file `cooper_union_students.csv`, 2/2 no-email. Not yet
+added to SOURCES. Not yet committed.
+
+## Batch 19 (2026-08-15): New school — SCAD, largest of the 5, needed a scraper
+
+Fifth and final of the 5 remaining original-28 schools.
+
+**Result: 367 names, 0 emails.** SCAD's public "SCAD Thesis Digital
+Collection" (library.scad.edu) is a genuinely large, plain-HTML, keyword
+-searchable library catalog covering 50+ programs since Fall 2010 MFA /
+Spring 2020 undergrad — far too large to browse manually (486 results for
+Painting alone, going back 16 years). Per user decision, scoped to
+**2025-2026 only**, matching every other school in this project (current/
+recent graduating cohorts, not full historical archives).
+
+Wrote `scad_scraper.py`: plain `curl` fetch (no JS needed — this is a static
+library catalog), parses each result card's title/author/year via regex,
+paginates 50-per-page, and — since results are sorted newest-first — stops
+paginating a program as soon as it hits a pre-2025 entry rather than walking
+the entire multi-year archive. One bug found and fixed during testing: SCAD's
+saved-search URLs contain literal unencoded spaces (`%22 thesis painting%22`)
+which silently broke a bare `curl <url>` call (empty response, no error) —
+fixed by percent-encoding spaces before the fetch.
+
+Mapped 11 of SCAD's 50+ programs to this project's 9 in-scope mediums:
+Painting, Illustration, Printmaking -> Painting/Drawing; Sculpture ->
+Sculpture; Fibers -> Fiber and Material Arts; Photography -> Photography;
+Animation -> 2D/3D Animation; Film & Television -> Filmmaking; Graphic
+Design -> Design; User Experience (UX) Design -> UI/UX Design; Fashion ->
+Fashion. All other SCAD programs (Architecture, Advertising, Interior
+Design, Themed Entertainment Design, Writing, etc.) are out of scope and
+were not scraped.
+
+Per-program yield (2025-2026 only): Illustration 93, Film & Television 66,
+Animation 76, Graphic Design 33, Painting 42, Photography 26, Fashion 17,
+Sculpture 4, Fibers 4, User Experience (UX) Design 6, Printmaking 0 (all 11
+of its results predate 2025). 367 unique students after de-duplication by
+(name, thesis title).
+
+No emails or portfolio links published on any thesis catalog entry (matches
+every other school in this batch of 5).
+
+**Status:** New file `scad_students.csv`, 367/367 no-email — by far the
+largest addition among the 5 remaining original-28 schools. Not yet added to
+SOURCES. Not yet committed. All 5 remaining schools now scraped: Alfred (14),
+Cornell (37), UT Austin (78), Cooper Union (2), SCAD (367) = 498 new names,
+0 new emails, across 5 new CSV files. Next: wire into
+`build_master_workbook.py` SOURCES + SOURCE_CITATIONS and rebuild all three
+master workbooks.
