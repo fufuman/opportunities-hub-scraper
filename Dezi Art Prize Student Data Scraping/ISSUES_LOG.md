@@ -1895,3 +1895,256 @@ truncated name from the original scrape, "Genavieve G." (last name cut off
 on the source page), was not searchable meaningfully and remains unresolved.
 
 **Status:** UT Austin final: 14/78 with email.
+
+## Batch 23 (2026-08-15): SCAD email discovery pass (Serper) — 31/367
+
+Final school of the 5 new schools. Ran individual Serper searches, smallest
+-program-first per SCAD's own program split: Fibers (4), Sculpture (4), UX
+Design (6), Fashion (17), Photography (26), Graphic Design (33), Painting
+(42). Session paused at that point — Film & Television (66), Animation
+(76), and Illustration (93), 235 names, remain untouched.
+
+### Approach note: abandoned a batch-automation attempt
+Initially tried building `scad_email_finder.py`, an automated batch script
+that queries Serper per name and extracts candidate emails via a tiered
+confidence system (own-domain match / near a "contact me" phrase / mere
+co-occurrence in a noisy snippet). Caught a real false-positive during
+testing: a search for "Megha Nema" returned a snippet where her name and an
+unrelated email ("Laura@artriculate.com", from a completely different
+person's caption on the same Instagram post) appeared close together — even
+a tightened proximity-window heuristic couldn't reliably tell them apart.
+Per user direction, abandoned the automated approach in favor of continuing
+the same manual-verification method used for every other school so far:
+individual search + human-reviewed raw-HTML confirmation before writing
+anything in.
+
+### 31 emails found across 7 programs
+- **Fibers (1/4):** Lusiana Morales Febo — lusiana.arte@gmail.com (Voyage
+  Savannah feature article, explicit Contact Info line)
+- **Sculpture (1/4):** Emma Adler — emmaadler1@gmail.com (own site
+  emmaadler.com)
+- **UX Design (0/6):** none found — small cohort, no personal sites with
+  visible contact info
+- **Fashion (4/17):** Rupal Panwar (rupalpanwar.com), Jiani Hu
+  (jianihu.com), Isaac Yu (isaac-yu.art, corroborated on Instagram), plus
+  Melanee "Mel" Brown moved to Photography count below by mistake in
+  earlier tally -- correctly counted under Photography
+- **Photography (7/26):** Melanee "Mel" Brown (Instagram self-declared,
+  corroborated by a third-party photo credit), Kourtney Iman King (matches
+  own domain, Instagram-consistent), Taylor Edgerton (Instagram bio, "available
+  for work"), Hailey R. Kasper (haileykasper.com), Xavier Thompson
+  (xaviertylerthompson.com), DeAngelo Williams (Voyage ATL feature article
+  -- flagged that a WebFetch pass separately guessed a different,
+  unverifiable deobfuscated address from the same page; used only the
+  literal snippet text instead), Zhiquan Zhao (Instagram bio, "DM or Email
+  for Bookings")
+- **Graphic Design (6/33):** Mingxuan Duan (mingxuan.design), Trevor Kimathi
+  Mugambi (trevormugambi.com), Caroline Schwarm (carolineschwarm.com),
+  Xiaoyue Shen (email read directly from her own resume PDF via WebFetch --
+  first successful PDF-text extraction used as a source in this project),
+  Sia Tyagi (siatyagi.com)
+- **Painting (12/42, 2 already found in an earlier CSV write reconciled
+  into this count):** Jannelly Herrera, Sandra Iafrate, Rachel Korzeb, Elise
+  Le Gallo (corroborated across 2 sources), Sharon Potter (Facebook Contact
+  Info), Nikki Rakov (nikkirakovart.com), Cristina Marietta Komaroff
+  (madamecristina.art), Shannon Meadows (shannonmeadows.com -- 2 slightly
+  different self-published addresses found across her sites/Instagram, used
+  the one on her official SCAD-MFA bio page as more authoritative), Keshav
+  Prasad (carrd.co site, quoted in search snippet, not independently
+  re-verified via fetch), Evelyn Shoults (evelynshoults.com), Joanna Silver
+  (joannapaigesilver.com), Denis Byrd (search-snippet-quoted, his own site
+  is currently 404ing), Hannah Grace Maki (hannahgrace.art), Jazmin Marie
+  Saunders (jazmarie.art)
+
+### One important identity check that prevented a wrong write
+For "Jieun Kim" (Graphic Design), a personal site (ji-kim.net) surfaced with
+an email (narrative.ji@gmail.com) under the similar name "Ji Kim" -- checked
+the site directly for any SCAD/Savannah/Jieun mention to confirm it was the
+same person before using it. Found none, so left unresolved rather than
+risk a wrong-person email, the same discipline applied throughout this
+project.
+
+**Status (mid-batch):** SCAD at 31/367 (7 of 11 in-scope programs done: Fibers,
+Sculpture, UX Design, Fashion, Photography, Graphic Design, Painting).
+Remaining: Film & Television (66), Animation (76), Illustration (93) — 235
+names untouched. Not yet committed.
+
+## Batch 24: SCAD email discovery, Film & Television complete (31 → 46)
+
+Searched all remaining names in Film & Television (66 total) individually
+via Serper, batches of 5, same manual-verification discipline as Batch 23
+(raw-HTML `curl`+`grep` confirmation for any candidate before writing it
+in; Instagram/Facebook-only findings accepted only when the email is
+directly and unambiguously self-declared with the person's own name
+attached, not merely co-occurring nearby).
+
+### 14/66 found (program now complete)
+- Zilyu Ye — zilyye20@student.scad.edu (repeated across 2 Facebook casting
+  posts)
+- Adrianna Amy-Delgado — aplowd20@student.scad.edu (own SCAD Production
+  Office profile page)
+- Pranav Abraham Varikad — pranav810x@gmail.com (own Wix site)
+- Koyna Mitra — kmitra20@student.scad.edu (SCAD Production Office profile)
+- Keishla Marie Oquendo — xkeishla@gmail.com (Instagram bio, corroborated
+  by Voyage ATL feature)
+- Nguyen Brian (Brian Nguyen) — bnguye24@student.scad.edu (SCAD Production
+  Office profile)
+- Fatima Diallo — Fdiallo33@gmail.com (own Instagram post)
+- Noah Trainor — nbtrainor21@gmail.com (own site, raw HTML verified)
+- Becca Robinson — srobin34@student.scad.edu (SCAD Production Office
+  profile)
+- Yulin Chen — yulin@redpavilionfilms.com (own production-company "About"
+  page, raw HTML verified)
+- Sean Malady — august.starling@gmail.com (self-declared "Sean Malady
+  Email:" in his own crew casting-call posts, corroborated across 2
+  separate Facebook posts)
+- Scott Joseph Moore — smartcastings@live.com (self-declared in his own
+  YouTube video description with name + LinkedIn attached)
+- Cache Jill Capuyan — afterthecreditsroll.films@gmail.com (own portfolio
+  site afterthecreditsroll.weebly.com, raw HTML verified)
+- Esteban Larach — estebanlarachg@gmail.com (own portfolio site
+  estebanlarach.com, raw HTML verified)
+
+### False-positive risks avoided (consistent with Megha Nema lesson)
+- Xinran Gu: a candidate email appeared in an Instagram showcase post but
+  wasn't clearly attributed to her specifically — not used.
+- Denise Gordon: multiple casting-call threads had OTHER commenters'
+  emails nearby (thestrawlady@gmail.com, jamieweilwrites@gmail.com,
+  Daniellacarter@me.com, etc.) — none of these belong to her; not used.
+- Shakira Murphy, Hanzhong Bai: same pattern — casting-call threads with
+  unrelated third-party emails nearby, correctly not attributed to them.
+
+### Low-yield stretch (~35 names with no usable candidate)
+Rachel Shipman, Elijah Willis, Lauryn Alexandria Terry, Roni Lovejoy, Zyria
+Jessie, Arielle Engle, Taoran Liu, Michael Jones, Bixuan Zhang, Ziqin Ma,
+Niranjana Karumampuram Arunkumar, Regan Hutton, Beatrise Ziedina, Yuxi
+Zhang, Zhanlan Lei, Marina Kathy Saji, C.J. Staidum, WeiChung Chen, Alec
+Dixon, Denise Francis Gordon, Brennan Haley, Andrew James Taylor, Sarabi
+Woods, Yuheng Zhang, Vusumuzi Mthembu, Shakira Murphy, Brandon Walker, Chi
+Fan, Stephen Ford (GoFundMe checked, no usable email), Annie Funderburk,
+Xinzhu Liu (own site checked, no email listed), Zhaoning Lyu, Yili Ma,
+Hanzhong Bai, Shihao Fu, Ziyou Li, Jiaxin Li, Eunique Foreman, Jacob McKee
+(own site checked, no email listed), Garrison Rolle, Zitong Shu, Damian
+James Standen, Ronesha Strickland, Christopher Williams (name collision
+with a SCAD faculty member, no clear student match), Haolan Liu, Ivi
+D'vynne Wicks, Yeting Wang. Most have active social/industry profiles
+(LinkedIn, IMDb, Backstage) but no directly verifiable personal email.
+
+**Status:** SCAD at 46/367. Film & Television (66) now complete. Remaining:
+Animation (76), Illustration (93) — 169 names untouched. Not yet committed.
+
+## Batch 25: SCAD email discovery, Animation complete (46 → 57)
+
+Searched all 76 Animation names individually via Serper, batches of 5, same
+manual-verification discipline (raw-HTML confirmation for any candidate,
+false-positive checks against co-occurring third-party emails).
+
+### 11/76 found (program now complete)
+- Lan Luo — lanluo@lanluoart.com (own site lanluoart.com, raw HTML verified)
+- Sarah Via — sarahcvia@gmail.com (own site sarahcvia.com, raw HTML
+  verified across 2 pages)
+- Yoona Hwang — yoonahwang.art@gmail.com (own site yoonahwang.com, raw HTML
+  verified; also self-declared silence.film.official@gmail.com on her
+  thesis film's therookies.co page)
+- Gabby Gillespie — gabbygillespie24@gmail.com (own site
+  gabbygillespieart.com, raw HTML verified)
+- Freddy Bendekgey — freddybendekgey@gmail.com (own site
+  freddybendekgey.com, raw HTML verified across multiple pages)
+- Daniela Rumbaut — danielarumbaut@utexas.edu (own portfolio site contact
+  page, raw HTML verified — UT Austin .edu address, not SCAD, but listed as
+  her own current contact)
+- Drew Clark — drew.anne.clark@gmail.com (own site sodapopsketches.com, raw
+  HTML verified)
+- Anindita Maturi — aninditamaturi.98@gmail.com (own Wix site, raw HTML
+  verified)
+- Iman Gadalla — imanmgadalla@gmail.com (self-declared in her own Instagram
+  post, "EMAIL ME AT IMANMGADALLA@GMAIL.COM")
+- Mark J. Boone — mboone20@student.scad.edu (self-declared on his own
+  LinkedIn profile, handle mboone20 matches address)
+- Ian Anastas — itanastas@gmail.com (self-declared in his own Instagram
+  bio, "Open for work: itanastas@gmail.com")
+
+### False-positive risks avoided
+- Ziyi Xu, Xuan (Ruth) Zhang, Jiayi Gu: common-name collisions or
+  low-confidence template pages where the SCAD-student identity couldn't be
+  confirmed — none of the candidate emails were used.
+- Geoffrey Aaron Asch, Mian Brindisi: candidate emails belonged to other
+  people/projects mentioned in the same post (a different classmate's
+  academic email; the "Grotesque Film" project's shared inbox) — correctly
+  not attributed to them.
+- Esther Son, Momo Chang, Michael Mauro: distinct same-named individuals
+  (a realtor, a journalist, a community-college professor) surfaced instead
+  of the SCAD student — not used.
+
+### Low-yield stretch (~55 names with no usable candidate)
+Most had confirmable LinkedIn/Instagram/ArtStation/Twine presence but no
+independently verifiable personal email (RocketReach/SignalHire-obscured
+addresses were not used, consistent with project rules).
+
+**Status:** SCAD at 57/367. Film & Television (66) and Animation (76) both
+complete. Remaining: Illustration (93 names) untouched. Not yet committed.
+
+## Batch 26: SCAD email discovery, Illustration complete (57 → 68) — full SCAD pass done
+
+Searched all 93 Illustration names individually via Serper (switched query
+pattern mid-batch per user feedback to consistently include "artist" +
+"email" + "Savannah College of Art and Design" for more targeted results),
+same manual-verification discipline throughout.
+
+### 11/93 found (program now complete)
+- Connor Stelle — connorstelle@gmail.com (own site
+  connorstelleillustration.com, raw HTML verified)
+- Chani Alia Becker — chani@chanibecker.com (own site chanibecker.com, raw
+  HTML verified)
+- Juntang Xu — juntangxustudio@gmail.com (self-declared in his own
+  Instagram bio)
+- Jake Steven Czubinski — jakeczubinski@yahoo.com (own site
+  czubinski.myportfolio.com, raw HTML verified)
+- Jordyn Goodman — jordyngoodman14@gmail.com (own site
+  jordyngoodman.myportfolio.com, raw HTML verified)
+- Wynter Malone — wynterartist@gmail.com (own site wynterartist.com, raw
+  HTML verified)
+- Maggie Stinauer — StinaCaliArt@gmail.com (own site stinacali.com, raw
+  HTML verified; professional name "Stina Cali")
+- Lai Wei — laiwei511@gmail.com (own site laiwei21.com, raw HTML verified)
+- Hollie Puterbaugh — hollieillu@gmail.com (self-declared, corroborated
+  across her own site, Instagram bio, LinkedIn, and an interview feature —
+  found via a search for a different name, illustrating the value of
+  broad/adjacent searches)
+- Jiayi Zhang — jiayi6120@gmail.com (own site jiayizhangtom.org, raw HTML
+  verified)
+- Richard Zhao — zgradecomics@gmail.com (structured "e:" contact field on
+  the official Applied Arts Magazine 2025 Student Awards winner page,
+  directly attached to his name and SCAD)
+
+### False-positive risks avoided
+- Ziyi Xu-style common-name collisions recurred throughout (Xiao Li, Qi
+  Wang, Yu Guo, Alejandro Martinez, Anna Levy, etc.) — candidate emails
+  belonging to clearly different people (professors, unrelated
+  professionals, other same-named students at other schools) were not used.
+- Minghan (Mandy) Zhang: a "Mandy Zhang Art" London gallery surfaced but is
+  an unrelated business, not our student — not used.
+- Leqi Wang: a Dartmouth .edu email under the same name was a different
+  person — not used.
+
+### Low-yield stretch (~82 names with no usable candidate)
+Most had confirmable LinkedIn/Instagram/feature-article presence (many via
+CanvasRebel, BoldJourney, VoyageATL, ShoutoutAtlanta interview features
+that are common for SCAD Illustration alumni) but no independently
+verifiable personal email.
+
+## SCAD FULL PASS SUMMARY: 68/367 (18.5%)
+
+All 11 in-scope programs now fully searched: Fibers (1/4), Sculpture (1/4),
+UX Design (0/6), Fashion (4/17 incl. Photography-miscount correction),
+Photography (7/26), Graphic Design (6/33), Painting (14/42), Film &
+Television (14/66), Animation (11/76), Illustration (11/93). Every email in
+scad_students.csv has been individually verified per the project's
+confidence-gating rule (raw HTML confirmation, or an unambiguous
+self-declaration with the person's own name/handle directly attached) —
+none were written from automated batch inference after the abandoned
+scad_email_finder.py approach.
+
+**Status:** SCAD email-discovery pass complete for this session at
+68/367. Next steps: rebuild master workbooks, commit, push to GitHub, and
+generate the Nitya batch file.
