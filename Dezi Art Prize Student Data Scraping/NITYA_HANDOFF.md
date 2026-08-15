@@ -12,10 +12,10 @@ Repo: **https://github.com/fufuman/opportunities-hub-scraper.git**
 ## 1. What this project actually is
 
 We're building a contact list of art students (MFA/BFA, mostly graduating cohorts)
-from ~25+ US art schools, for outreach related to the Dezi Art Prize. For each
+from ~26 US art schools, for outreach related to the Dezi Art Prize. For each
 student we try to capture: **name, email, major, graduation_year, portfolio_url,
-college, notes** (plus two outreach-tracking columns, `contacted`/`response`, added
-only in the final Excel output).
+college, notes, sent_to_nitya** (plus two outreach-tracking columns,
+`contacted`/`response`, added only in the final Excel output).
 
 The work happens in two phases:
 
@@ -30,6 +30,10 @@ The work happens in two phases:
    same CSV. This is a slower, more manual phase, done city/school by school, with a
    human (you) verifying anything the AI couldn't fetch directly or wasn't fully
    confident about.
+
+Two people currently contribute emails to this dataset (you and Nitya), which is why
+handoff is now done in small **batches** rather than the whole file at once — see
+Section 6.
 
 **Two git branches matter:**
 
@@ -108,11 +112,18 @@ supersedes it for anything under `Dezi Art Prize Student Data Scraping/`.
 
 - **The CSVs are the source of truth.** Never hand-edit the `.xlsx` files directly —
   always edit the relevant `<school>_students.csv`, then regenerate the Excel outputs
-  (see Section 5). Every CSV has exactly these 7 columns:
-  `name, email, major, graduation_year, portfolio_url, college, notes`
+  (see Section 5). Every CSV has exactly these 8 columns:
+  `name, email, major, graduation_year, portfolio_url, college, notes, sent_to_nitya`
 - **Missing email is written as an empty string**, not "N/A" or similar (a couple of
-  older rows use the literal string `"Not found"` — also treated as "no email" by the
-  splitting logic, but new rows should just use `""`).
+  older rows — all of Cranbrook — use the literal string `"Not found"`, checked
+  case-insensitively and also treated as "no email" everywhere, but new rows should
+  just use `""`).
+- **`sent_to_nitya`** — blank until a row has been included in a batch sent to Nitya
+  (see Section 6), then stamped with the date it was sent (e.g. `2026-08-11`). This is
+  handoff-tracking, distinct from `contacted`/`response` (which track whether *Nitya*
+  has reached out to *the student* — a separate concern, only present in the Excel
+  outputs). Never hand-edit this column — it's only ever written by
+  `mark_batch_sent.py`.
 - **`notes` should always say what happened**, honestly. Conventions used throughout:
   - `"Email confirmed by user"` — when the human found/verified it manually.
   - `"Email found via web search (own site X.com)"` — when Claude found it directly
@@ -126,14 +137,19 @@ supersedes it for anything under `Dezi Art Prize Student Data Scraping/`.
     say *why* there's no email, for future reference.
 - **`build_master_workbook.py`** reads all the CSVs and writes `master_students.xlsx`
   — one sheet per school, with a 3-line italic source-citation header (name/URL/date
-  accessed, from a `SOURCE_CITATIONS` dict in that file) above the data.
+  accessed, from a `SOURCE_CITATIONS` dict in that file) above the data. It also
+  exposes a module-level `SOURCES` list — `(sheet title, csv filename, college
+  label)` per school — that every other script in this folder imports rather than
+  keeping its own copy. (There used to be a second, separately hardcoded copy in
+  `split_master_workbook.py` that had drifted out of sync — fixed 2026-08-15 by
+  having it import `SOURCES` instead. If you ever add a new school, add it to
+  `SOURCES` in `build_master_workbook.py` only — every downstream script picks it up
+  automatically.)
 - **`split_master_workbook.py`** does the same thing but writes two separate
   workbooks: `master_students_with_email.xlsx` (only rows with a real email) and
-  `master_students_no_email.xlsx` (the rest). **This second script has its own
-  hardcoded copy of the school list — if you add a new school, you must update the
-  list in BOTH `build_master_workbook.py` and `split_master_workbook.py`, or the new
-  school won't appear in one of the outputs.** This is a known repo quirk, not a bug
-  to "fix" — just something to remember.
+  `master_students_no_email.xlsx` (the rest).
+- **`build_nitya_batch.py`** / **`mark_batch_sent.py`** — the batch handoff tools,
+  see Section 6.
 
 ---
 
@@ -196,14 +212,15 @@ same URLs repeatedly.
    (`--out`, `--force-refresh`). Look at `ucla_scraper.py` or `bgsu_scraper.py` as
    clean, simple examples.
 4. Run it, sanity-check the row count against what the source doc claimed.
-5. Add the school to `SOURCE_CITATIONS` + a `--<school>-csv` flag + a sources tuple in
-   **both** `build_master_workbook.py` and `split_master_workbook.py`.
-6. Rebuild all three workbooks (Section 3 commands).
+5. Add the school to `SOURCE_CITATIONS` **and** to the `SOURCES` list — both in
+   `build_master_workbook.py` only; `split_master_workbook.py` and the batch tools
+   import `SOURCES` from there automatically, no second place to update anymore.
+6. Rebuild all three workbooks (Section 4 commands).
 7. Log what happened in `ISSUES_LOG.md` (what worked, what was wrong in the doc, any
-   dead ends) — this file is long (700+ lines) and is meant to be read, not just
+   dead ends) — this file is long (900+ lines) and is meant to be read, not just
    written to; check it before starting a new school in case it's already been tried.
-8. Commit to `main`. If new emails were added, also mirror
-   `master_students_with_email.xlsx` onto `final-master-list` (see Section 6).
+8. Commit to `main`. If new emails were added, generate/send a batch (Section 6a) and
+   mirror `master_students_with_email.xlsx` onto `final-master-list` (Section 6b).
 
 ### B. Finding missing emails (the current phase of work)
 1. Work through name-only students **one school at a time**, generally smallest
@@ -229,14 +246,54 @@ same URLs repeatedly.
      `firstname.lastname@college.edu` without verifying) even if a college's naming
      convention seems obvious from other confirmed emails at that school.
 6. After a school's pass is done: rebuild the workbooks, log a summary paragraph in
-   `ISSUES_LOG.md` (X of Y found, what worked, what didn't), commit to `main`, mirror
-   the with-email workbook to `final-master-list`, push both.
+   `ISSUES_LOG.md` (X of Y found, what worked, what didn't), commit to `main`,
+   generate/send a batch (Section 6a), mirror the with-email workbook to
+   `final-master-list` (Section 6b), push both.
 
 ---
 
-## 6. The two-branch push routine
+## 6. Handoff: batches (day-to-day) + the two-branch mirror (full backup)
 
-After any session that changes `master_students_with_email.xlsx`:
+Two people add emails to this dataset now (you and Nitya), so as of 2026-08-15 there
+are **two handoff mechanisms that run alongside each other**:
+
+- **WhatsApp batches** — the actual day-to-day handoff. A small `.xlsx` containing
+  only the rows Nitya hasn't received yet, generated on demand and shared directly.
+- **`final-master-list` branch** — kept exactly as before, as a complete backup/audit
+  trail of the with-email file. Still updated every session, but is not what you
+  actually send Nitya day to day anymore.
+
+### 6a. Generating and sending a batch
+
+Every CSV has a `sent_to_nitya` column (blank = never sent). After a session where
+new emails were added:
+
+```bash
+cd "Dezi Art Prize Student Data Scraping"
+../.venv_crawl4ai/Scripts/python.exe build_nitya_batch.py
+```
+
+This scans every school's CSV for rows with a real email and a blank `sent_to_nitya`,
+and writes them to `nitya_batch_<today>.xlsx` — one sheet per school that has
+something new, same citation-header formatting as the full master workbook. It prints
+a per-school count and **does not modify any CSV** — safe to re-run any time to
+preview what would go out.
+
+Review the file, then send it to Nitya (WhatsApp, or however). **Only after
+confirming it was actually sent**, mark it as delivered:
+
+```bash
+../.venv_crawl4ai/Scripts/python.exe mark_batch_sent.py
+```
+
+This stamps today's date into `sent_to_nitya` on every row that was just sent
+(re-running the same filter `build_nitya_batch.py` used), after showing a
+confirmation prompt (`--yes` to skip it). Do **not** run this before actually sending
+the batch — if you generate a batch, get interrupted, and don't send it that session,
+just leave it unmarked; running `build_nitya_batch.py` again next session will pick
+up the same rows plus anything new.
+
+### 6b. The two-branch mirror (unchanged, still done every session)
 
 ```bash
 # 1. Commit everything to main as normal
@@ -253,22 +310,35 @@ git checkout main
 ```
 
 `final-master-list` only ever contains that one file — it's not meant to accumulate
-scraper code or other CSVs. If Nitya is the one finding emails going forward and
-wants to push updates herself, she can follow this exact same routine, or just work
-entirely on `main` and have her Claude do the mirroring step.
+scraper code or other CSVs. Keep doing this every session regardless of whether a
+batch also went out — it's the full backup, batches are just the incremental
+day-to-day handoff.
+
+### 6c. First batch under this system (2026-08-15)
+
+Nitya's last sync was 2026-08-11. Everything with an email as of that point (1,007
+rows — every school except the 10 below) was backfilled with
+`sent_to_nitya = 2026-08-11`. The first real batch under this system was VCU (6 new
+emails) + Ohio State (4 new emails) = 10 rows, generated as
+`nitya_batch_2026-08-15.xlsx`.
 
 ---
 
-## 7. Current state (as of this handoff)
+## 7. Current state (as of 2026-08-15)
 
-- **25 schools scraped**, 1,875 total student rows across all CSVs.
-- **756 students have a confirmed email** so far (about 40%); the rest are
-  name-only or have only an unverified/flagged lead.
+- **26 schools scraped**, ~2,126 total student rows across all CSVs.
+- **1,017 students have a confirmed email** so far; the rest are name-only or have
+  only an unverified/flagged lead.
 - Email-discovery has been completed (at least one pass) for: BGSU, UW Art, MassArt,
-  CMU, Temple/Tyler, Columbia College Chicago (0 emails found there — see below).
-- **Not yet attempted**: Cranbrook, UCLA, Iowa, VCU, Ohio State, U Michigan Stamps,
-  Parsons (partially — some already had emails), SVA, Pratt, MICA, MCAD (partially),
-  RISD, BU, CalArts, CCA, Yale.
+  CMU, Temple/Tyler, Columbia College Chicago (0 emails found there — see below),
+  VCU (6/13), Ohio State (4/21, 2025 cohort only — see `ISSUES_LOG.md` for why the
+  8 UNVERIFIED 2026-cohort names were deliberately left untouched).
+- CalArts Animation (a new source, distinct from the existing names-only "CalArts"
+  sheet) was added 2026-08-11 — 251 students, 251 with a confirmed email (100%).
+- **Not yet attempted**: Cranbrook (genuinely 0 public emails — confirmed via the
+  alumni directory not publishing them, not a scraper gap), UCLA, Iowa, U Michigan
+  Stamps, Parsons (partially — some already had emails), SVA, Pratt, MICA, MCAD
+  (partially), RISD, BU, CalArts (original High Pass sheet), CCA, Yale.
 - **Known pattern**: MFA/graduate cohorts are much easier to find emails for (they
   commonly maintain personal portfolio sites with a bio/CV page listing contact info)
   than BFA/undergrad cohorts (who mostly don't have a personal site yet — searches for

@@ -1105,3 +1105,370 @@ left as-is — do not attempt email discovery on those 8 names without a stronge
 identity-verification method than has been tried so far (e.g. a real OSU MFA
 student directory/roster page that could independently confirm the reconstructed
 names exist as written, not just plausible surname matches).
+
+---
+
+## Batch 8 (2026-08-15): VCU + Ohio State follow-up review — user-assisted second pass
+
+**Result: 8 more emails found (VCU +4 → 10/13, Ohio State +4 → 8/21).** After
+reviewing the no-email lists from the first pass, the user ran a few manual
+searches with broader/differently-worded queries than the school-specific phrasing
+used originally (e.g. plain `"<Name>" artist email` instead of `"<Name>" <College>
+<major> email`) and surfaced several addresses the first pass missed. Re-ran the
+same broadened phrasing across the rest of both no-email lists.
+
+### VCU — 4 new (10/13 total)
+- **Debra Dowden-Crockett** (ddowdenc@odu.edu) — missed originally because she's
+  since moved to a faculty appointment at Old Dominion University; the ODU-specific
+  context wasn't in the original VCU-scoped search terms. Corroborated by ODU Art
+  Department directory.
+- **August Neuscheler** (august@mound.info) — **correction to the original
+  pass**: `aneuscheler.info` genuinely is his site after all. The first pass only
+  checked the bare homepage (near-blank); a deeper page
+  (`neuscheler.shtml`, found via the broadened search) has his full name
+  ("alexander august canossa neuscheler, richmond, va") next to this email,
+  verified in raw HTML. Lesson: a site with minimal homepage content can still
+  have real info one page deeper — don't conclude "unrelated site" from the
+  homepage alone.
+- **brooklin grantz** (hello@brooklin-studio.com) — user-confirmed. Site
+  (brooklin-studio.com) has an expired TLS certificate server-side, blocking
+  automated fetch entirely (same class of issue as SCAD earlier); user verified
+  the address independently.
+- **Alex Bacon** (alex.j.bacon@gmail.com) — user-confirmed, used despite an
+  unresolved flag: this exact address independently traces via search to a CV PDF
+  for a different, well-documented Alex Bacon (art historian/curator, ex-Princeton
+  Curatorial Associate). Written in per explicit user instruction ("use it anyway,
+  you've verified it's correct") — noted in the CSV as a caution in case it bounces.
+
+Remaining VCU no-email (2): Diego Pablo Málaga, Aleckxi Hristou-Dorhofer — not
+re-searched this pass, no new leads surfaced.
+
+### Ohio State — 4 new, all from the 2025 cohort (8/21 total)
+- **Zaza Naylor** (naylor.135@osu.edu), **Julian Robbins** (robbins.391@osu.edu),
+  **Isabella Saraceni** (saraceni.4@osu.edu), **Alex Trippe** (trippe.5@osu.edu) —
+  all four OSU directory URLs that 404'd in the first pass now surface in search
+  results with a specific email, but **still 404 on direct fetch as of today** —
+  could not independently verify the email or confirm current-student status
+  (title/bio) the way `mehall.11`'s page allowed when it was live. All four used
+  per explicit user confirmation ("use these they seem correct"), with a caution
+  note in each CSV row about the unverified page status.
+- **Matty Machado — explicitly NOT used**, real near-miss caught: `machado.50@osu.edu`
+  resolved to a live OSU directory page this pass (previous 404 was transient),
+  but its Job Title field reads **"Lecturer"**, not a current MFA student — this
+  is almost certainly the same "different Matthew Machado" ambiguity flagged in
+  the original pass, now confirmed rather than just suspected. Left unmarked.
+- 2026 cohort (8 UNVERIFIED reconstructed names): re-searched all 8 with the
+  broadened phrasing anyway (with the user's awareness these are lower-confidence
+  names) — genuine dead ends across the board, no personal sites or email trails
+  for any of the 8 specific reconstructed full names. No change from the prior
+  pass; still flagged UNVERIFIED, still no email.
+
+Remaining Ohio State no-email (13): Annelise Duque, Breana Hendricks (real
+personal site + contact page found, but only a contact form — no mailto, checked
+via `interactive_email_finder.py`), Josiah Jamison, Matty Machado (see above),
+James Waite, plus all 8 of the 2026 cohort.
+
+### Pattern worth carrying forward
+Query phrasing matters more than expected: switching from school/major-scoped
+searches (`"<Name>" <College> <major> portfolio`) to plain `"<Name>" artist email`
+surfaced several real, previously-missed results in this pass. Worth trying both
+phrasings before concluding "no email found," not just the school-scoped one this
+project has defaulted to so far.
+
+**Status:** Both schools' no-email lists reviewed and re-searched with broadened
+phrasing; both now closed out for this round (VCU 2 remaining, Ohio State 13
+remaining, all with a documented dead-end reason). Moving to the next
+smallest-remaining school next.
+
+---
+
+## Batch 9 (2026-08-15, same day): user manual pass on Ohio State — a real name-reconstruction error found and fixed
+
+**Result: 12 more Ohio State emails (8 → 16/22), plus the 2026 cohort's names
+corrected from 8 wrong-pairing guesses to 9 correctly-paired names** (one new
+row added — the cohort was always 9 people, not 8, per the source page's own
+"nine MFA graduate students" text; the reconstruction logic had been silently
+dropping one person). The user did a manual search pass on the remaining Batch 8
+no-email list and found results this session's searches had missed, including one
+that overturned a "same person? uncertain" ambiguity from earlier in the project.
+
+### 2025 cohort — 3 more found (Duque, Jamison, Waite)
+All three found via the plain `"<Name>" artist email` phrasing (same pattern
+Batch 8 already validated as more effective than school-scoped searches).
+Annelise Duque's confirmed address (annelise.duque@gmail.com) notably isn't
+published anywhere on her own site (annelise-duque.com) that this project could
+find directly — a reminder that "checked their own site, nothing there" doesn't
+mean an email doesn't exist somewhere else indexed.
+
+### 2026 cohort — the reconstruction was wrong, now corrected
+The original name-reconstruction (done in an earlier session, re-verified but not
+re-derived in Batch 8) assumed the raw source string
+(`"Banerjee, Shaheen Beardsley, Maria Conlon, Onni Estabrook, Samuel Lo, Takahiro
+Okubo, Shruti Shankar, Sam Wrigglesworth, Xuan"`) was a "Lastname, Firstname
+Lastname, Firstname..." shifted pattern, producing pairings like "Shaheen
+Banerjee" and "Maria Beardsley". **This was wrong.** The user searched a few of
+these names directly and got results contradicting the assumed pairing — e.g.
+searching "Maria Beardsley" surfaced "**Shaheen** Beardsley" instead. Re-deriving
+the string by hand confirms the correct read is much simpler: it's a plain
+"Firstname Lastname, Firstname Lastname, ..." list where each token IS a complete
+person, **except** the very first token ("Banerjee") is missing its first name
+and the very last token ("Xuan") is missing its last name — i.e. 9 people total
+(matching the source page's own "nine MFA graduate students" line, which the
+original 8-person reconstruction undercounted by one).
+
+Corrected pairings (5 with emails, user-confirmed via search):
+- Shaheen Banerjee → **Shaheen Beardsley** (beardsley.55@osu.edu)
+- Maria Beardsley → **Maria Conlon** (conlon.65@osu.edu)
+- Onni Conlon → **Onni Estabrook** (estabrook.17@osu.edu) — caution retained: an
+  earlier session found an OSU directory profile for an "Onni Estabrook" bio'd as
+  a Lecturer, the same faculty-vs-student risk seen with Matthew Machado; user
+  confirmed this address anyway, kept as a flag in the notes in case it bounces.
+- Samuel Estabrook → **Samuel Lo** (lo.327@buckeyemail.osu.edu)
+- Takahiro Lo → **Takahiro Okubo** (okubo.11@osu.edu)
+- Shruti Okubo → **Shruti Shankar** (no email found under corrected name yet)
+- Sam Shankar → **Sam Wrigglesworth** (no email found under corrected name yet)
+- Xuan Wrigglesworth → **[9th person, name split across two rows]**: re-checked
+  the source page directly, confirmed "Banerjee" and "Xuan" are two separate,
+  separately-incomplete people, not fragments of the 7 paired names.
+  "Banerjee" resolved to **Meghadityo Banerjee** via a UAS.osu.edu artist
+  interview article linking to his personal site (meghadityobanerjee.com,
+  confirmed OSU first-year MFA student via the "Convergence" 2024 show) — no
+  email found (contact form only). "Xuan" remains unresolved (no last name found
+  after checking "Convergence" and "Here & There" show coverage) — left as
+  `Xuan [Lastname unknown]` for a future pass.
+
+### Also fixed this session: a self-inflicted sent_to_nitya bug
+While writing in the newly-confirmed VCU/Ohio State emails from the first half of
+this session (Batch 8), 8 rows were accidentally stamped with today's date in
+`sent_to_nitya` at the same time their email was added — before they'd actually
+been included in a batch or sent anywhere. Caught by re-running
+`build_nitya_batch.py` and noticing it reported the stale count (10) instead of
+the expected new total; traced to the CSV edits, corrected by clearing
+`sent_to_nitya` on those 8 rows before generating the real batch. Worth
+remembering: when writing a newly-found email into a CSV row, `sent_to_nitya`
+should always be left blank — it only ever gets a value from `mark_batch_sent.py`.
+
+### Pattern worth carrying forward
+When a user's manual search directly contradicts an assumed name pairing (as
+happened with "Maria Beardsley" search returning "Shaheen Beardsley"), that's a
+strong signal to re-derive the reconstruction from scratch rather than assume the
+user's result is the anomaly. The original token-shift logic was never actually
+verified character-by-character against the raw string in Batch 8 — it was
+re-confirmed by producing the same (wrong) output twice, which felt like
+verification but wasn't.
+
+**Status:** Ohio State now 16/22 with email. Remaining no-email (6): Breana
+Hendricks, Matty Machado (Lecturer name-collision, unresolved), Shruti Shankar,
+Sam Wrigglesworth (both under corrected names, not yet re-searched), Meghadityo
+Banerjee (site found, no email published), Xuan (last name still unknown).
+`nitya_batch_2026-08-15.xlsx` regenerated — 26 total new rows (VCU 10 + Ohio
+State 16), correctly unmarked and ready to send.
+
+## Batch 10 (2026-08-15): New school — UAL Central Saint Martins, full scrape
+
+**Result: 283/283 students with email — a new source, 100% email yield.**
+Built `ual_csm_scraper.py` (Playwright-driven) to scrape the UAL Showcase
+graduate showcase for Central Saint Martins, per user's explicit instructions
+to start at page 17 (start_rank 193) and continue to the end (page 66,
+start_rank 781; 790 total listed projects).
+
+### Why a custom scraper was needed
+The listing page is a JS-rendered, scroll-triggered grid — a plain fetch or a
+passively-rendered crawl4ai fetch (even with `delay_before_return_html` up to
+10s) only ever showed "Loading projects" because the grid's content never
+renders without an active scroll gesture. Fixed with raw Playwright:
+`wait_until="domcontentloaded"` + explicit `page.mouse.wheel(0, 2000)` fired
+5 times with ~1.2-1.5s waits between each, which reliably triggered the
+lazy-load. `wait_until="networkidle"` was tried first and does not work on
+this site (never reaches idle, times out).
+
+Each project card links out via a search-redirect wrapper URL
+(`ual-search.arts.ac.uk/s/redirect?...&url=<real-profile-url>`) rather than a
+direct link. The initial regex `[?&]url=([^&"]+)` matched zero people because
+the raw HTML HTML-entity-encodes the ampersand (`&amp;url=`, not `&url=`) —
+fixed to `[?&](?:amp;)?url=([^&";]+)`, verified against cached test HTML
+(0 → 12 people parsed correctly on the same page).
+
+Each qualifying student's individual profile page publishes a real `mailto:`
+link directly in the page DOM — no interaction needed for extraction despite
+the email icon only being visually revealed on hover in a live browser.
+
+### Scope filtering
+Course/major text matched against the project's 9 in-scope mediums via
+keyword classification (`classify_medium()` in the scraper). Per user decision
+2026-08-15: Industrial Design excluded (too far from Design scope), Curation/
+Culture/Criticism excluded (curatorial studies, not a medium), Architecture
+never in scope. Courses not matching any keyword were skipped entirely (not
+written to the CSV at all — this source only ever contains in-scope,
+with-email rows, hence 0 no-email rows).
+
+### Run in 4 checkpoints (~15 pages each) per user's requested cadence
+- Pages 17-31: 92 students
+- Pages 32-46: 75 students (167 running total) — page 33 legitimately returned
+  0 projects (confirmed via cache inspection, not a scraping failure)
+- Pages 47-61: 101 students (268 running total)
+- Pages 62-66: 15 students (283 final total) — pages 65-66 had lower/zero
+  qualifying counts as the listing approached its end (790 total projects ÷
+  12/page = 66 pages)
+
+### One data-quality fix during review
+One row's profile URL resolved to a project cover page (a collaborative/group
+project) rather than an individual profile, so the name-extraction regex
+grabbed the project title "Collaborative project" instead of a person's name.
+Caught during a post-scrape sanity pass (checked for suspicious name patterns
+across all 283 rows). Recovered the real name (**Rose Kessler**) from the
+page's `<title>` tag ("The Vegas Paradox - Rose Kessler - UAL Showcase") and
+corrected the row, with a note explaining the recovery. No duplicate names and
+no other anomalies found in the full 283-row set.
+
+### Workbook integration
+Added to `build_master_workbook.py`'s `SOURCES` list and `SOURCE_CITATIONS`
+dict; rebuilt all three master workbooks. UAL Central Saint Martins sheet:
+283 with email, 0 without, in both `master_students.xlsx` and
+`master_students_with_email.xlsx` (absent, as expected, from
+`master_students_no_email.xlsx`).
+
+**Status:** UAL Central Saint Martins complete, 283/283 with email. Not yet
+committed to git. Not yet included in a Nitya batch — per the established
+one-school-at-a-time handoff flow, this should either be folded into a
+regenerated `nitya_batch_2026-08-15.xlsx` alongside the still-pending VCU/Ohio
+State rows, or sent as its own separate batch — needs user confirmation on
+which.
+
+## Batch 11 (2026-08-15): CMU + UW-Madison follow-up — smallest-remaining pass
+
+Picked the two smallest no-email counts after UAL (CMU: 1 missing, UW-Madison:
+2 missing) per the established smallest-school-first convention.
+
+**Result: 1 more email found (UW-Madison), 1 name correction, 2 confirmed
+dead ends.**
+
+### UW-Madison — Anna! resolved to Anna Colombia
+The directory listed only "Anna!" (no last name). Her linked personal site
+(annacolombia.com) and Instagram (@anna.colombia) identify her as **Anna
+Colombia**. Found and verified `annacolombia.colombiaanna@gmail.com` directly
+in the raw HTML `mailto:` link on annacolombia.com/contact — worth noting a
+WebFetch pass on the same page first reported a truncated/wrong version of the
+address (`colombiaanna@gmail.com`, missing the `annacolombia.` prefix), caught
+by cross-checking against the raw HTML rather than trusting the fetched-page
+summary.
+
+### CMU — Morgan Strahorn, exhaustively checked, no email exists publicly
+User supplied an Instagram exhibition-announcement caption for "Dream
+Sequence" (CMU 1st/2nd-year MFA show, SPACE gallery, Feb-Apr 2026) listing 11
+artists including "Morgan Strahorn (MFA '28) @mrgnstrhrn" — this both
+confirmed her Instagram handle and let us cross-check the full CMU roster: all
+11 names in the caption were already present in `cmu_students.csv` (the other
+3 CMU rows — Afrooz Partovi, Naomi Chambers, Bulumko Mbete — are third-years
+not in this particular show, not missing people). So CMU's roster is
+confirmed complete; Morgan Strahorn was the only gap.
+
+Followed the Instagram handle through every available surface: Behance (no
+contact info), Instagram bio (emoji only) → Linktree (linktr.ee/mrgnstrhrn,
+no email, only SoundCloud/Are.na/radio-station links) → Are.na author bio
+("Morgan Strahorn is a sweet person with an art degree. She lives and works in
+Dayton, OH") → none published an email. Confirmed as the same person (bio
+matches, she/her) but no email exists in any public, searchable location.
+Left as a no-email dead end — would need a direct DM/ask, out of scope for
+this project's search-only method.
+
+### Molly Green (UW-Madison) — also checked, also a dead end
+Confirmed real via her MFA Qualifier show "Feed the Birds" (UW News,
+art.wisc.edu event page) and Instagram (@mollygreen.pdf), she/her. No personal
+site, no published email found via web search or her UW directory listing.
+Left as-is.
+
+**Status:** CMU now 0/14 no-email (complete). UW-Madison now 1/21 no-email
+(Molly Green only). Not yet committed. Not yet added to a Nitya batch.
+
+## Batch 12 (2026-08-15): BGSU follow-up — no new emails found
+
+Next-smallest school after CMU/UW-Madison (2 missing). Checked both names,
+including Instagram per user's reminder that a lot of artists have an
+Instagram presence worth checking even when a general web search comes up
+empty.
+
+**Result: 0/2 found — both remain confirmed-real dead ends.**
+
+- **Precious Gyekye** — confirmed BGSU MFA 2025 ("Unraveling Silence" thesis,
+  3-D Studio Art) and a curatorial assistant for BGSU School of Art galleries
+  (alongside curator Matthew Kyba and fellow assistant Matthew Bowlus, per a
+  2024 Congressional Art Competition mention). Not in BGSU's public
+  faculty/staff directory (grad student, not staff). No personal site found.
+  Checked Instagram — no matching account found (search surfaced several
+  unrelated "Gyekye" and "Precious" accounts, none tied to BGSU or matching
+  bio details). BGSU's own directory search requires a BGSU login for student
+  lookups, out of reach.
+- **Peter Kiladejo** (Adetope Peter Kiladejo) — confirmed BGSU MFA 2025
+  ("Bloom III" oil painting listed for sale via ArtCloud/The African Art Hub
+  gallery). Only gallery/general-inquiry emails surfaced (not his own
+  address). Ruled out a same-name "Peter Kiladejo" profile at Nigeria's Green
+  Institute as a different person — that one's MFA is from Obafemi Awolowo
+  University in 2012, not BGSU 2025, no BGSU mention at all. No Instagram
+  match found either.
+
+**Status:** BGSU stays at 2/6 no-email — no change this pass.
+
+## Batch 13 (2026-08-15): UW Art follow-up — 2 of 4 found
+
+Next-smallest after BGSU (4 missing).
+
+**Result: 2 more emails found (Dahae Cheon, Alex Moni-Sauri), 2 remain
+unresolved (Stephanie Alacon, Jeff Jiang).**
+
+- **Dahae Cheon** — dahae35@uw.edu. Industrial designer, Hongik University
+  BFA. Search results cite her official UW Art + Art History + Design
+  directory page (art.washington.edu/people/dahae-cheon), same URL 404s on a
+  direct curl/WebFetch (no login/referrer) — this is the same
+  can't-independently-verify-but-plausible pattern already seen and approved
+  on several Ohio State rows in Batch 8. Flagged to user, approved for reuse.
+- **Alex Moni-Sauri** — monia@uw.edu. Multidisciplinary artist/writer. Same
+  404-on-direct-fetch pattern as Cheon above (art.washington.edu/people/
+  alex-moni-sauri), plus corroborated by an active Instagram (@a.moni.sauri)
+  including a "grad student spotlight" post confirming current UW MFA status.
+  User approved reuse of the same confidence pattern for both rows together.
+- **Stephanie Alacon** — confirmed real (3D4M ceramics/glass/sculpture MFA,
+  BFA Cal State Long Beach 2024) via her own UW directory page, but that page
+  also 404s and no search result surfaced an actual email address (only the
+  department's general gradart@uw.edu). Left unresolved — no address to even
+  flag for approval, unlike Cheon/Moni-Sauri.
+- **Jeff Jiang** — personal site jeff-jiang.com found (footwear/product
+  design) but no email in static HTML, likely JS contact form. Web search for
+  his specific site/name turned up only unrelated same-name people (a CEO, a
+  state senate candidate, various LinkedIn profiles) — none matching. Left
+  unresolved.
+
+**Status:** UW Art now 2/10 no-email (was 4). Not yet committed.
+
+## Batch 14 (2026-08-15): MassArt follow-up — 1 of 5 found
+
+Next-smallest after UW Art (5 missing). Checked personal sites, Instagram
+(per user's standing reminder to always check it), and MassArt's own grad
+student events page for all 5.
+
+- **Michael d'Entremont** — RESOLVED: snailpiratebusiness@gmail.com,
+  confirmed by user. An automated search first surfaced Instagram handle
+  @michaelkdentremont, whose bio ("Dad X2... Gym Owner... East Coaster > YEG")
+  is clearly a different, unrelated person and was correctly not used — the
+  real email came from the user separately (his "Snailpirate" animator/artist
+  persona/business email), a name-to-persona link this project's automated
+  search had no way to make on its own.
+- **Christopher Gage Arotsky** — confirmed real via his own MassArt x SoWa
+  artist page (sowa.massart.edu/artist/christopher-arotsky), which lists his
+  real Instagram (@christophergage_, private account) but only a shared
+  gallery inbox email (mxs@massart.edu) — not his personal address, not used
+  per the confidence-gating rule (a shared gallery inbox isn't a reliable way
+  to reach this specific student).
+- **Camryn Connolly** — personal site (camrynconnolly.com) only has a mailing
+  -list signup form, no visible email. Instagram (@camrynscollections, "a
+  collection of my work") exists but no email in bio per search snippet.
+- **Robin Jamkatel** — confirmed MassArt Graduate Teaching/Technical
+  Assistant + MFA Photography student via ZoomInfo, which confirms a
+  `@massart.edu` address exists but masks the username (`r***@massart.edu`)
+  — not guessing it. No personal site or portfolio found (search kept
+  surfacing an unrelated "Roshan Jamkatel," a Chicago-based photographer).
+- **Dylan Record** — confirmed real only via MassArt's own exhibition/event
+  listings (2026 MFA Thesis Part II, Fall 2025 MFA Walkthroughs); no
+  personal site, no Instagram, no email found anywhere.
+
+**Status:** MassArt now 4/11 no-email (was 5).

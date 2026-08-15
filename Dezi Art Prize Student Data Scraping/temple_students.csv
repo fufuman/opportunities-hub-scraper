@@ -1,31 +1,31 @@
-name,email,major,graduation_year,portfolio_url,college,notes
-Charles Jarboe,charles.jarboe@gmail.com,MFA Glass,2025,https://www.charles-jarboe.com/,Temple/Tyler,"Email and portfolio found via web search (own site charles-jarboe.com/bio)"
-Natalia Purchiaroni,npurchphotography@gmail.com,MFA Photography,2025,,Temple/Tyler,"Email confirmed by user"
-Macy West,macywest99@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user"
-Amanda Crain-Freeland,amandancrain@gmail.com,MFA Sculpture,2025,https://www.amandacrainfreeland.com/,Temple/Tyler,"Email and portfolio found via web search (own site amandacrainfreeland.com CV page)"
-Mo (Maria-Fernanda) Nunez Alzate,,MFA Sculpture,2025,https://fernandanunez.com/,Temple/Tyler,"Own site (fernandanunez.com) found via web search but returned HTTP 503 on fetch; not resolved this pass — still needs manual check"
-Mika Obayashi,mikacobayashi@gmail.com,MFA Fiber/Sculpture,2025,https://www.mikaobayashi.com/,Temple/Tyler,"Email confirmed by user"
-Heather Swenson,Mail@heatherswenson.com,MFA Painting,2025,https://www.heatherswenson.com/,Temple/Tyler,"Email confirmed by user (own site heatherswenson.com)"
-Sophia Dell'Arciprete,sophiadellarciprete@yahoo.com,MFA Photography,2025,https://sophiadellarciprete.com/,Temple/Tyler,"Email confirmed by user"
-Rae Helms,Raehelmsprint@gmail.com,MFA Printmaking,2025,https://raehelms.ink/,Temple/Tyler,"Email and portfolio found via web search (own site raehelms.ink)"
-Francesca Lally,francescalally@gmail.com,MFA Printmaking,2025,https://www.francescalally.net/,Temple/Tyler,"Email and portfolio found via web search (own site francescalally.net/ccvv)"
-Ari Zuaro,azuaro@theclaystudio.org,MFA Ceramics,2025,https://arizuaro.com/,Temple/Tyler,"Email confirmed by user (Clay Studio staff address, where they also work)"
-Lilly Buttitta,lbuttittaart@gmail.com,MFA Painting,2025,https://lillybuttitta.com/,Temple/Tyler,"Email and portfolio found via web search (own site lillybuttitta.com)"
-Theodora Dagkli Andonopoulos,,MFA Painting,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced, only a LinkedIn profile"
-Jess Lauro,,MFA Fine Arts,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced"
-Esther Park,eyparkart7@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user"
-Mollie Hansen,mollie.hansen.art@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user"
-Maedeh Mehdipour,mehdipour.maede@gmail.com,MFA Fiber and Material Studies,2025,https://maedehmehdipour.com/,Temple/Tyler,"Email confirmed by user (site was returning HTTP 403 on fetch by this tool)"
-Ally Messer,,MFA Printmaking,2025,,Temple/Tyler,"No email found via web search — only a LinkedIn profile surfaced, no personal site"
-Madeline Rodriguez,rodriguez.maddie@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user"
-Ruoxua Fan,,MFA Fine Arts,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced"
-Ivy Jewell,ijewell@theclaystudio.org,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user (Clay Studio staff address)"
-Angelique Scott,ArtByAngeliqueScott@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user"
-Ben Solo,benweidlich.bs@gmail.com,MFA Fine Arts,2025,https://www.bensoloart.com/,Temple/Tyler,"Email confirmed by user (real name appears to be Ben Weidlich; site was unresolvable by this tool's fetcher)"
-Logan Crompton,lcrompton@kcai.edu,MFA Fine Arts,2025,https://scoby.page/log3y-logan-crompton,Temple/Tyler,"Email confirmed by user (Kansas City Art Institute address)"
-Boi Boy,boiboy.art@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,"Email confirmed by user (full name may be 'Boi Boy Cottrell' per one source)"
-Diego Juarez,juarezcdiego@gmail.com,MFA Painting,2025,https://www.diegojuarez.com/,Temple/Tyler,"Email confirmed by user"
-Gianna Santucci,gsantucci630@gmail.com,MFA Painting,2025,,Temple/Tyler,"Email confirmed by user"
-Dora Moghaddamikhomami,,MFA Graphic Design,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced"
-Marissa Raybuck,,MFA Graphic Design,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced; works at Running Press Book Publishers"
-Pegah Saebi,pegah.saebi96@gmail.com,MFA Design,2025,https://pegahsaebi.com/,Temple/Tyler,"Email confirmed by user (site was unresolvable by this tool's fetcher)"
+name,email,major,graduation_year,portfolio_url,college,notes,sent_to_nitya
+Charles Jarboe,charles.jarboe@gmail.com,MFA Glass,2025,https://www.charles-jarboe.com/,Temple/Tyler,Email and portfolio found via web search (own site charles-jarboe.com/bio),2026-08-11
+Natalia Purchiaroni,npurchphotography@gmail.com,MFA Photography,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Macy West,macywest99@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Amanda Crain-Freeland,amandancrain@gmail.com,MFA Sculpture,2025,https://www.amandacrainfreeland.com/,Temple/Tyler,Email and portfolio found via web search (own site amandacrainfreeland.com CV page),2026-08-11
+Mo (Maria-Fernanda) Nunez Alzate,,MFA Sculpture,2025,https://fernandanunez.com/,Temple/Tyler,Own site (fernandanunez.com) found via web search but returned HTTP 503 on fetch; not resolved this pass — still needs manual check,
+Mika Obayashi,mikacobayashi@gmail.com,MFA Fiber/Sculpture,2025,https://www.mikaobayashi.com/,Temple/Tyler,Email confirmed by user,2026-08-11
+Heather Swenson,Mail@heatherswenson.com,MFA Painting,2025,https://www.heatherswenson.com/,Temple/Tyler,Email confirmed by user (own site heatherswenson.com),2026-08-11
+Sophia Dell'Arciprete,sophiadellarciprete@yahoo.com,MFA Photography,2025,https://sophiadellarciprete.com/,Temple/Tyler,Email confirmed by user,2026-08-11
+Rae Helms,Raehelmsprint@gmail.com,MFA Printmaking,2025,https://raehelms.ink/,Temple/Tyler,Email and portfolio found via web search (own site raehelms.ink),2026-08-11
+Francesca Lally,francescalally@gmail.com,MFA Printmaking,2025,https://www.francescalally.net/,Temple/Tyler,Email and portfolio found via web search (own site francescalally.net/ccvv),2026-08-11
+Ari Zuaro,azuaro@theclaystudio.org,MFA Ceramics,2025,https://arizuaro.com/,Temple/Tyler,"Email confirmed by user (Clay Studio staff address, where they also work)",2026-08-11
+Lilly Buttitta,lbuttittaart@gmail.com,MFA Painting,2025,https://lillybuttitta.com/,Temple/Tyler,Email and portfolio found via web search (own site lillybuttitta.com),2026-08-11
+Theodora Dagkli Andonopoulos,,MFA Painting,2025,,Temple/Tyler,"No email found via web search — no personal site surfaced, only a LinkedIn profile",
+Jess Lauro,,MFA Fine Arts,2025,,Temple/Tyler,No email found via web search — no personal site surfaced,
+Esther Park,eyparkart7@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Mollie Hansen,mollie.hansen.art@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Maedeh Mehdipour,mehdipour.maede@gmail.com,MFA Fiber and Material Studies,2025,https://maedehmehdipour.com/,Temple/Tyler,Email confirmed by user (site was returning HTTP 403 on fetch by this tool),2026-08-11
+Ally Messer,,MFA Printmaking,2025,,Temple/Tyler,"No email found via web search — only a LinkedIn profile surfaced, no personal site",
+Madeline Rodriguez,rodriguez.maddie@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Ruoxua Fan,,MFA Fine Arts,2025,,Temple/Tyler,No email found via web search — no personal site surfaced,
+Ivy Jewell,ijewell@theclaystudio.org,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user (Clay Studio staff address),2026-08-11
+Angelique Scott,ArtByAngeliqueScott@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Ben Solo,benweidlich.bs@gmail.com,MFA Fine Arts,2025,https://www.bensoloart.com/,Temple/Tyler,Email confirmed by user (real name appears to be Ben Weidlich; site was unresolvable by this tool's fetcher),2026-08-11
+Logan Crompton,lcrompton@kcai.edu,MFA Fine Arts,2025,https://scoby.page/log3y-logan-crompton,Temple/Tyler,Email confirmed by user (Kansas City Art Institute address),2026-08-11
+Boi Boy,boiboy.art@gmail.com,MFA Fine Arts,2025,,Temple/Tyler,Email confirmed by user (full name may be 'Boi Boy Cottrell' per one source),2026-08-11
+Diego Juarez,juarezcdiego@gmail.com,MFA Painting,2025,https://www.diegojuarez.com/,Temple/Tyler,Email confirmed by user,2026-08-11
+Gianna Santucci,gsantucci630@gmail.com,MFA Painting,2025,,Temple/Tyler,Email confirmed by user,2026-08-11
+Dora Moghaddamikhomami,,MFA Graphic Design,2025,,Temple/Tyler,No email found via web search — no personal site surfaced,
+Marissa Raybuck,,MFA Graphic Design,2025,,Temple/Tyler,No email found via web search — no personal site surfaced; works at Running Press Book Publishers,
+Pegah Saebi,pegah.saebi96@gmail.com,MFA Design,2025,https://pegahsaebi.com/,Temple/Tyler,Email confirmed by user (site was unresolvable by this tool's fetcher),2026-08-11

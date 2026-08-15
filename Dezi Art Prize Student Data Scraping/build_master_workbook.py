@@ -17,6 +17,41 @@ UNIFIED_COLUMNS = [
     "contacted",
     "response",
     "notes",
+    "sent_to_nitya",
+]
+
+# (sheet title, csv filename, college label). Single shared source list -
+# both split_master_workbook.py and build_nitya_batch.py import this rather
+# than keeping their own copy, since a second hardcoded copy previously
+# drifted out of sync and silently dropped Cranbrook from one output.
+SOURCES = [
+    ("RIT", "rit_students.csv", "RIT"),
+    ("MCAD", "mcad_students.csv", "MCAD"),
+    ("Cranbrook", "cranbrook_students.csv", "Cranbrook"),
+    ("RISD", "risd_students.csv", "RISD"),
+    ("Otis", "otis_students.csv", "Otis"),
+    ("Parsons", "parsons_students.csv", "Parsons"),
+    ("Temple-Tyler", "temple_students.csv", "Temple/Tyler"),
+    ("VCU", "vcu_students.csv", "VCU"),
+    ("Yale", "yale_students.csv", "Yale"),
+    ("CMU", "cmu_students.csv", "CMU"),
+    ("UW-Madison", "uw_madison_students.csv", "UW-Madison"),
+    ("Ohio State", "ohio_state_students.csv", "Ohio State"),
+    ("Pratt", "pratt_students.csv", "Pratt"),
+    ("BU", "bu_students.csv", "BU"),
+    ("SVA", "sva_students.csv", "SVA"),
+    ("MICA", "mica_students.csv", "MICA"),
+    ("CCA", "cca_students.csv", "CCA"),
+    ("MassArt", "massart_students.csv", "MassArt"),
+    ("U Michigan Stamps", "umich_students.csv", "U Michigan Stamps"),
+    ("CalArts", "calarts_students.csv", "CalArts"),
+    ("UCLA", "ucla_students.csv", "UCLA"),
+    ("Columbia College Chicago", "columbia_students.csv", "Columbia College Chicago"),
+    ("Iowa", "iowa_students.csv", "University of Iowa"),
+    ("UW Art", "uw_art_students.csv", "University of Washington"),
+    ("BGSU", "bgsu_students.csv", "BGSU"),
+    ("CalArts Animation", "calarts_animation_students.csv", "CalArts (Animation)"),
+    ("UAL Central Saint Martins", "ual_csm_students.csv", "UAL Central Saint Martins"),
 ]
 
 RESPONSE_OPTIONS = "No response,Interested,Not interested,Bounced,Follow-up needed"
@@ -223,6 +258,19 @@ SOURCE_CITATIONS = {
                "bfa-1 through bfa-4, affiliates, recent-alumni, mfa-1 through mfa-3)",
         "accessed": "2026-08-07",
     },
+    "UAL Central Saint Martins": {
+        "name": "UAL Showcase — Central Saint Martins graduate showcase listing "
+                "(JS-rendered, scroll-triggered grid; pages 17 through end, "
+                "start_rank 193-790), filtered to students whose course matched "
+                "an in-scope medium. Each qualifying student's individual UAL "
+                "Showcase profile page was fetched for a direct mailto: email "
+                "link. Industrial Design, Curation/Culture/Criticism, and "
+                "Architecture courses excluded per user decision 2026-08-15.",
+        "url": "https://ualshowcase.arts.ac.uk/c/central-saint-martins"
+               "?collection=ual~sp-showcase&meta_college_sand=Central+Saint+Martins "
+               "(paginated, num_ranks=12, start_rank increments of 12)",
+        "accessed": "2026-08-15",
+    },
 }
 
 
@@ -261,6 +309,7 @@ def write_sheet(wb, sheet_title, rows, college_name):
             row.get("contacted", "No") or "No",
             row.get("response", ""),
             row.get("notes", ""),
+            row.get("sent_to_nitya", ""),
         ])
 
     last_row = ws.max_row
@@ -282,7 +331,8 @@ def write_sheet(wb, sheet_title, rows, college_name):
     ws.auto_filter.ref = f"A{header_row_num}:{get_column_letter(len(UNIFIED_COLUMNS))}{last_row}"
 
     widths = {"name": 24, "email": 28, "major": 26, "graduation_year": 16,
-              "portfolio_url": 36, "college": 14, "contacted": 12, "response": 18, "notes": 40}
+              "portfolio_url": 36, "college": 14, "contacted": 12, "response": 18,
+              "notes": 40, "sent_to_nitya": 16}
     for i, col in enumerate(UNIFIED_COLUMNS, start=1):
         ws.column_dimensions[get_column_letter(i)].width = widths.get(col, 18)
 
@@ -292,69 +342,12 @@ def write_sheet(wb, sheet_title, rows, college_name):
 def main():
     parser = argparse.ArgumentParser(description="Build/update the master student outreach workbook")
     parser.add_argument("--out", default="master_students.xlsx")
-    parser.add_argument("--rit-csv", default="rit_students.csv")
-    parser.add_argument("--mcad-csv", default="mcad_students.csv")
-    parser.add_argument("--cranbrook-csv", default="cranbrook_students.csv")
-    parser.add_argument("--risd-csv", default="risd_students.csv")
-    parser.add_argument("--otis-csv", default="otis_students.csv")
-    parser.add_argument("--parsons-csv", default="parsons_students.csv")
-    parser.add_argument("--temple-csv", default="temple_students.csv")
-    parser.add_argument("--vcu-csv", default="vcu_students.csv")
-    parser.add_argument("--yale-csv", default="yale_students.csv")
-    parser.add_argument("--cmu-csv", default="cmu_students.csv")
-    parser.add_argument("--uw-madison-csv", default="uw_madison_students.csv")
-    parser.add_argument("--ohio-state-csv", default="ohio_state_students.csv")
-    parser.add_argument("--pratt-csv", default="pratt_students.csv")
-    parser.add_argument("--bu-csv", default="bu_students.csv")
-    parser.add_argument("--sva-csv", default="sva_students.csv")
-    parser.add_argument("--mica-csv", default="mica_students.csv")
-    parser.add_argument("--cca-csv", default="cca_students.csv")
-    parser.add_argument("--massart-csv", default="massart_students.csv")
-    parser.add_argument("--umich-csv", default="umich_students.csv")
-    parser.add_argument("--calarts-csv", default="calarts_students.csv")
-    parser.add_argument("--ucla-csv", default="ucla_students.csv")
-    parser.add_argument("--columbia-csv", default="columbia_students.csv")
-    parser.add_argument("--iowa-csv", default="iowa_students.csv")
-    parser.add_argument("--uw-art-csv", default="uw_art_students.csv")
-    parser.add_argument("--bgsu-csv", default="bgsu_students.csv")
-    parser.add_argument("--calarts-animation-csv", default="calarts_animation_students.csv")
     args = parser.parse_args()
 
     wb = Workbook()
     wb.remove(wb.active)
 
-    # (sheet title, csv path, college label). Add a new tuple here for each
-    # additional school scraped; the CSV just needs the unified columns.
-    sources = [
-        ("RIT", args.rit_csv, "RIT"),
-        ("MCAD", args.mcad_csv, "MCAD"),
-        ("Cranbrook", args.cranbrook_csv, "Cranbrook"),
-        ("RISD", args.risd_csv, "RISD"),
-        ("Otis", args.otis_csv, "Otis"),
-        ("Parsons", args.parsons_csv, "Parsons"),
-        ("Temple-Tyler", args.temple_csv, "Temple/Tyler"),
-        ("VCU", args.vcu_csv, "VCU"),
-        ("Yale", args.yale_csv, "Yale"),
-        ("CMU", args.cmu_csv, "CMU"),
-        ("UW-Madison", args.uw_madison_csv, "UW-Madison"),
-        ("Ohio State", args.ohio_state_csv, "Ohio State"),
-        ("Pratt", args.pratt_csv, "Pratt"),
-        ("BU", args.bu_csv, "BU"),
-        ("SVA", args.sva_csv, "SVA"),
-        ("MICA", args.mica_csv, "MICA"),
-        ("CCA", args.cca_csv, "CCA"),
-        ("MassArt", args.massart_csv, "MassArt"),
-        ("U Michigan Stamps", args.umich_csv, "U Michigan Stamps"),
-        ("CalArts", args.calarts_csv, "CalArts"),
-        ("UCLA", args.ucla_csv, "UCLA"),
-        ("Columbia College Chicago", args.columbia_csv, "Columbia College Chicago"),
-        ("Iowa", args.iowa_csv, "University of Iowa"),
-        ("UW Art", args.uw_art_csv, "University of Washington"),
-        ("BGSU", args.bgsu_csv, "BGSU"),
-        ("CalArts Animation", args.calarts_animation_csv, "CalArts (Animation)"),
-    ]
-
-    for sheet_title, csv_path, college_name in sources:
+    for sheet_title, csv_path, college_name in SOURCES:
         if not os.path.exists(csv_path):
             print(f"Skipping {sheet_title}: {csv_path} not found")
             continue
