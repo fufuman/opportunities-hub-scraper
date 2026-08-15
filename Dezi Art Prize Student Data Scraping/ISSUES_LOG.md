@@ -1661,3 +1661,237 @@ Cornell (37), UT Austin (78), Cooper Union (2), SCAD (367) = 498 new names,
 0 new emails, across 5 new CSV files. Next: wire into
 `build_master_workbook.py` SOURCES + SOURCE_CITATIONS and rebuild all three
 master workbooks.
+
+## Batch 20 (2026-08-15): Email discovery pass on Cooper Union + Alfred (smallest-first)
+
+Started the email-discovery pass on the 5 newly-added schools, smallest
+-first per the established convention.
+
+### Cooper Union: 1/2 found
+**Regina Cervantes Ellis** — regina.ce@icloud.com, found via her own
+portfolio site (reginacervantes.com), verified directly in raw HTML (a
+WebFetch summary pass had 503'd on this site; a direct curl succeeded).
+**Skye Jones** — no email found; several same-name Instagram accounts
+surfaced but none confirmed as this specific artist, so none used; her
+LinkedIn exists but returned an anti-bot block (HTTP 999) rather than real
+content.
+
+### Alfred University: 4/14 found
+- **Amanda Gentry** — studio@amandagentry.com (own site amandagentry.com,
+  verified in raw HTML)
+- **Max Heaton** — maxheaton1@gmail.com (own site maxheaton.com, verified in
+  raw HTML)
+- **GH Wood** — ogwood03@gmail.com (own site oghwood.com, verified in raw
+  HTML) — note the web-search summary pass surfaced no email at all for him;
+  it only turned up once the raw HTML was checked directly, a reminder that
+  search summaries can under-report what a page actually contains
+- **Ignacio Luera** — Luera36@gmail.com (own Canva site
+  ignacioluera.my.canva.site, verified in raw HTML; corroborated by his
+  Instagram bio @zer0logic explicitly stating "MFA at Alfred U. '26")
+- **Justin Donica, Hazel Liu, Yuxuan Wang, Krist Lee, Marita Manson,
+  Elizabeth Scott, Michelle Seo, David Park** — no email found; all
+  confirmed as real current/recent Alfred MFA students via press coverage,
+  but no personal site, portfolio, or public contact surfaced for any of
+  them.
+- **Toomas Toomepuu, Erin Berry** — both have their own personal sites
+  (toomastoomepuu.com, erin-berry.com) confirmed to exist via search, but
+  both are DNS-unreachable by every fetch tool available here (`ENOTFOUND`)
+  — flagged in their CSV notes for a manual check, not marked as dead ends.
+
+**Status:** Cooper Union complete (1/2). Alfred now 4/14 with email. Not yet
+committed.
+
+### User manual pass on Alfred: 2 more found (via Google AI Overview)
+User searched "Yuxuan Wang artist alfred university email" directly on
+Google (which surfaces an AI Overview box this project's search tool
+doesn't have access to) and found:
+- **Hazel Liu** — yl25@alfred.edu. Alfred-pattern student email. Flagged
+  that the initials "yl" don't obviously match "Hazel Liu" (would expect
+  "hl") — possibly a given/legal name difference (e.g. an underlying Chinese
+  given name starting with Y). User confirmed using it anyway.
+- **Yuxuan Wang** — fishywang@gmail.com. CAUTION: this exact address
+  independently traces via this project's own search to a *different,
+  well-documented* Yuxuan Wang — a software developer/technologist born
+  1983 in Wuhan with his own site (wang.yuxuan.org) — not obviously our
+  Alfred MFA Electronic Integrated Arts student. User confirmed using it
+  anyway despite the apparent name collision.
+
+Both used per explicit user confirmation despite the flags — same pattern as
+the earlier Alex Bacon (VCU) name-collision case. Worth a second look on
+either if a send bounces.
+
+**Status:** Alfred now 6/14 with email.
+
+### New tool: Serper.dev (real Google Search API) — significant upgrade
+User provided a Serper API key (stored in a new, gitignored `.env` file in
+this folder — added `.env`/`*.env` to `.gitignore`) after noticing this
+project's WebSearch tool was returning different, less specific results than
+searching the same exact phrase directly on google.com (which also shows a
+Google AI Overview box this project has no access to). Built
+`serper_search.py`, a small wrapper around Serper's `/search` endpoint,
+which hits real Google index results.
+
+Immediate result running it against the remaining Alfred/Cooper Union
+no-email names: found real Instagram handles, personal-site leads, and 3
+more direct emails that the standard WebSearch pass had missed entirely for
+the same names:
+- **Marita Manson** — maritamanson@gmail.com, found directly in her own
+  Instagram bio text via a Serper search result snippet (no fetch needed —
+  the email was already visible in the indexed snippet)
+- **Toomas Toomepuu** — toomepuut@gmail.com, listed on a feature article
+  about his work (sayhito-atlas.com) that the standard search never
+  surfaced
+- **Skye Jones** (Cooper Union) — skyealgojones@gmail.com, found via a
+  personal site (skyejones.info) that Serper surfaced but standard search
+  never did; verified directly in raw HTML
+
+Also confirmed real Instagram handles for 2 more names without finding an
+email (Krist Lee @krist.leee, bio literally reads "Los Angeles MFA Alfred
+University NY, 2026"; Elizabeth Scott @cone_beautiful) — useful for a future
+manual DM-based pass even without an email.
+
+**Takeaway going forward:** Serper should be the default first search tool
+for future email-discovery passes on this project — it consistently
+surfaced more specific, more useful results than the built-in WebSearch tool
+across every name tried in this batch.
+
+**Status:** Cooper Union complete (2/2). Alfred now 8/14 with email.
+
+### Final Alfred push with Serper: no further emails found
+Ran Serper against the remaining 6 no-email names. One more confirmed
+Instagram handle (Michelle Seo — @m__y__seo, Korean name 서영은, bio confirms
+"@alfredceramics MFA") but no email surfaced for her or the other 5. Also
+checked Justin Donica's personal portfolio site directly
+(cargocollective.com/justindonica, including a /Contact subpage which
+404s) — no email published there either.
+
+**Status:** Alfred final: 8/14 with email. Remaining no-email (6): Justin
+Donica (has a Cargo Collective portfolio, no contact info published), Krist
+Lee (Instagram @krist.leee confirmed), Elizabeth Scott (Instagram
+@cone_beautiful confirmed), Michelle Seo (Instagram @m__y__seo confirmed),
+David Park, Erin Berry (own site erin-berry.com still DNS-unreachable by
+this tool's fetchers — worth a manual check). Cooper Union complete (2/2),
+no further action needed on that school.
+
+## Batch 21 (2026-08-15): Cornell email discovery pass (Serper) — 11/39
+
+Next-smallest school after Alfred/Cooper Union. Ran the full 37-name roster
+through Serper.
+
+### Roster correction found first
+Serper surfaced Cornell's actual official "MFA Image Text Student Profiles"
+directory page (aap.cornell.edu/art/master-of-fine-arts-in-image-text/
+image-text-student-profiles/), which lists the '26 cohort as **11** people,
+not the 10 originally scraped from the SELF/ASSEMBLY thesis-show page. Two
+names were missing entirely: **Monique Flynn** and **Clare Sheedy** — added
+as new rows. Checked whether Julian Darwall (whose own bio describes him as
+"a faculty member of Parsons... holds an MFA from Cornell", raising a
+question of whether he's a current student) should be removed — confirmed
+via multiple independent sources (the SELF/ASSEMBLY thesis show page itself,
+several Instagram posts) that he is explicitly named as a 2026 Image Text
+MFA graduate, so kept as-is; his own site's language is likely just dated or
+describes a concurrent teaching role.
+
+### 11 emails found
+- **Smith Galtney** — smithg@bakeryphoto.com (Bakery Photo Collective bio
+  page, verified in raw HTML)
+- **Jacquelyn Johnson** — jacjohnsoninfo@gmail.com (own site jacjohnson.info)
+- **Jared Radin** — jared@r4d1n.net (own site r4d1n.net/about)
+- **Joseph Rafferty III** — jar652@cornell.edu (own site josephrafferty.com,
+  real Cornell institutional address)
+- **Carla Rangel García** — rangel.g.carla@gmail.com (own site
+  carlarangelgarcia.com/information)
+- **Onome Olotu** — studio.onomeolotu@gmail.com (quoted directly in her
+  Instagram bio via the search snippet, not independently re-verified by
+  fetch since Instagram bios aren't fetchable by this tool)
+- **Sandy Wang** (full name Yun Hsiang (Sandy) Wang) — sandywang1120@gmail.com
+  (own site sandywang00.com/info)
+- **Sheila Novak** — SheilaNovakStudios@gmail.com (own site
+  sheilanovak.com/about)
+- **Sally Yu** (full name Daeum Sally Yu) — jy652@cornell.edu (repeated
+  across multiple Cornell AAP Instagram posts as her own contact)
+- **Lena Park** — lp346@cornell.edu (own site lena-park.com/about and her
+  LinkedIn, both list the same address)
+- **Asuka Kurebayashi** — ak2245@cornell.edu (own site
+  asukakurebayashi.com/about, verified in raw HTML)
+
+### One near-miss caught: name collision on "Won Ryu"
+A site (rooryu.com) surfaced for "Roo Ryu" with contact email
+d48ryu@gmail.com — but the page's own bio identifies this person as
+**Dahyun Ryu (류다현)**, not Won Ryu. Confirmed via a separate search that
+Dahyun Ryu is actually a *different* Cornell BFA student (paired with
+Isabella "Bella H" Chung on a joint show called "Demian") who happens to
+share a surname with our Won Ryu. Correctly not used — a good example of why
+every found email needs an identity cross-check before being written in,
+not just a name-string match.
+
+### Remaining 28/39 no-email
+No further leads found for: Luke Christiansen, Julian Darwall, Vernell
+Dunams (has own site vernelldunams.com, no email visible on /about or /cv),
+Angela Rauf, Caroline Wallis, Monique Flynn, Clare Sheedy, Marissa Cote,
+Michael Morgan (has own site michaelmorganart.com, only a placeholder email
+in raw HTML), Faye Pamintuan (has own site fayepamintuan.com, no email in
+raw HTML), Hanul Gu, Julien Roumieu-Lavigne, Won Ryu, Edward Conte (has own
+site edwardconte.com, no email found), Rachel Shepherd, Kate James (has own
+site katejamesdesign.com, only a placeholder email), Vera Kelly, Alex Park,
+Bella H Chung / Isabella Chung, Julie Christine Chung, Josephine Cosmosse,
+AnneMarie Ehrenreich, Rory Haltmaier, Amy Lee, Erin Choi, Nadia Holcomb,
+NEBA. (real name appears to be just "NEBA." as a mononym per her own event
+page, not "NEBA Onajevwe" as two separate name parts — worth a note for
+Nitya but not correcting the CSV name without more certainty).
+
+**Status:** Cornell final: 11/39 with email (was 0/37 before roster
+correction added 2 names).
+
+## Batch 22 (2026-08-15): UT Austin email discovery pass (Serper) — 14/78
+
+Next school after Cornell in the smallest-first order (though UT Austin is
+actually the largest of the 5 remaining schools by headcount — picked next
+per the earlier plan to work through them in the order already announced).
+
+### MFA cohort (21 names): 9/21 found — high yield
+- **Nathan Anthony** — nathan.anthony@utexas.edu (UT Austin faculty/
+  directory page, institutional address)
+- **Ben Copolillo** — copolillob@gmail.com (own site bencopolillo.com)
+- **Noah Dasho** — noah.dasho@gmail.com (own site noahdasho.com)
+- **Christian Hastad** — christianhastad@gmail.com (own site
+  christianhastad.com/profile)
+- **Tova Katzman** — tovakatzman.studio@gmail.com (own site
+  tovakatzman.com/about)
+- **Selina Wagner** — swagnerstudio@gmail.com (own site selinawagner.com)
+- **Rosalyn Jewel Farney** — rosalynfarney@gmail.com (own site
+  rosalynfarney.com/about)
+- **Jo Kim** — joannekim103@gmail.com (own site joanne-kim.com; likely legal
+  name Joanne Kim)
+- **Nolan Zunk** — nolan@nolanzunk.com (Facebook "Contact info" field, not
+  independently re-verified in his own site's raw HTML)
+
+No email found for: Lorena Diosdado, Laurent Le Bel-Roux, Miles Matis-Uzzo,
+Britt Moseley, Sasha-Kay Nicole, Javier Robelo, Phoebe Shuman-Goodier,
+Katherine Vaughn, Maya Gauvin, Edward Gia, Morgan Grigsby, Tiffany Katarina
+Smith (12/21) -- several confirmed real via press coverage/personal sites
+that exist but publish no visible email (Javier Robelo's site only exposes
+Wix telemetry addresses, not real contact info).
+
+### BFA cohort (57 names, "Proof of Life"): 5/57 found — very low yield
+User confirmed continuing the full sweep despite an early 0/8 signal. Final
+yield confirms the pattern: current undergrad seniors mostly have Instagram
+accounts only, not professional sites or press coverage yet.
+- **Josiah Brown** — josiah.brown.oh@gmail.com (own site
+  josiahbrownart.com/about-me)
+- **Jeongin Choi** — jpaintingc@gmail.com (own site jeonginchoi.com/about)
+- **Gabrielle Dick** — Gabrielle.gbd@gmail.com (own site
+  gabrielledick.com/about)
+- **Reese Ertel** — reeseertel.art@gmail.com (her TikTok bio
+  @reeseertel.art, corroborated by her own site; not independently
+  re-verified in the site's raw HTML)
+- **Claire Fleming** — claireflem02@gmail.com (own site
+  claireflemingart.com, verified in raw HTML)
+
+No email found for the other 52 BFA names, including several with real
+personal sites that simply don't expose contact info in the raw HTML (Scott
+Cobb, Ania Davila, Alissa Murphy, Chloe Pruett, Maia Vollbrecht). One
+truncated name from the original scrape, "Genavieve G." (last name cut off
+on the source page), was not searchable meaningfully and remains unresolved.
+
+**Status:** UT Austin final: 14/78 with email.
